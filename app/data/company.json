@@ -1,0 +1,168 @@
+{
+  "company": {
+    "name": "淼泽松源（上海）科技发展有限公司",
+    "shortName": "淼泽松源",
+    "slogan": "绿色能源，科技未来",
+    "description": "淼泽松源（上海）科技发展有限公司，聚焦甲醇新能源、风能等核心技术研发，同步开展能源储存及设备销售、租赁等多元业态。",
+    "established": "2020",
+    "location": "上海市浦东新区",
+    "vision": "成为全球领先的新能源解决方案提供商",
+    "mission": "通过科技创新推动绿色能源发展，为可持续发展贡献力量"
+  },
+  "services": [
+    {
+      "id": 1,
+      "title": "甲醇新能源技术研发",
+      "description": "专注于甲醇燃料电池、甲醇重整技术等新能源技术研发，提供高效、清洁的能源解决方案。",
+      "icon": "beaker",
+      "features": ["高效转换", "低排放", "可持续性", "成本效益"]
+    },
+    {
+      "id": 2,
+      "title": "风能技术研发",
+      "description": "开发先进的风力发电技术，提高风能利用效率，推动可再生能源发展。",
+      "icon": "cloud",
+      "features": ["高效率", "低噪音", "适应性强", "智能化"]
+    },
+    {
+      "id": 3,
+      "title": "能源储存解决方案",
+      "description": "提供先进的能源储存系统，包括电池储能、压缩空气储能等多种解决方案。",
+      "icon": "bolt",
+      "features": ["高密度", "长寿命", "安全性", "智能化管理"]
+    },
+    {
+      "id": 4,
+      "title": "设备销售与租赁",
+      "description": "提供新能源设备的销售和租赁服务，满足不同客户的多样化需求。",
+      "icon": "cog",
+      "features": ["灵活方案", "全程服务", "技术支持", "成本优化"]
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "MZ-1000 甲醇燃料电池系统",
+      "category": "甲醇能源",
+      "description": "高效甲醇燃料电池系统，适用于分布式发电和备用电源。",
+      "specifications": {
+        "功率": "1000kW",
+        "效率": ">45%",
+        "燃料": "甲醇",
+        "应用场景": "工业园区、数据中心、医院"
+      },
+      "image": "/images/products/methanol-fuel-cell.svg"
+    },
+    {
+      "id": 2,
+      "name": "MZ-WT-200 风力发电机组",
+      "category": "风能",
+      "description": "高效低噪音风力发电机组，适用于分布式风电场。",
+      "specifications": {
+        "功率": "200kW",
+        "叶片直径": "30m",
+        "启动风速": "3m/s",
+        "应用场景": "工业园区、偏远地区、海岛"
+      },
+      "image": "/images/products/wind-turbine.svg"
+    },
+    {
+      "id": 3,
+      "name": "MZ-ES-500 能源储存系统",
+      "category": "能源储存",
+      "description": "高效能源储存系统，支持多种应用场景。",
+      "specifications": {
+        "容量": "500kWh",
+        "充放电效率": ">95%",
+        "循环寿命": ">6000次",
+        "应用场景": "电网调频、峰谷电价套利、可再生能源配套"
+      },
+      "image": "/images/products/energy-storage.svg"
+    },
+    {
+      "id": 4,
+      "name": "MZ-MC-100 移动充电站",
+      "category": "设备租赁",
+      "description": "灵活的移动充电解决方案，适用于临时活动和应急场景。",
+      "specifications": {
+        "容量": "100kWh",
+        "充电接口": "多类型",
+        "移动方式": "拖车式",
+        "应用场景": "户外活动、应急供电、临时工地"
+      },
+      "image": "/images/products/mobile-charging.svg"
+    }
+  ],
+  "partners": [
+    {
+      "id": 1,
+      "name": "上海交通大学",
+      "type": "学术合作",
+      "description": "在新能源技术研发领域开展深度合作，共同推动技术创新。",
+      "logo": "/images/partners/sjtu.png"
+    },
+    {
+      "id": 2,
+      "name": "国家电网",
+      "type": "战略合作伙伴",
+      "description": "在能源储存和智能电网领域开展合作，共同推进能源转型。",
+      "logo": "/images/partners/state-grid.png"
+    },
+    {
+      "id": 3,
+      "name": "中石油",
+      "type": "产业合作",
+      "description": "在甲醇新能源产业链开展合作，共同构建新能源生态。",
+      "logo": "/images/partners/cnpc.png"
+    },
+    {
+      "id": 4,
+      "name": "中科院上海分院",
+      "type": "科研合作",
+      "description": "在前沿能源技术领域开展合作，共同攻克技术难题。",
+      "logo": "/images/partners/cas.png"
+    }
+  ],
+  "contact": {
+    "address": "上海市浦东新区张江高科技园区碧波路572弄",
+    "phone": "+86-21-12345678",
+    "email": "info@mzsytech.com",
+    "website": "www.mzsytech.com",
+    "workingHours": "周一至周五 9:00-18:00",
+    "social": {
+      "wechat": "mzsytech",
+      "linkedin": "mzsy-technology",
+      "weibo": "@淼泽松源科技"
+    }
+  },
+  "team": [
+    {
+      "id": 1,
+      "name": "张明",
+      "position": "首席执行官",
+      "description": "拥有20年新能源行业经验，曾任多家知名能源企业高管。",
+      "photo": "/images/team/zhang-ming.jpg"
+    },
+    {
+      "id": 2,
+      "name": "李华",
+      "position": "首席技术官",
+      "description": "能源技术专家，拥有多项新能源技术专利，深耕甲醇能源领域15年。",
+      "photo": "/images/team/li-hua.jpg"
+    },
+    {
+      "id": 3,
+      "name": "王强",
+      "position": "研发总监",
+      "description": "风能技术专家，主持多个国家级风能研发项目。",
+      "photo": "/images/team/wang-qiang.jpg"
+    },
+    {
+      "id": 4,
+      "name": "赵丽",
+      "position": "市场总监",
+      "description": "拥有丰富的能源市场经验，擅长新能源产品市场推广。",
+      "photo": "/images/team/zhao-li.jpg"
+    }
+  ]
+}
