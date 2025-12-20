@@ -3,11 +3,6 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   nitro: {},
-  postcss: {
-    plugins: {
-      "@tailwindcss/postcss": {},
-      autoprefixer: {},
-    },
-  },
+  modules: ["@nuxt/icon", "@nuxtjs/tailwindcss"],
   css: ["~/assets/css/main.css"],
 });
