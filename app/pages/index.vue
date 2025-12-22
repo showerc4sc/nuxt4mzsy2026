@@ -26,7 +26,7 @@
       <!-- 轮播容器 -->
       <div class="relative h-full" :style="{ transform: `translateY(${getParallaxOffset(0.3)}px)`, height: '100vh' }">
         <ClientOnly>
-          <div class="flex h-full" :style="{ transform: `translateX(-${heroSlide * 100}%)`, transition: 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)', height: '100vh' }">
+          <div class="flex h-full" :style="{ transform: `translateX(-${heroSlide * 100}%)`, transition: 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)', height: '100vh' }" v-if="isClientInitialized">
             <!-- 轮播项 1: 公司介绍 -->
             <div class="w-full flex-shrink-0 relative">
               <!-- 视频背景 -->
@@ -290,7 +290,7 @@
           <!-- 轮播容器 -->
           <ClientOnly>
             <div class="overflow-hidden rounded-2xl shadow-2xl bg-white">
-              <div class="flex transition-transform duration-700 ease-out" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
+              <div class="flex transition-transform duration-700 ease-out" :style="{ transform: `translateX(-${currentSlide * 100}%)` }" v-if="isClientInitialized">
                 <!-- 轮播项 -->
                 <div
                   v-for="(product, index) in productsData"
@@ -801,6 +801,14 @@ const { data: productsData } = await useAsyncData('products', async () => {
 // 轮播控制
 const currentSlide = ref(0);
 const heroSlide = ref(0);
+
+// 客户端初始化标志
+const isClientInitialized = ref(false);
+
+// 在客户端初始化轮播状态
+onMounted(() => {
+  isClientInitialized.value = true;
+});
 
 const nextSlide = () => {
   if (!productsData.value) return;
