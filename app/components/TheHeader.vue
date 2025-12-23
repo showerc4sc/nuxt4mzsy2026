@@ -108,40 +108,94 @@ onMounted(() => {
 
 // 获取导航菜单数据
 const { data: menuData, pending: menuPending } = await useAsyncData('navigationMenu', async () => {
+  const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/';
+  const apiUrl = `${apiBase}client/cms/category/pub/getList`;
+
   try {
+    // 记录请求开始
+    console.log('[Header] 开始获取导航菜单数据');
+    console.log('[Header] 请求URL:', apiUrl);
+    console.log('[Header] 运行环境:', process.env.NODE_ENV || 'unknown');
+    console.log('[Header] 是否为客户端:', import.meta.client);
+
     // 直接使用 $fetch 获取数据
-    const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/';
-    const response = await $fetch(`${apiBase}client/cms/category/pub/getList`);
+    const response = await $fetch(apiUrl);
+
+    // 记录响应数据
+    console.log('[Header] API响应成功:', response);
 
     // 检查响应是否有效
     if (response && response.code === 0 && response.data && response.data.rows) {
       // 映射API响应数据到导航菜单格式
-      return response.data.rows.map(item => ({
+      const mappedData = response.data.rows.map(item => ({
         name: item.title || item.name || item.categoryName || '未命名',
         path: item.path || item.url || item.href || `/${item.id || ''}`
       }));
+      console.log('[Header] 菜单数据映射成功:', mappedData);
+      return mappedData;
     }
 
-    // 如果API调用失败，返回默认菜单
-    return [
-      { name: '首页', path: '/' },
-      { name: '关于我们', path: '/about' },
-      { name: '产品列表', path: '/products' },
-      { name: '合作伙伴', path: '/partners' },
-      { name: '联系我们', path: '/contact' }
-    ];
+    // 如果API返回数据格式不符合预期
+    console.warn('[Header] API响应格式不符合预期，使用默认菜单');
+    console.warn('[Header] 响应数据:', response);
+    return getDefaultMenu();
   } catch (error) {
-    console.error('获取导航菜单失败:', error);
+    // 详细的错误日志
+    console.error('[Header] =========================================');
+    console.error('[Header] 获取导航菜单失败');
+    console.error('[Header] =========================================');
+    console.error('[Header] 错误类型:', error.name || 'Unknown');
+    console.error('[Header] 错误消息:', error.message || '无错误消息');
+    console.error('[Header] 请求URL:', apiUrl);
+    console.error('[Header] 运行环境:', process.env.NODE_ENV || 'unknown');
+    console.error('[Header] 是否为客户端:', import.meta.client);
+    console.error('[Header] 错误堆栈:', error.stack || '无堆栈信息');
+
+    // 检查是否有响应信息
+    if (error.response) {
+      console.error('[Header] 响应状态码:', error.response.status);
+      console.error('[Header] 响应状态文本:', error.response.statusText);
+      console.error('[Header] 响应头:', error.response.headers);
+      console.error('[Header] 响应数据:', error.response._data || error.response.data);
+    }
+
+    // 检查是否有请求信息
+    if (error.request) {
+      console.error('[Header] 请求已发送但无响应');
+    }
+
+    // 检查其他可能的错误属性
+    if (error.cause) {
+      console.error('[Header] 错误原因:', error.cause);
+    }
+
+    if (error.statusCode) {
+      console.error('[Header] HTTP状态码:', error.statusCode);
+    }
+
+    if (error.statusMessage) {
+      console.error('[Header] HTTP状态消息:', error.statusMessage);
+    }
+
+    console.error('[Header] =========================================');
+    console.error('[Header] 使用默认菜单');
+    console.error('[Header] =========================================');
+
     // 出错时返回默认菜单
-    return [
-      { name: '首页', path: '/' },
-      { name: '关于我们', path: '/about' },
-      { name: '产品列表', path: '/products' },
-      { name: '合作伙伴', path: '/partners' },
-      { name: '联系我们', path: '/contact' }
-    ];
+    return getDefaultMenu();
   }
 });
+
+// 获取默认菜单
+const getDefaultMenu = () => {
+  return [
+    { name: '首页', path: '/' },
+    { name: '关于我们', path: '/about' },
+    { name: '产品列表', path: '/products' },
+    { name: '合作伙伴', path: '/partners' },
+    { name: '联系我们', path: '/contact' }
+  ];
+};
 
 // 使用从API获取的菜单数据
 const navigationItems = computed(() => menuData.value || []);
