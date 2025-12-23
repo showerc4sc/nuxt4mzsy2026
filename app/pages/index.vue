@@ -35,9 +35,16 @@
             <div class="w-full flex-shrink-0 relative">
               <!-- 视频背景 -->
               <div class="absolute inset-0 overflow-hidden">
-                <video class="absolute inset-0 w-full h-full object-cover scale-105" autoplay muted loop playsinline>
+                <video ref="heroVideo" class="absolute inset-0 w-full h-full object-cover scale-105" autoplay muted loop
+                  playsinline preload="auto" crossorigin="anonymous" @error="handleVideoError"
+                  @loadeddata="handleVideoLoaded">
                   <source src="/video/index.mp4" type="video/mp4">
+                  您的浏览器不支持视频标签。
                 </video>
+                <!-- 视频加载失败时的备用背景 -->
+                <div v-if="videoLoadFailed" class="absolute inset-0 bg-cover bg-center scale-105"
+                  style="background-image: url('https://picsum.photos/seed/mzsy-hero/1920/1080.jpg')">
+                </div>
                 <div class="absolute inset-0 bg-gradient-to-r from-eco-800/85 to-eco-600/75 z-10"></div>
               </div>
 
@@ -401,7 +408,7 @@
                             class="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0">
                             <span class="text-gray-500 text-sm">{{ key }}:</span>
                             <span class="font-medium text-gray-900 text-sm bg-eco-50 px-2 py-1 rounded">{{ value
-                              }}</span>
+                            }}</span>
                           </div>
                         </div>
                       </div>
@@ -996,9 +1003,36 @@ const newsSlide = ref(0);
 // 客户端初始化标志
 const isClientInitialized = ref(false);
 
+// 视频引用
+const heroVideo = ref(null);
+
+// 视频加载失败标志
+const videoLoadFailed = ref(false);
+
+// 视频加载成功处理
+const handleVideoLoaded = () => {
+  console.log('视频加载成功');
+  videoLoadFailed.value = false;
+};
+
+// 视频错误处理
+const handleVideoError = (event) => {
+  console.error('视频加载失败:', event);
+  console.error('视频错误详情:', event.target.error);
+  videoLoadFailed.value = true;
+};
+
 // 在客户端初始化轮播状态
 onMounted(() => {
   isClientInitialized.value = true;
+
+  // 尝试播放视频
+  if (heroVideo.value) {
+    heroVideo.value.play().catch(error => {
+      console.error('视频播放失败:', error);
+      videoLoadFailed.value = true;
+    });
+  }
 });
 
 const nextSlide = () => {

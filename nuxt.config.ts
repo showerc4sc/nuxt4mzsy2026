@@ -2,7 +2,17 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  nitro: {},
+  nitro: {
+    // 配置静态资源规则
+    routeRules: {
+      '/video/**': {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Content-Type': 'video/mp4'
+        }
+      }
+    }
+  },
   modules: ["@nuxt/icon", "@nuxtjs/tailwindcss"],
   css: ["~/assets/css/main.css"],
   postcss: {
