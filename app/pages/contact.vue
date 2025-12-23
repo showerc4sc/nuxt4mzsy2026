@@ -1,8 +1,15 @@
 <template>
   <div>
     <!-- 页面头部 -->
-    <section class="relative pt-40 pb-24 bg-gradient-to-r from-eco-500 to-primary-600 text-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="relative pt-40 pb-24 text-white overflow-hidden" style="background-image: url('https://picsum.photos/seed/mzsy-contact/1920/1080.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+      <!-- 深色遮罩层 -->
+      <div class="absolute inset-0 bg-gradient-to-br from-eco-900/85 to-primary-900/80"></div>
+      <!-- 装饰性光晕 -->
+      <div class="absolute inset-0 opacity-20">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-500 rounded-full filter blur-3xl"></div>
+      </div>
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h1 class="text-4xl md:text-5xl font-bold mb-6">联系我们</h1>
         <p class="text-xl max-w-3xl">
           我们期待与您的合作，共同推动绿色能源发展
