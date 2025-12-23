@@ -32,4 +32,16 @@ export default defineNuxtConfig({
     // 私有配置，仅在服务端访问
     // privateSecret: process.env.PRIVATE_SECRET
   },
+  // 配置 Vite 构建选项，保留生产模式下的 console 日志
+  vite: {
+    build: {
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: false,
+          drop_debugger: false,
+        },
+      },
+    },
+  },
 });
