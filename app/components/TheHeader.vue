@@ -116,57 +116,21 @@ onMounted(() => {
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
-
-  // 在客户端加载导航菜单数据
-  if (import.meta.client) {
-    fetchNavigationMenu();
-  }
 });
 
-// 获取导航菜单数据
-const menuData = ref(null);
-const menuPending = ref(false);
-const menuError = ref(null);
-
-// 获取导航菜单的函数
-const fetchNavigationMenu = async () => {
-  const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/';
-  const apiUrl = `${apiBase}client/cms/category/pub/getList`;
-
-  try {
-    menuPending.value = true;
-    menuError.value = null;
-
-    // 直接使用 $fetch 获取数据
-    const response = await $fetch(apiUrl);
-
-    // 检查响应是否有效
-    if (response && response.code === 0 && response.data && response.data.rows) {
-      // 映射API响应数据到导航菜单格式
-      const mappedData = response.data.rows.map(item => ({
-        name: item.title || item.name || item.categoryName || '未命名',
-        path: item.path || item.url || item.href || `/${item.id || ''}`
-      }));
-      menuData.value = mappedData;
-    } else {
-      // 如果API返回数据格式不符合预期，使用默认菜单
-      menuData.value = getDefaultMenu();
-    }
-  } catch (error) {
-    // 出错时使用默认菜单
-    menuData.value = getDefaultMenu();
-    menuError.value = error;
-  } finally {
-    menuPending.value = false;
-  }
-};
+// 使用SSR模式获取导航菜单数据
+const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', () => $fetch('/api/navigation-menu'), {
+  server: true
+});
 
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
-  if (menuData.value && menuData.value.length > 0) {
-    return menuData.value;
+  // 检查是否有有效的菜单数据
+  if (menuData.value && menuData.value.success && menuData.value.data && menuData.value.data.length > 0) {
+    return menuData.value.data;
   }
 
+  // 使用默认菜单
   return getDefaultMenu();
 });
 
