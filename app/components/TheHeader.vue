@@ -121,7 +121,11 @@ const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/route
 const apiUrl = `${apiBase}/client/cms/category/pub/getList`;
 
 // 使用SSR模式获取导航菜单数据
-const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', () => $fetch(apiUrl), {
+const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', async () => {
+  const response = await $fetch(apiUrl);
+  // 直接返回 data.rows
+  return response?.data?.rows || [];
+}, {
   server: true
 });
 
@@ -136,12 +140,15 @@ watch(menuError, (error) => {
   }
 }, { immediate: true });
 
-
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
   // 检查是否有有效的菜单数据
   if (menuData.value && menuData.value.length > 0) {
-    return menuData.value;
+    // 映射API响应数据到导航菜单格式
+    return menuData.value.map(item => ({
+      name: item.title || item.name || item.categoryName || '未命名',
+      path: item.path || item.url || item.href || `/${item.id || ''}`
+    }));
   }
 
   // 使用默认菜单
