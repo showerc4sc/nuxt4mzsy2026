@@ -99,9 +99,9 @@ const getDefaultMenu = () => {
   const defaultMenu = [
     { name: '首页', path: '/' },
     { name: '关于我们', path: '/about' },
-    { name: '产品列表', path: '/products' },
-    { name: '合作伙伴', path: '/partners' },
-    { name: '联系我们', path: '/contact' }
+    // { name: '产品列表', path: '/products' },
+    // { name: '合作伙伴', path: '/partners' },
+    // { name: '联系我们', path: '/contact' }
   ];
   return defaultMenu;
 };
