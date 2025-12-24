@@ -117,11 +117,25 @@ onMounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
 });
+const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router';
+const apiUrl = `${apiBase}/client/cms/category/pub/getList`;
 
 // 使用SSR模式获取导航菜单数据
-const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', () => $fetch('/api/navigation-menu'), {
+const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', () => $fetch(apiUrl), {
   server: true
 });
+
+// 监听错误并打印
+watch(menuError, (error) => {
+  if (error) {
+    console.error('[Header] 获取导航菜单失败:', error);
+    console.error('[Header] 错误类型:', error.name);
+    console.error('[Header] 错误消息:', error.message);
+    console.error('[Header] 请求URL:', apiUrl);
+    console.error('[Header] 错误堆栈:', error.stack);
+  }
+}, { immediate: true });
+
 
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
