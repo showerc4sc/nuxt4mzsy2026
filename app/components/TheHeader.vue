@@ -178,14 +178,27 @@ onMounted(() => {
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
+
+  // 在客户端加载导航菜单数据
+  if (import.meta.client) {
+    fetchNavigationMenu();
+  }
 });
 
 // 获取导航菜单数据
-const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigationMenu', async () => {
+const menuData = ref(null);
+const menuPending = ref(false);
+const menuError = ref(null);
+
+// 获取导航菜单的函数
+const fetchNavigationMenu = async () => {
   const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/';
   const apiUrl = `${apiBase}client/cms/category/pub/getList`;
 
   try {
+    menuPending.value = true;
+    menuError.value = null;
+
     // 记录请求开始
     addDebugLog('log', '[Header] 开始获取导航菜单数据');
     addDebugLog('log', '[Header] 请求URL:', apiUrl);
@@ -206,13 +219,13 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
         path: item.path || item.url || item.href || `/${item.id || ''}`
       }));
       addDebugLog('log', '[Header] 菜单数据映射成功:', mappedData);
-      return mappedData;
+      menuData.value = mappedData;
+    } else {
+      // 如果API返回数据格式不符合预期
+      addDebugLog('warn', '[Header] API响应格式不符合预期，使用默认菜单');
+      addDebugLog('warn', '[Header] 响应数据:', response);
+      menuData.value = getDefaultMenu();
     }
-
-    // 如果API返回数据格式不符合预期
-    addDebugLog('warn', '[Header] API响应格式不符合预期，使用默认菜单');
-    addDebugLog('warn', '[Header] 响应数据:', response);
-    return getDefaultMenu();
   } catch (error) {
     // 详细的错误日志
     addDebugLog('error', '[Header] =========================================');
@@ -255,10 +268,13 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
     addDebugLog('error', '[Header] 使用默认菜单');
     addDebugLog('error', '[Header] =========================================');
 
-    // 出错时返回默认菜单
-    return getDefaultMenu();
+    // 出错时使用默认菜单
+    menuData.value = getDefaultMenu();
+    menuError.value = error;
+  } finally {
+    menuPending.value = false;
   }
-});
+};
 
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
