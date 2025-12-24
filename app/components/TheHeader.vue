@@ -107,7 +107,7 @@ onMounted(() => {
 });
 
 // 获取导航菜单数据
-const { data: menuData, pending: menuPending } = await useAsyncData('navigationMenu', async () => {
+const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigationMenu', async () => {
   const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/';
   const apiUrl = `${apiBase}client/cms/category/pub/getList`;
 
@@ -188,17 +188,31 @@ const { data: menuData, pending: menuPending } = await useAsyncData('navigationM
 
 // 获取默认菜单
 const getDefaultMenu = () => {
-  return [
+  const defaultMenu = [
     { name: '首页', path: '/' },
     { name: '关于我们', path: '/about' },
     { name: '产品列表', path: '/products' },
     { name: '合作伙伴', path: '/partners' },
     { name: '联系我们', path: '/contact' }
   ];
+  console.log('[Header] 返回默认菜单:', defaultMenu);
+  return defaultMenu;
 };
 
-// 使用从API获取的菜单数据
-const navigationItems = computed(() => menuData.value || []);
+// 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
+const navigationItems = computed(() => {
+  console.log('[Header] 计算导航菜单项');
+  console.log('[Header] menuData.value:', menuData.value);
+  console.log('[Header] menuError.value:', menuError.value);
+
+  if (menuData.value && menuData.value.length > 0) {
+    console.log('[Header] 使用API数据:', menuData.value);
+    return menuData.value;
+  }
+
+  console.log('[Header] 使用默认菜单');
+  return getDefaultMenu();
+});
 
 // 移动菜单状态
 const isMobileMenuOpen = ref(false);
