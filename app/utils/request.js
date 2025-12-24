@@ -38,9 +38,10 @@ function beforeRequest(url, options = {}) {
 /**
  * 请求后处理
  * @param {Object} response - 原始响应
+ * @param {Object} options - 请求选项
  * @returns {Object} 标准格式的响应
  */
-function afterRequest(response) {
+function afterRequest(response, options = {}) {
   console.log('[Response]', response);
 
   const result = {
@@ -75,6 +76,29 @@ function afterRequest(response) {
   }
 
   return result;
+}
+
+/**
+ * 处理响应数据
+ * @param {Object} response - 原始响应
+ * @param {Object} options - 请求选项
+ * @returns {Promise} 处理后的响应
+ */
+function handleResponse(response, options = {}) {
+  const result = afterRequest(response, options);
+
+  if (options.raw) {
+    return result;
+  }
+
+  if (result.code === 0) {
+    return result.data;
+  }
+
+  const error = new Error(result.msg || '请求失败');
+  error.code = result.code;
+  error.data = result.data;
+  throw error;
 }
 
 /**
@@ -118,7 +142,7 @@ export async function requestGet(url, options = {}) {
     });
 
     const response = await $fetch(fullUrl, requestOptions);
-    return afterRequest(response);
+    return handleResponse(response, options);
   } catch (error) {
     return handleError(error);
   }
@@ -140,7 +164,7 @@ export async function requestPost(url, data = {}, options = {}) {
     });
 
     const response = await $fetch(fullUrl, requestOptions);
-    return afterRequest(response);
+    return handleResponse(response, options);
   } catch (error) {
     return handleError(error);
   }
@@ -162,7 +186,7 @@ export async function requestPut(url, data = {}, options = {}) {
     });
 
     const response = await $fetch(fullUrl, requestOptions);
-    return afterRequest(response);
+    return handleResponse(response, options);
   } catch (error) {
     return handleError(error);
   }
@@ -182,7 +206,7 @@ export async function requestDelete(url, options = {}) {
     });
 
     const response = await $fetch(fullUrl, requestOptions);
-    return afterRequest(response);
+    return handleResponse(response, options);
   } catch (error) {
     return handleError(error);
   }
@@ -199,7 +223,7 @@ export async function request(url, options = {}) {
     const { url: fullUrl, options: requestOptions } = beforeRequest(url, options);
 
     const response = await $fetch(fullUrl, requestOptions);
-    return afterRequest(response);
+    return handleResponse(response, options);
   } catch (error) {
     return handleError(error);
   }

@@ -124,8 +124,14 @@ onMounted(() => {
  * 使用 useAsyncData 在 SSR 模式下获取数据
  */
 const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', async () => {
-  return await request.get('/client/cms/category/pub/getList');
-
+  try {
+    const data = await request.get('/client/cms/category/pub/getList');
+    console.log('=== TheHeader request data ===', data);
+    return data;
+  } catch (error) {
+    console.error('=== TheHeader request error ===', error);
+    return null;
+  }
 }, {
   server: true
 });
@@ -137,9 +143,18 @@ const navigationItems = computed(() => {
   console.log('=== TheHeader menuData.value ===', menuData.value);
   console.log('=== TheHeader menuData.value type ===', typeof menuData.value);
   console.log('=== TheHeader menuData.value is array ===', Array.isArray(menuData.value));
-  let menuItems = menuData.value.data.rows || [];
+
+  let menuItems = null;
+  if (menuData.value && menuData.value.rows && Array.isArray(menuData.value.rows)) {
+    menuItems = menuData.value.rows;
+    console.log('=== TheHeader 使用 menuData.value.rows ===', menuItems);
+  } else if (menuData.value && Array.isArray(menuData.value)) {
+    menuItems = menuData.value;
+    console.log('=== TheHeader 使用 menuData.value ===', menuItems);
+  }
+
   if (menuItems && Array.isArray(menuItems) && menuItems.length > 0) {
-    console.log('=== TheHeader 使用 menuItems.value ===', menuItems);
+    console.log('=== TheHeader 使用 menuItems ===', menuItems);
     // 映射API响应数据到导航菜单格式
     return menuItems.map(item => ({
       name: item.title || item.name || item.categoryName || '未命名',
