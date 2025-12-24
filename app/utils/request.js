@@ -86,7 +86,7 @@ function afterRequest(response, options = {}) {
  */
 function handleResponse(response, options = {}) {
   const result = afterRequest(response, options);
-
+  console.log('[Handle Response]', result);
   if (options.raw) {
     return result;
   }
