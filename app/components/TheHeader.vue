@@ -153,6 +153,19 @@ const addDebugLog = (type, ...args) => {
   console[type === 'error' ? 'error' : type === 'warn' ? 'warn' : 'log'](...args);
 };
 
+// 获取默认菜单
+const getDefaultMenu = () => {
+  const defaultMenu = [
+    { name: '首页', path: '/' },
+    { name: '关于我们', path: '/about' },
+    { name: '产品列表', path: '/products' },
+    { name: '合作伙伴', path: '/partners' },
+    { name: '联系我们', path: '/contact' }
+  ];
+  addDebugLog('log', '[Header] 返回默认菜单:', defaultMenu);
+  return defaultMenu;
+};
+
 // 监听页面滚动
 onMounted(() => {
   isClientInitialized.value = true;
@@ -246,19 +259,6 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
     return getDefaultMenu();
   }
 });
-
-// 获取默认菜单
-const getDefaultMenu = () => {
-  const defaultMenu = [
-    { name: '首页', path: '/' },
-    { name: '关于我们', path: '/about' },
-    { name: '产品列表', path: '/products' },
-    { name: '合作伙伴', path: '/partners' },
-    { name: '联系我们', path: '/contact' }
-  ];
-  addDebugLog('log', '[Header] 返回默认菜单:', defaultMenu);
-  return defaultMenu;
-};
 
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
