@@ -140,8 +140,8 @@ watch(menuError, (error) => {
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
   // 检查是否有有效的菜单数据
-  if (menuData.value && menuData.value.success && menuData.value.data && menuData.value.data.length > 0) {
-    return menuData.value.data;
+  if (menuData.value && menuData.value.length > 0) {
+    return menuData.value;
   }
 
   // 使用默认菜单

@@ -18,24 +18,14 @@ export default defineEventHandler(async (event) => {
         path: item.path || item.url || item.href || `/${item.id || ''}`
       }));
 
-      return {
-        success: true,
-        data: mappedData
-      };
+      // 直接返回映射后的数据
+      return mappedData;
     }
 
-    // 如果API返回数据格式不符合预期，返回错误
-    return {
-      success: false,
-      error: 'API响应格式不符合预期',
-      data: []
-    };
+    // 如果API返回数据格式不符合预期，返回空数组
+    return [];
   } catch (error) {
-    // 出错时返回错误信息
-    return {
-      success: false,
-      error: error.message || '获取导航菜单失败',
-      data: []
-    };
+    // 出错时返回空数组
+    return [];
   }
 });
