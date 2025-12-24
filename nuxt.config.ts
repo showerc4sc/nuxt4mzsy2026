@@ -5,13 +5,13 @@ export default defineNuxtConfig({
   nitro: {
     // 配置静态资源规则
     routeRules: {
-      '/video/**': {
+      "/video/**": {
         headers: {
-          'Cache-Control': 'public, max-age=31536000, immutable',
-          'Content-Type': 'video/mp4'
-        }
-      }
-    }
+          "Cache-Control": "public, max-age=31536000, immutable",
+          "Content-Type": "video/mp4",
+        },
+      },
+    },
   },
   modules: ["@nuxt/icon", "@nuxtjs/tailwindcss"],
   css: ["~/assets/css/main.css"],
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     public: {
       // 设置 API 基础 URL
       apiBase:
-        "https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/",
+        "https://fc-mp-a8d810ca-99cf-4f32-babc-6547a65799b4.next.bspapp.com/http/router/",
     },
     // 私有配置，仅在服务端访问
     // privateSecret: process.env.PRIVATE_SECRET
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   // 配置 Vite 构建选项，保留生产模式下的 console 日志
   vite: {
     build: {
-      minify: 'terser',
+      minify: "terser",
       terserOptions: {
         compress: {
           drop_console: false,
