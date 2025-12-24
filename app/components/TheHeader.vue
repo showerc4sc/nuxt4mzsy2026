@@ -86,6 +86,8 @@
 </template>
 
 <script setup>
+import request from '~/utils/request';
+
 // 滚动状态
 const isScrolled = ref(false);
 
@@ -117,19 +119,19 @@ onMounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
 });
-
 /**
  * 获取导航菜单数据
  * 使用 useAsyncData 在 SSR 模式下获取数据
  */
 const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', async () => {
-  const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router';
-  const apiUrl = `${apiBase}/client/cms/category/pub/getList`;
+  const result = await request.get('/client/cms/category/pub/getList');
+  console.log('=== TheHeader request result ===', result);
 
-  const response = await $fetch(apiUrl);
+  if (result.code === 0 && result.data && result.data.rows) {
+    return result.data.rows;
+  }
 
-  // 直接返回 rows
-  return response?.data?.rows || [];
+  return [];
 }, {
   server: true
 });
@@ -138,7 +140,12 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
  * 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
  */
 const navigationItems = computed(() => {
-  if (menuData.value && menuData.value.length > 0) {
+  console.log('=== TheHeader menuData.value ===', menuData.value);
+  console.log('=== TheHeader menuData.value type ===', typeof menuData.value);
+  console.log('=== TheHeader menuData.value is array ===', Array.isArray(menuData.value));
+
+  if (menuData.value && Array.isArray(menuData.value) && menuData.value.length > 0) {
+    console.log('=== TheHeader 使用 menuData.value ===', menuData.value);
     // 映射API响应数据到导航菜单格式
     return menuData.value.map(item => ({
       name: item.title || item.name || item.categoryName || '未命名',
