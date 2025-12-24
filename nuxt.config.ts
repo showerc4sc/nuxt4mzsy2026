@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     public: {
       // 设置 API 基础 URL
       apiBase:
-        "https://fc-mp-a8d810ca-99cf-4f32-babc-6547a65799b4.next.bspapp.com/http/router/",
+        "https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router/",
     },
     // 私有配置，仅在服务端访问
     // privateSecret: process.env.PRIVATE_SECRET
