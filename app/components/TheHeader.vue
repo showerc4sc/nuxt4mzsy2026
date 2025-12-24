@@ -1,6 +1,39 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-[101] transition-all duration-300 bg-transparent py-4"
     :class="{ 'bg-white/95 backdrop-blur-md shadow-md': isClientInitialized && isScrolled }">
+    <!-- 调试面板切换按钮 -->
+    <button @click="showDebugPanel = !showDebugPanel"
+      class="fixed top-20 right-4 z-[102] px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors">
+      {{ showDebugPanel ? '关闭调试' : '调试' }} ({{ debugLogs.length }})
+    </button>
+
+    <!-- 调试面板 -->
+    <div v-if="showDebugPanel"
+      class="fixed top-28 right-4 z-[102] w-[600px] max-h-[80vh] overflow-auto bg-black/90 text-white text-xs p-4 rounded-lg shadow-xl">
+      <div class="flex justify-between items-center mb-3 pb-2 border-b border-gray-600">
+        <h3 class="font-bold text-sm">调试日志 ({{ debugLogs.length }})</h3>
+        <button @click="debugLogs = []" class="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600 text-[10px]">清空</button>
+      </div>
+      <div class="space-y-2">
+        <div v-for="(log, index) in debugLogs" :key="index" class="p-2 rounded border-l-2" :class="{
+          'border-green-500 bg-green-900/20': log.type === 'log',
+          'border-yellow-500 bg-yellow-900/20': log.type === 'warn',
+          'border-red-500 bg-red-900/20': log.type === 'error'
+        }">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-gray-400">[{{ log.timestamp }}]</span>
+            <span class="font-bold" :class="{
+              'text-green-400': log.type === 'log',
+              'text-yellow-400': log.type === 'warn',
+              'text-red-400': log.type === 'error'
+            }">{{ log.type.toUpperCase() }}</span>
+          </div>
+          <pre class="whitespace-pre-wrap break-words font-mono">{{ log.message }}</pre>
+        </div>
+        <div v-if="debugLogs.length === 0" class="text-gray-500 text-center py-4">暂无日志</div>
+      </div>
+    </div>
+
     <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
@@ -92,6 +125,34 @@ const isScrolled = ref(false);
 // 客户端初始化标志
 const isClientInitialized = ref(false);
 
+// 调试信息收集
+const debugLogs = ref([]);
+const showDebugPanel = ref(false);
+
+// 添加调试日志
+const addDebugLog = (type, ...args) => {
+  const timestamp = new Date().toLocaleTimeString();
+  const message = args.map(arg => {
+    if (typeof arg === 'object') {
+      try {
+        return JSON.stringify(arg, null, 2);
+      } catch (e) {
+        return String(arg);
+      }
+    }
+    return String(arg);
+  }).join(' ');
+
+  debugLogs.value.push({
+    type,
+    timestamp,
+    message
+  });
+
+  // 同时输出到console
+  console[type === 'error' ? 'error' : type === 'warn' ? 'warn' : 'log'](...args);
+};
+
 // 监听页面滚动
 onMounted(() => {
   isClientInitialized.value = true;
@@ -113,16 +174,16 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
 
   try {
     // 记录请求开始
-    console.log('[Header] 开始获取导航菜单数据');
-    console.log('[Header] 请求URL:', apiUrl);
-    console.log('[Header] 运行环境:', process.env.NODE_ENV || 'unknown');
-    console.log('[Header] 是否为客户端:', import.meta.client);
+    addDebugLog('log', '[Header] 开始获取导航菜单数据');
+    addDebugLog('log', '[Header] 请求URL:', apiUrl);
+    addDebugLog('log', '[Header] 运行环境:', process.env.NODE_ENV || 'unknown');
+    addDebugLog('log', '[Header] 是否为客户端:', import.meta.client);
 
     // 直接使用 $fetch 获取数据
     const response = await $fetch(apiUrl);
 
     // 记录响应数据
-    console.log('[Header] API响应成功:', response);
+    addDebugLog('log', '[Header] API响应成功:', response);
 
     // 检查响应是否有效
     if (response && response.code === 0 && response.data && response.data.rows) {
@@ -131,55 +192,55 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
         name: item.title || item.name || item.categoryName || '未命名',
         path: item.path || item.url || item.href || `/${item.id || ''}`
       }));
-      console.log('[Header] 菜单数据映射成功:', mappedData);
+      addDebugLog('log', '[Header] 菜单数据映射成功:', mappedData);
       return mappedData;
     }
 
     // 如果API返回数据格式不符合预期
-    console.warn('[Header] API响应格式不符合预期，使用默认菜单');
-    console.warn('[Header] 响应数据:', response);
+    addDebugLog('warn', '[Header] API响应格式不符合预期，使用默认菜单');
+    addDebugLog('warn', '[Header] 响应数据:', response);
     return getDefaultMenu();
   } catch (error) {
     // 详细的错误日志
-    console.error('[Header] =========================================');
-    console.error('[Header] 获取导航菜单失败');
-    console.error('[Header] =========================================');
-    console.error('[Header] 错误类型:', error.name || 'Unknown');
-    console.error('[Header] 错误消息:', error.message || '无错误消息');
-    console.error('[Header] 请求URL:', apiUrl);
-    console.error('[Header] 运行环境:', process.env.NODE_ENV || 'unknown');
-    console.error('[Header] 是否为客户端:', import.meta.client);
-    console.error('[Header] 错误堆栈:', error.stack || '无堆栈信息');
+    addDebugLog('error', '[Header] =========================================');
+    addDebugLog('error', '[Header] 获取导航菜单失败');
+    addDebugLog('error', '[Header] =========================================');
+    addDebugLog('error', '[Header] 错误类型:', error.name || 'Unknown');
+    addDebugLog('error', '[Header] 错误消息:', error.message || '无错误消息');
+    addDebugLog('error', '[Header] 请求URL:', apiUrl);
+    addDebugLog('error', '[Header] 运行环境:', process.env.NODE_ENV || 'unknown');
+    addDebugLog('error', '[Header] 是否为客户端:', import.meta.client);
+    addDebugLog('error', '[Header] 错误堆栈:', error.stack || '无堆栈信息');
 
     // 检查是否有响应信息
     if (error.response) {
-      console.error('[Header] 响应状态码:', error.response.status);
-      console.error('[Header] 响应状态文本:', error.response.statusText);
-      console.error('[Header] 响应头:', error.response.headers);
-      console.error('[Header] 响应数据:', error.response._data || error.response.data);
+      addDebugLog('error', '[Header] 响应状态码:', error.response.status);
+      addDebugLog('error', '[Header] 响应状态文本:', error.response.statusText);
+      addDebugLog('error', '[Header] 响应头:', error.response.headers);
+      addDebugLog('error', '[Header] 响应数据:', error.response._data || error.response.data);
     }
 
     // 检查是否有请求信息
     if (error.request) {
-      console.error('[Header] 请求已发送但无响应');
+      addDebugLog('error', '[Header] 请求已发送但无响应');
     }
 
     // 检查其他可能的错误属性
     if (error.cause) {
-      console.error('[Header] 错误原因:', error.cause);
+      addDebugLog('error', '[Header] 错误原因:', error.cause);
     }
 
     if (error.statusCode) {
-      console.error('[Header] HTTP状态码:', error.statusCode);
+      addDebugLog('error', '[Header] HTTP状态码:', error.statusCode);
     }
 
     if (error.statusMessage) {
-      console.error('[Header] HTTP状态消息:', error.statusMessage);
+      addDebugLog('error', '[Header] HTTP状态消息:', error.statusMessage);
     }
 
-    console.error('[Header] =========================================');
-    console.error('[Header] 使用默认菜单');
-    console.error('[Header] =========================================');
+    addDebugLog('error', '[Header] =========================================');
+    addDebugLog('error', '[Header] 使用默认菜单');
+    addDebugLog('error', '[Header] =========================================');
 
     // 出错时返回默认菜单
     return getDefaultMenu();
@@ -195,22 +256,22 @@ const getDefaultMenu = () => {
     { name: '合作伙伴', path: '/partners' },
     { name: '联系我们', path: '/contact' }
   ];
-  console.log('[Header] 返回默认菜单:', defaultMenu);
+  addDebugLog('log', '[Header] 返回默认菜单:', defaultMenu);
   return defaultMenu;
 };
 
 // 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
 const navigationItems = computed(() => {
-  console.log('[Header] 计算导航菜单项');
-  console.log('[Header] menuData.value:', menuData.value);
-  console.log('[Header] menuError.value:', menuError.value);
+  addDebugLog('log', '[Header] 计算导航菜单项');
+  addDebugLog('log', '[Header] menuData.value:', menuData.value);
+  addDebugLog('log', '[Header] menuError.value:', menuError.value);
 
   if (menuData.value && menuData.value.length > 0) {
-    console.log('[Header] 使用API数据:', menuData.value);
+    addDebugLog('log', '[Header] 使用API数据:', menuData.value);
     return menuData.value;
   }
 
-  console.log('[Header] 使用默认菜单');
+  addDebugLog('log', '[Header] 使用默认菜单');
   return getDefaultMenu();
 });
 
