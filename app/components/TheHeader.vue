@@ -117,32 +117,27 @@ onMounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
 });
-const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router';
-const apiUrl = `${apiBase}/client/cms/category/pub/getList`;
 
-// 使用SSR模式获取导航菜单数据
+/**
+ * 获取导航菜单数据
+ * 使用 useAsyncData 在 SSR 模式下获取数据
+ */
 const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', async () => {
+  const apiBase = 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router';
+  const apiUrl = `${apiBase}/client/cms/category/pub/getList`;
+
   const response = await $fetch(apiUrl);
-  // 直接返回 data.rows
+
+  // 直接返回 rows
   return response?.data?.rows || [];
 }, {
   server: true
 });
 
-// 监听错误并打印
-watch(menuError, (error) => {
-  if (error) {
-    console.error('[Header] 获取导航菜单失败:', error);
-    console.error('[Header] 错误类型:', error.name);
-    console.error('[Header] 错误消息:', error.message);
-    console.error('[Header] 请求URL:', apiUrl);
-    console.error('[Header] 错误堆栈:', error.stack);
-  }
-}, { immediate: true });
-
-// 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
+/**
+ * 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
+ */
 const navigationItems = computed(() => {
-  // 检查是否有有效的菜单数据
   if (menuData.value && menuData.value.length > 0) {
     // 映射API响应数据到导航菜单格式
     return menuData.value.map(item => ({
@@ -151,7 +146,6 @@ const navigationItems = computed(() => {
     }));
   }
 
-  // 使用默认菜单
   return getDefaultMenu();
 });
 
