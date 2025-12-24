@@ -9,7 +9,7 @@
  */
 function getApiBase() {
   const config = useRuntimeConfig();
-  return config.public.apiBase || 'https://env-00jxt6g9928j.dev-hz.cloudbasefunction.cn/http/router';
+  return config.public.apiBase || 'https://fc-mp-a8d810ca-99cf-4f32-babc-6547a65799b4.next.bspapp.com/http/router';
 }
 
 /**
