@@ -79,7 +79,7 @@
                       class="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0">
                       <span class="text-gray-500 text-sm">{{ key }}:</span>
                       <span class="font-medium text-gray-900 text-sm bg-eco-50 px-2 py-1 rounded">{{ value
-                        }}</span>
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -156,6 +156,7 @@ const { data: categoryData, pending } = await useAsyncData(
   'category-products',
   () => getCategoryBySlug('products'),
   {
+    server: false,
     transform: (response) => {
       console.log('产品栏目数据:', response);
       return response || null;
