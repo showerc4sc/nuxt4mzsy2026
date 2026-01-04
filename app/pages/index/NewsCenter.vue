@@ -148,7 +148,7 @@ const { data: categoryData, pending } = await useAsyncData(
   'category-news',
   () => getCategoryBySlug('news'),
   {
-    server: false,
+
     transform: (response) => {
       console.log('栏目数据:', response);
       return response || null;
@@ -167,7 +167,6 @@ const { data: articleResponse } = await useAsyncData(
     limit: 10
   }),
   {
-    server: false,
     transform: (response) => {
       console.log('文章数据:', response);
       return response || { rows: [], total: 0 };

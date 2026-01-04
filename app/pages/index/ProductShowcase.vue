@@ -156,7 +156,7 @@ const { data: categoryData, pending } = await useAsyncData(
   'category-products',
   () => getCategoryBySlug('products'),
   {
-    server: false,
+    
     transform: (response) => {
       console.log('产品栏目数据:', response);
       return response || null;
