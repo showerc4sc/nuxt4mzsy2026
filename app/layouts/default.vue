@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col" v-cloak>
     <TheHeader />
     <main class="flex-grow">
       <PageTransition>
@@ -11,6 +11,11 @@
 </template>
 
 <script setup>
+/**
+ * 默认布局组件
+ * 包含页眉、主内容区域和页脚
+ */
+
 // 导入页面过渡组件
 import PageTransition from '~/components/PageTransition.vue'
 
@@ -21,3 +26,10 @@ useHead({
   ]
 })
 </script>
+
+<style scoped>
+/* 确保布局组件在CSS加载前不显示 */
+[v-cloak] {
+  display: none !important;
+}
+</style>

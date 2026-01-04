@@ -9,7 +9,10 @@
  */
 function getApiBase() {
   const config = useRuntimeConfig();
-  return config.public.apiBase || 'https://fc-mp-a8d810ca-99cf-4f32-babc-6547a65799b4.next.bspapp.com/http/router';
+  return (
+    config.public.apiBase ||
+    "https://fc-mp-6dcc09dd-1236-43d8-99fa-f4368884f556.next.bspapp.com/http/router"
+  );
 }
 
 /**
@@ -20,17 +23,23 @@ function getApiBase() {
  */
 function beforeRequest(url, options = {}) {
   const apiBase = getApiBase();
-  const fullUrl = url.startsWith('http') ? url : `${apiBase}${url}`;
+  const fullUrl = url.startsWith("http") ? url : `${apiBase}${url}`;
+
+  const defaultHeaders = {
+    appkey: "showerc19861008@",
+    "Content-Type": "application/json",
+  };
 
   const requestOptions = {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      ...options.headers
-    }
+      ...defaultHeaders,
+      ...options.headers,
+    },
   };
 
-  console.log(`[Request] ${options.method || 'GET'} ${fullUrl}`);
+  console.log(`[Request] ${options.method || "GET"} ${fullUrl}`);
+  console.log(`[Request Headers]`, requestOptions.headers);
 
   return { url: fullUrl, options: requestOptions };
 }
@@ -42,26 +51,26 @@ function beforeRequest(url, options = {}) {
  * @returns {Object} 标准格式的响应
  */
 function afterRequest(response, options = {}) {
-  console.log('[Response]', response);
+  console.log("[Response]", response);
 
   const result = {
     code: 0,
-    msg: '',
-    data: null
+    msg: "",
+    data: null,
   };
 
   if (response === null || response === undefined) {
     result.code = -1;
-    result.msg = '响应为空';
+    result.msg = "响应为空";
     return result;
   }
 
-  if (typeof response === 'string') {
+  if (typeof response === "string") {
     try {
       response = JSON.parse(response);
     } catch (e) {
       result.code = -1;
-      result.msg = '响应格式错误';
+      result.msg = "响应格式错误";
       result.data = response;
       return result;
     }
@@ -69,7 +78,7 @@ function afterRequest(response, options = {}) {
 
   if (response.code !== undefined) {
     result.code = response.code;
-    result.msg = response.msg || response.message || '';
+    result.msg = response.msg || response.message || "";
     result.data = response.data !== undefined ? response.data : response;
   } else {
     result.data = response;
@@ -86,7 +95,7 @@ function afterRequest(response, options = {}) {
  */
 function handleResponse(response, options = {}) {
   const result = afterRequest(response, options);
-  console.log('[Handle Response]', result);
+  console.log("[Handle Response]", result);
   if (options.raw) {
     return result;
   }
@@ -95,7 +104,7 @@ function handleResponse(response, options = {}) {
     return result.data;
   }
 
-  const error = new Error(result.msg || '请求失败');
+  const error = new Error(result.msg || "请求失败");
   error.code = result.code;
   error.data = result.data;
   throw error;
@@ -107,22 +116,22 @@ function handleResponse(response, options = {}) {
  * @returns {Object} 标准格式的错误响应
  */
 function handleError(error) {
-  console.error('[Request Error]', error);
+  console.error("[Request Error]", error);
 
   const result = {
     code: -1,
-    msg: '',
-    data: null
+    msg: "",
+    data: null,
   };
 
   if (error.response) {
     result.code = error.response.status || -1;
-    result.msg = error.response.statusText || error.message || '请求失败';
+    result.msg = error.response.statusText || error.message || "请求失败";
     result.data = error.response._data || null;
   } else if (error.message) {
     result.msg = error.message;
   } else {
-    result.msg = '未知错误';
+    result.msg = "未知错误";
   }
 
   return result;
@@ -138,7 +147,7 @@ export async function requestGet(url, options = {}) {
   try {
     const { url: fullUrl, options: requestOptions } = beforeRequest(url, {
       ...options,
-      method: 'GET'
+      method: "GET",
     });
 
     const response = await $fetch(fullUrl, requestOptions);
@@ -159,8 +168,8 @@ export async function requestPost(url, data = {}, options = {}) {
   try {
     const { url: fullUrl, options: requestOptions } = beforeRequest(url, {
       ...options,
-      method: 'POST',
-      body: data
+      method: "POST",
+      body: data,
     });
 
     const response = await $fetch(fullUrl, requestOptions);
@@ -181,8 +190,8 @@ export async function requestPut(url, data = {}, options = {}) {
   try {
     const { url: fullUrl, options: requestOptions } = beforeRequest(url, {
       ...options,
-      method: 'PUT',
-      body: data
+      method: "PUT",
+      body: data,
     });
 
     const response = await $fetch(fullUrl, requestOptions);
@@ -202,7 +211,7 @@ export async function requestDelete(url, options = {}) {
   try {
     const { url: fullUrl, options: requestOptions } = beforeRequest(url, {
       ...options,
-      method: 'DELETE'
+      method: "DELETE",
     });
 
     const response = await $fetch(fullUrl, requestOptions);
@@ -220,7 +229,10 @@ export async function requestDelete(url, options = {}) {
  */
 export async function request(url, options = {}) {
   try {
-    const { url: fullUrl, options: requestOptions } = beforeRequest(url, options);
+    const { url: fullUrl, options: requestOptions } = beforeRequest(
+      url,
+      options
+    );
 
     const response = await $fetch(fullUrl, requestOptions);
     return handleResponse(response, options);
@@ -237,5 +249,5 @@ export default {
   post: requestPost,
   put: requestPut,
   delete: requestDelete,
-  request
+  request,
 };

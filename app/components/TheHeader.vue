@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import request from '~/utils/request';
+import { getCategoryList } from '~/api/category';
 
 // 滚动状态
 const isScrolled = ref(false);
@@ -125,11 +125,9 @@ onMounted(() => {
  */
 const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', async () => {
   try {
-    const data = await request.get('/client/cms/category/pub/getList');
-    console.log('=== TheHeader request data ===', data);
+    const data = await getCategoryList();
     return data;
   } catch (error) {
-    console.error('=== TheHeader request error ===', error);
     return null;
   }
 }, {
@@ -140,21 +138,16 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
  * 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
  */
 const navigationItems = computed(() => {
-  console.log('=== TheHeader menuData.value ===', menuData.value);
-  console.log('=== TheHeader menuData.value type ===', typeof menuData.value);
-  console.log('=== TheHeader menuData.value is array ===', Array.isArray(menuData.value));
+
 
   let menuItems = null;
   if (menuData.value && menuData.value.rows && Array.isArray(menuData.value.rows)) {
     menuItems = menuData.value.rows;
-    console.log('=== TheHeader 使用 menuData.value.rows ===', menuItems);
   } else if (menuData.value && Array.isArray(menuData.value)) {
     menuItems = menuData.value;
-    console.log('=== TheHeader 使用 menuData.value ===', menuItems);
   }
 
   if (menuItems && Array.isArray(menuItems) && menuItems.length > 0) {
-    console.log('=== TheHeader 使用 menuItems ===', menuItems);
     // 映射API响应数据到导航菜单格式
     return menuItems.map(item => ({
       name: item.title || item.name || item.categoryName || '未命名',

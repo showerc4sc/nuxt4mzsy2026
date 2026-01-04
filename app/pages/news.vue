@@ -43,8 +43,8 @@
           <div class="max-w-5xl mx-auto">
             <!-- 新闻卡片列表 -->
             <div class="space-y-6">
-              <div v-for="news in currentNews" :key="news.id"
-                class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
+              <NuxtLink v-for="news in currentNews" :key="news.id" :to="`/newsDetail/${news.id}`"
+                class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group block">
                 <div class="flex flex-col md:flex-row">
                   <!-- 新闻图片 -->
                   <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
@@ -80,7 +80,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </NuxtLink>
             </div>
 
             <!-- 分页 -->

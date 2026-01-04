@@ -2,6 +2,35 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  // 优化应用配置，防止FOUC
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "zh-CN",
+      },
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { "http-equiv": "X-UA-Compatible", content: "IE=edge" },
+      ],
+      // 预加载关键CSS
+      link: [
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossorigin: true,
+        },
+      ],
+      // 添加noscript标签，当JavaScript禁用时显示内容
+      noscript: [
+        { innerHTML: "<style>body { opacity: 1 !important; }</style>" },
+      ],
+    },
+    // 启用页面过渡
+    pageTransition: { name: "page", mode: "out-in" },
+    layoutTransition: { name: "layout", mode: "out-in" },
+  },
   nitro: {
     // 配置静态资源规则
     routeRules: {
@@ -9,6 +38,12 @@ export default defineNuxtConfig({
         headers: {
           "Cache-Control": "public, max-age=31536000, immutable",
           "Content-Type": "video/mp4",
+        },
+      },
+      // 优化静态资源缓存
+      "/_nuxt/**": {
+        headers: {
+          "Cache-Control": "public, max-age=31536000, immutable",
         },
       },
     },
@@ -27,7 +62,7 @@ export default defineNuxtConfig({
     public: {
       // 设置 API 基础 URL
       apiBase:
-        "https://fc-mp-a8d810ca-99cf-4f32-babc-6547a65799b4.next.bspapp.com/http/router",
+        "https://fc-mp-6dcc09dd-1236-43d8-99fa-f4368884f556.next.bspapp.com/http/router/",
     },
     // 私有配置，仅在服务端访问
     // privateSecret: process.env.PRIVATE_SECRET
@@ -53,6 +88,10 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: [],
+    },
+    // 优化CSS加载
+    css: {
+      devSourcemap: true,
     },
   },
   // 启用源码映射以便调试
