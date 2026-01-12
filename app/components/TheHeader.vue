@@ -12,7 +12,7 @@
             <span class="text-xl font-bold transition-colors duration-300 group-hover:text-eco-600"
               :class="isClientInitialized && isScrolled ? 'text-gray-900' : 'text-white'">{{ company.shortName }}</span>
             <div class="text-xs font-medium"
-              :class="isClientInitialized && isScrolled ? 'text-gray-500' : 'text-white/80'">新能源科技</div>
+              :class="isClientInitialized && isScrolled ? 'text-gray-500' : 'text-white/80'">{{ company.subtitle }}</div>
           </div>
         </NuxtLink>
 
@@ -28,16 +28,16 @@
               class="relative px-4 py-2 font-medium transition-all duration-300 rounded-lg group" :class="[
                 $route.path === item.path
                   ? isClientInitialized && isScrolled
-                    ? 'text-eco-600'
-                    : 'text-white'
+                    ? 'text-eco-600 font-semibold'
+                    : 'text-white font-semibold'
                   : isClientInitialized && isScrolled
                     ? 'text-gray-700 hover:text-eco-600'
                     : 'text-white hover:text-eco-200'
               ]">
               {{ item.name }}
               <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-eco-600 transition-all duration-300 group-hover:w-8"
-                :class="{ 'w-8': $route.path === item.path }"></span>
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-eco-600 transition-all duration-300 group-hover:w-8"
+                :class="{ 'w-12': $route.path === item.path, 'w-0': $route.path !== item.path }"></span>
             </NuxtLink>
           </template>
         </div>
@@ -87,12 +87,25 @@
 
 <script setup>
 import { getCategoryList } from '~/api/category';
+import { useCompanyInfo } from '~/composables/useCompanyInfo.js';
 
 // 滚动状态
 const isScrolled = ref(false);
 
 // 客户端初始化标志
 const isClientInitialized = ref(false);
+
+// 获取公司信息
+const {
+  companyName,
+  companySubtitle
+} = useCompanyInfo()
+
+// 公司信息
+const company = computed(() => ({
+  shortName: companyName.value || '淼泽松源',
+  subtitle: companySubtitle.value || '新能源科技'
+}));
 
 // 获取默认菜单
 const getDefaultMenu = () => {
@@ -160,15 +173,6 @@ const navigationItems = computed(() => {
 
 // 移动菜单状态
 const isMobileMenuOpen = ref(false);
-
-// 直接导入JSON数据
-const { data: companyData } = await useAsyncData('company', async () => {
-  const companyJson = await import('~/data/company.json');
-  return companyJson.default.company;
-});
-
-// 确保 companyData 可用
-const company = computed(() => companyData.value || {});
 
 // 切换移动菜单
 const toggleMobileMenu = () => {

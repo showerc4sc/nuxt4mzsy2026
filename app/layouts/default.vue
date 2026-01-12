@@ -19,11 +19,30 @@
 // 导入页面过渡组件
 import PageTransition from '~/components/PageTransition.vue'
 
+// 导入公司信息 composable
+import { useCompanyInfo } from '~/composables/useCompanyInfo.js'
+
+// 获取公司信息
+const {
+  companyName,
+  companySummary,
+  seoMeta
+} = useCompanyInfo()
+
 // 使用SEO优化
 useHead({
   meta: [
     { name: 'keywords', content: '淼泽松源,新能源,甲醇能源,风能,能源储存,科技发展' }
   ]
+})
+
+// 根据公司信息动态设置页面标题
+watchEffect(() => {
+  if (companyName.value) {
+    useHead({
+      title: companyName.value
+    })
+  }
 })
 </script>
 

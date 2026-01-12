@@ -90,8 +90,25 @@
 </template>
 
 <script setup>
+import { useCompanyInfo } from '~/composables/useCompanyInfo.js';
+
 // 获取当前年份
 const currentYear = new Date().getFullYear();
+
+// 获取公司信息
+const {
+  companyName,
+  companySummary,
+  companyAddress,
+  companyTel,
+  companyEmail
+} = useCompanyInfo()
+
+// 公司信息
+const company = computed(() => ({
+  name: companyName.value || '淼泽松源',
+  description: companySummary.value || '淼泽松源（上海）科技发展有限公司，聚焦甲醇新能源、风能等核心技术研发，同步开展能源储存及设备销售、租赁等多元业态。'
+}));
 
 // 导航菜单项
 const navigationItems = [
@@ -101,18 +118,10 @@ const navigationItems = [
   { name: '联系我们', path: '/contact' }
 ];
 
-// 直接导入JSON数据
-const { data: companyData } = await useAsyncData('company', async () => {
-  const companyJson = await import('~/data/company.json');
-  return companyJson.default.company;
-});
-
-// 确保 companyData 可用
-const company = computed(() => companyData.value || {});
-
-// 直接导入JSON数据
-const { data: contactData } = await useAsyncData('contact', async () => {
-  const companyJson = await import('~/data/company.json');
-  return companyJson.default.contact;
-});
+// 联系信息 - 从 API 返回的顶层字段中获取
+const contactData = computed(() => ({
+  address: companyAddress.value || '上海市浦东新区',
+  phone: companyTel.value || '021-12345678',
+  email: companyEmail.value || 'contact@example.com'
+}));
 </script>
