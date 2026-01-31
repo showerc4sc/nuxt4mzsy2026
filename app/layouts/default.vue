@@ -37,12 +37,8 @@ useHead({
 })
 
 // 根据公司信息动态设置页面标题
-watchEffect(() => {
-  if (companyName.value) {
-    useHead({
-      title: companyName.value
-    })
-  }
+useHead({
+  title: computed(() => companyName.value || '淼泽松源')
 })
 </script>
 

@@ -15,37 +15,75 @@
           <div v-if="videoLoadFailed" class="absolute inset-0 bg-cover bg-center scale-105"
             style="background-image: url('https://picsum.photos/seed/mzsy-hero/1920/1080.jpg')">
           </div>
-          <div class="absolute inset-0 bg-gradient-to-r from-eco-800/85 to-eco-600/75 z-10"></div>
+          <!-- 多层渐变遮罩增强视觉层次 -->
+          <div class="absolute inset-0 bg-gradient-to-br from-eco-900/90 via-eco-800/70 to-blue-900/80 z-10"></div>
+          <!-- 动态光效层 -->
+          <div class="absolute inset-0 z-10 opacity-30 animate-background-shift"
+            style="background: radial-gradient(ellipse at 30% 20%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
+                   radial-gradient(ellipse at 70% 80%, rgba(14, 165, 233, 0.2) 0%, transparent 50%);">
+          </div>
+        </div>
+
+        <!-- 装饰性网格 -->
+        <div class="absolute inset-0 z-15 opacity-10 pointer-events-none"
+          style="background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px;">
         </div>
 
         <!-- 内容 -->
         <div class="relative z-20 h-full flex items-center justify-center">
-          <div class="text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto animate-fade-in-up">
-            <div class="mb-8">
+          <div class="text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+            <!-- 欢迎标签 -->
+            <div class="mb-8 animate-fade-in-down">
               <div
-                class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-6">
+                class="inline-flex items-center px-5 py-2.5 bg-white/10 backdrop-blur-md rounded-full text-white text-sm font-medium border border-white/20 shadow-lg hover:bg-white/20 transition-all duration-500 cursor-default group">
+                <span class="w-2 h-2 bg-eco-400 rounded-full mr-2 animate-pulse"></span>
                 欢迎来到{{ company.name }}
+                <Icon name="heroicons:sparkles" class="w-4 h-4 ml-2 text-yellow-300 group-hover:rotate-12 transition-transform" />
               </div>
             </div>
-            <h1 class="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
-              {{ company.name }}
+
+            <!-- 主标题 -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight animate-fade-in-up">
+              <span class="block mb-2">{{ company.name }}</span>
+              <span class="block text-2xl md:text-3xl lg:text-4xl font-light text-eco-200">{{ company.slogan }}</span>
             </h1>
-            <p class="text-xl md:text-3xl text-eco-100 font-light mb-8 leading-relaxed">
-              {{ company.slogan }}
-            </p>
-            <p class="text-lg md:text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
+
+            <!-- 描述文字 -->
+            <p class="text-lg md:text-xl text-white/80 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
               {{ company.description }}
             </p>
+
+            <!-- CTA 按钮组 -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style="animation-delay: 0.4s;">
+              <NuxtLink to="/products"
+                class="group relative px-8 py-4 bg-gradient-to-r from-eco-500 to-eco-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden btn-glow">
+                <span class="relative z-10 flex items-center">
+                  <Icon name="heroicons:cube-transparent" class="w-5 h-5 mr-2" />
+                  探索产品
+                </span>
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-eco-600 to-eco-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+              </NuxtLink>
+
+              <NuxtLink to="/contact"
+                class="group px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-xl border border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300 flex items-center">
+                <Icon name="heroicons:chat-bubble-left-right" class="w-5 h-5 mr-2" />
+                联系我们
+                <Icon name="heroicons:arrow-right"
+                  class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 滚动提示 -->
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-30">
-      <div class="flex flex-col items-center animate-bounce">
-        <span class="text-white/70 text-sm mb-2 font-medium">向下滚动</span>
-        <div class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+    <div class="absolute bottom-28 md:bottom-32 left-1/2 transform -translate-x-1/2 z-30">
+      <div class="flex flex-col items-center animate-bounce-gentle cursor-pointer group" @click="scrollToContent">
+        <span class="text-white/70 text-sm mb-2 font-medium group-hover:text-white transition-colors">向下滚动</span>
+        <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg border border-white/20 group-hover:bg-white/20 transition-all">
           <Icon name="heroicons:chevron-down" class="w-5 h-5 text-white/90" />
         </div>
       </div>
@@ -135,6 +173,16 @@ onMounted(() => {
     });
   }
 });
+
+/**
+ * 滚动到内容区域
+ */
+const scrollToContent = () => {
+  window.scrollTo({
+    top: window.innerHeight,
+    behavior: 'smooth'
+  });
+};
 </script>
 
 <style scoped>

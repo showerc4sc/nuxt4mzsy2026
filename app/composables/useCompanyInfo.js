@@ -3,23 +3,42 @@ import { getArticleBySlug } from '~/api/article';
 /**
  * 公司信息 Composable
  * 用于获取和管理公司信息数据
+ * 使用缓存机制，整个网站运行期间只读取一次
  * @returns {Object} 公司信息相关的计算属性和方法
  */
 export function useCompanyInfo() {
   /**
+   * 全局缓存的公司信息数据
+   * 使用 useState 确保在服务器端和客户端之间共享数据
+   */
+  const cachedCompanyData = useState('cached-company-info', () => null);
+
+  /**
    * 获取公司信息数据
    * slug: company-info
+   * 使用缓存机制，如果已有缓存则直接使用，否则从 API 获取
    */
   const { data: companyData, pending, error, refresh } = useAsyncData('company-info', async () => {
     try {
+      if (cachedCompanyData.value) {
+        return cachedCompanyData.value;
+      }
       const response = await getArticleBySlug('company-info');
-      return response || {};
+      const data = response || {};
+      cachedCompanyData.value = data;
+      return data;
     } catch (err) {
       console.error('获取公司信息失败:', err);
       return {};
     }
   }, {
-    server: true
+    server: true,
+    transform: (data) => {
+      if (data && !cachedCompanyData.value) {
+        cachedCompanyData.value = data;
+      }
+      return data;
+    }
   });
 
   /**

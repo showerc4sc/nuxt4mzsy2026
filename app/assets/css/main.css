@@ -398,3 +398,436 @@ html {
 .animate-pulse-glow {
   animation: pulse-glow 2s infinite;
 }
+
+/* ========== 新增现代化动画效果 ========== */
+
+/* 文字显示动画 */
+@keyframes text-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* 弹性增长动画 */
+@keyframes elastic-grow {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 简单滑入动画（移动设备优化） */
+@keyframes simple-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 简单缩放动画（移动设备优化） */
+@keyframes simple-scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 缩放旋转动画 */
+@keyframes zoom-in-rotate {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* 3D翻转动画 */
+@keyframes flip-3d-y {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0);
+  }
+}
+
+@keyframes flip-3d-x {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0);
+  }
+}
+
+/* 发光脉冲动画 */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.4), 0 0 10px rgba(34, 197, 94, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 30px rgba(34, 197, 94, 0.3);
+  }
+}
+
+/* 背景渐变位移动画 */
+@keyframes background-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 霓虹发光效果 */
+@keyframes neon-glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(34, 197, 94, 0.5), 0 0 10px rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.8), 0 0 30px rgba(34, 197, 94, 0.5), 0 0 40px rgba(34, 197, 94, 0.3);
+  }
+}
+
+/* 边框流动动画 */
+@keyframes border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 波纹效果 */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 悬浮动画 */
+@keyframes levitate {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+/* 卡片光泽效果 */
+@keyframes card-shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
+/* ========== 动画类 ========== */
+.animate-text-reveal {
+  animation: text-reveal 0.8s ease-out forwards;
+}
+
+.animate-elastic-grow {
+  animation: elastic-grow 0.8s ease-out forwards;
+}
+
+.animate-simple-slide-up {
+  animation: simple-slide-up 0.5s ease-out forwards;
+}
+
+.animate-simple-scale {
+  animation: simple-scale 0.5s ease-out forwards;
+}
+
+.animate-zoom-in-rotate {
+  animation: zoom-in-rotate 0.7s ease-out forwards;
+}
+
+.animate-flip-3d-y {
+  animation: flip-3d-y 0.8s ease-out forwards;
+  backface-visibility: hidden;
+}
+
+.animate-flip-3d-x {
+  animation: flip-3d-x 0.8s ease-out forwards;
+  backface-visibility: hidden;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-background-shift {
+  background-size: 200% 200%;
+  animation: background-shift 8s ease infinite;
+}
+
+.animate-neon-glow {
+  animation: neon-glow 2s ease-in-out infinite;
+}
+
+.animate-levitate {
+  animation: levitate 4s ease-in-out infinite;
+}
+
+/* ========== 交互效果类 ========== */
+
+/* 磁吸效果基础类 */
+.magnetic-element {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 3D卡片效果 */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-3d-inner {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover .card-3d-inner {
+  transform: rotateY(10deg) rotateX(5deg);
+}
+
+/* 玻璃态效果增强 */
+.glass-enhanced {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 渐变边框效果 */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #22c55e, #0ea5e9) border-box;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #22c55e, #0ea5e9, #22c55e);
+  background-size: 200% 200%;
+  animation: border-flow 3s ease infinite;
+  z-index: -1;
+}
+
+/* 按钮光效 */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-glow:hover::before {
+  left: 100%;
+}
+
+/* 卡片悬停光效 */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%) rotate(45deg);
+  transition: transform 0.6s;
+}
+
+.card-shine:hover::after {
+  animation: card-shine 0.8s ease-in-out;
+}
+
+/* 文字渐变动画 */
+.text-gradient-animate {
+  background: linear-gradient(90deg, #22c55e, #0ea5e9, #22c55e);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: background-shift 3s linear infinite;
+}
+
+/* 悬浮阴影效果 */
+.hover-shadow-lift {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-shadow-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 图标脉冲效果 */
+.icon-pulse {
+  transition: transform 0.3s ease;
+}
+
+.icon-pulse:hover {
+  animation: pulse-glow 1.5s infinite;
+}
+
+/* 下划线动画效果 */
+.underline-animate {
+  position: relative;
+}
+
+.underline-animate::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #22c55e, #0ea5e9);
+  transition: width 0.3s ease;
+}
+
+.underline-animate:hover::after {
+  width: 100%;
+}
+
+/* 图片缩放效果 */
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.img-zoom:hover img {
+  transform: scale(1.1);
+}
+
+/* 网格背景效果 */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* 点状背景效果 */
+.dot-pattern {
+  background-image: radial-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 波浪分隔线 */
+.wave-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 60px;
+}
+
+/* 滚动隐藏类（用于动画触发） */
+.scroll-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.scroll-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s ease-out;
+}

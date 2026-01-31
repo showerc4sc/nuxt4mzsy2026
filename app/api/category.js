@@ -27,3 +27,11 @@ export async function getCategoryBySlug(slug) {
   return request.get(`client/cms/category/pub/getBySlug`, { params: { slug } });
 }
 
+/**
+ * 根据slug获取子分类列表
+ * @param {string} slug - 父分类slug
+ * @returns {Promise<Object>} 返回子分类列表数据
+ */
+export async function getChildrenCategoryBySlug(slug) {
+  return request.get(`client/cms/category/pub/getChildrenBySlug`, { params: { slug } });
+}

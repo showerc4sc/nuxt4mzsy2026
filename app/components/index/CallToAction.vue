@@ -1,11 +1,13 @@
 <template>
-  <section class="cta-section py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+  <section class="cta-section py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 relative overflow-hidden">
     <!-- 背景装饰 -->
-    <div class="absolute inset-0 opacity-5">
-      <div class="parallax-element absolute top-1/3 right-1/3 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="parallax-element absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-gradient-to-br from-eco-200/40 to-transparent rounded-full filter blur-3xl"
         data-speed="0.2"></div>
-      <div class="parallax-element absolute bottom-1/3 left-1/3 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl"
+      <div class="parallax-element absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-gradient-to-br from-blue-200/40 to-transparent rounded-full filter blur-3xl"
         data-speed="0.1"></div>
+      <!-- 点状背景 -->
+      <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(circle, #22c55e 2px, transparent 2px); background-size: 40px 40px;"></div>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -18,61 +20,79 @@
 
         <!-- 错误状态 -->
         <div v-else-if="error" class="text-center py-20">
-          <div class="text-red-500 text-6xl mb-4">⚠️</div>
+          <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Icon name="heroicons:exclamation-triangle" class="w-10 h-10 text-red-500" />
+          </div>
           <p class="text-gray-600">加载失败，请稍后重试</p>
         </div>
 
         <!-- 正常内容 -->
         <template v-else>
-          <div class="inline-block px-4 py-2 bg-eco-100 text-eco-700 rounded-full text-sm font-medium mb-6">
-            {{ sectionData.subtitle }}
+          <!-- 标签 -->
+          <div class="inline-flex items-center px-5 py-2.5 bg-eco-50 border border-eco-100 text-eco-700 rounded-full text-sm font-medium mb-8">
+            <Icon name="heroicons:rocket-launch" class="w-4 h-4 mr-2" />
+            {{ sectionData.subtitle || '联系我们' }}
           </div>
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            {{ sectionData.title }}
+
+          <!-- 标题 -->
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            {{ sectionData.title || '准备好开启绿色能源之旅了吗？' }}
           </h2>
-          <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            {{ sectionData.summary }}
+
+          <!-- 描述 -->
+          <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+            {{ sectionData.summary || '联系我们的专业团队，了解更多关于新能源解决方案的信息，让我们一起为可持续发展贡献力量' }}
           </p>
 
+          <!-- CTA 按钮组 -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <NuxtLink to="/contact"
-              class="group relative px-8 py-4 bg-gradient-to-r from-eco-500 to-eco-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden font-display mouse-follow"
-              data-speed="0.03" data-max-distance="15">
+              class="group relative px-8 py-4 bg-gradient-to-r from-eco-500 to-eco-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden btn-glow">
               <span class="relative z-10 flex items-center">
                 <Icon name="heroicons:chat-bubble-left-right" class="w-5 h-5 mr-2" />
                 立即咨询
+                <Icon name="heroicons:arrow-right" class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
               </span>
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-eco-600 to-eco-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
             </NuxtLink>
 
             <NuxtLink to="/products"
-              class="group relative px-8 py-4 bg-transparent border-2 border-eco-500 text-eco-600 font-semibold rounded-xl hover:bg-eco-50 transition-all duration-300 font-display">
-              <span class="flex items-center">
-                <Icon name="heroicons:cube-transparent" class="w-5 h-5 mr-2" />
-                查看产品
-              </span>
-              <div
-                class="absolute inset-0 bg-eco-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
+              class="group px-8 py-4 bg-white text-eco-600 font-semibold rounded-xl border-2 border-eco-200 hover:border-eco-400 hover:bg-eco-50 transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
+              <Icon name="heroicons:cube-transparent" class="w-5 h-5 mr-2" />
+              查看产品
             </NuxtLink>
           </div>
 
-          <!-- 联系信息 -->
-          <div class="mt-12 pt-8 border-t border-gray-200">
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-8 text-gray-600">
-              <div class="flex items-center">
-                <Icon name="heroicons:phone" class="w-5 h-5 mr-2 text-eco-600" />
-                <span>{{ companyTel || '400-888-8888' }}</span>
+          <!-- 联系信息卡片 -->
+          <div class="mt-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="group flex items-center justify-center p-5 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-eco-200">
+                <div class="w-12 h-12 bg-eco-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-eco-500 group-hover:scale-110 transition-all duration-300">
+                  <Icon name="heroicons:phone" class="w-6 h-6 text-eco-600 group-hover:text-white transition-colors" />
+                </div>
+                <div class="text-left">
+                  <div class="text-xs text-gray-400 mb-0.5">服务热线</div>
+                  <div class="text-gray-900 font-semibold">{{ companyTel || '400-888-8888' }}</div>
+                </div>
               </div>
-              <div class="flex items-center">
-                <Icon name="heroicons:envelope" class="w-5 h-5 mr-2 text-eco-600" />
-                <span>{{ companyEmail || 'contact@mzsy.com' }}</span>
+
+              <div class="group flex items-center justify-center p-5 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-eco-200">
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-500 group-hover:scale-110 transition-all duration-300">
+                  <Icon name="heroicons:envelope" class="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+                </div>
+                <div class="text-left">
+                  <div class="text-xs text-gray-400 mb-0.5">电子邮箱</div>
+                  <div class="text-gray-900 font-semibold text-sm">{{ companyEmail || 'contact@mzsy.com' }}</div>
+                </div>
               </div>
-              <div class="flex items-center">
-                <Icon name="heroicons:map-pin" class="w-5 h-5 mr-2 text-eco-600" />
-                <span>{{ companyAddress || '上海市浦东新区' }}</span>
+
+              <div class="group flex items-center justify-center p-5 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-eco-200">
+                <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-purple-500 group-hover:scale-110 transition-all duration-300">
+                  <Icon name="heroicons:map-pin" class="w-6 h-6 text-purple-600 group-hover:text-white transition-colors" />
+                </div>
+                <div class="text-left">
+                  <div class="text-xs text-gray-400 mb-0.5">公司地址</div>
+                  <div class="text-gray-900 font-semibold text-sm">{{ companyAddress || '上海市浦东新区' }}</div>
+                </div>
               </div>
             </div>
           </div>

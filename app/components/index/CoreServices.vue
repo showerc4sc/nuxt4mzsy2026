@@ -1,11 +1,14 @@
 <template>
-  <section class="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+  <section class="py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 relative overflow-hidden">
     <!-- 背景装饰 -->
-    <div class="absolute inset-0 opacity-5">
-      <div class="parallax-element absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl"
-        data-speed="0.2"></div>
-      <div class="parallax-element absolute bottom-1/4 right-1/4 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"
-        data-speed="0.3"></div>
+    <div class="absolute inset-0 pointer-events-none">
+      <!-- 动态渐变球 -->
+      <div class="parallax-element absolute top-20 left-10 w-[500px] h-[500px] bg-gradient-to-br from-eco-200/30 to-transparent rounded-full filter blur-3xl"
+        data-speed="0.15"></div>
+      <div class="parallax-element absolute bottom-20 right-10 w-[400px] h-[400px] bg-gradient-to-br from-blue-200/30 to-transparent rounded-full filter blur-3xl"
+        data-speed="0.25"></div>
+      <!-- 点状图案 -->
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle, #22c55e 1px, transparent 1px); background-size: 30px 30px;"></div>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -17,64 +20,85 @@
 
       <!-- 错误状态 -->
       <div v-else-if="error" class="text-center py-20">
-        <div class="text-red-500 text-6xl mb-4">⚠️</div>
+        <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Icon name="heroicons:exclamation-triangle" class="w-10 h-10 text-red-500" />
+        </div>
         <p class="text-gray-600">加载失败，请稍后重试</p>
       </div>
 
       <!-- 正常内容 -->
       <template v-else>
         <div class="text-center mb-16">
-          <div class="inline-block px-4 py-2 bg-eco-100 text-eco-700 rounded-full text-sm font-medium mb-4">
-            {{ sectionData.subtitle }}
+          <div class="inline-flex items-center px-5 py-2.5 bg-eco-50 border border-eco-100 text-eco-700 rounded-full text-sm font-medium mb-6">
+            <Icon name="heroicons:briefcase" class="w-4 h-4 mr-2" />
+            {{ sectionData.subtitle || '我们的服务' }}
           </div>
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {{ sectionData.title }}
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <span class="text-gradient-animate">{{ sectionData.title || '核心业务' }}</span>
           </h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            {{ sectionData.summary }}
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            {{ sectionData.summary || '我们专注于新能源技术研发与应用，为客户提供全方位的绿色能源解决方案' }}
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div v-for="service in servicesData" :key="service.id"
-            class="service-card group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 relative overflow-hidden glow-element">
-            <!-- 背景光效 -->
-            <div
-              class="absolute inset-0 bg-gradient-to-br from-eco-50 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            </div>
+          <div v-for="(service, index) in servicesData" :key="service.id"
+            class="service-card group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 overflow-hidden border border-gray-100"
+            :style="{ animationDelay: `${index * 100}ms` }">
+            <!-- 悬停背景效果 -->
+            <div class="absolute inset-0 bg-gradient-to-br from-eco-50/80 via-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+            <!-- 顶部渐变条 -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-eco-400 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
 
             <!-- 图标容器 -->
-            <div class="relative mb-6">
-              <div
-                class="absolute inset-0 bg-eco-100 rounded-2xl blur-xl group-hover:scale-110 transition-transform duration-500 opacity-70">
-              </div>
-              <div
-                class="relative bg-gradient-to-br from-eco-500 to-eco-600 rounded-2xl p-4 text-white shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:rotate-3 flex items-center justify-center">
+            <div class="relative mb-8">
+              <!-- 发光背景 -->
+              <div class="absolute inset-0 bg-gradient-to-br from-eco-400 to-blue-500 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 transform group-hover:scale-125"></div>
+              <!-- 图标卡片 -->
+              <div class="relative bg-gradient-to-br from-eco-500 to-eco-600 rounded-2xl p-5 text-white shadow-lg group-hover:shadow-xl transition-all duration-500 transform group-hover:scale-105 group-hover:rotate-2 w-16 h-16 flex items-center justify-center">
                 <Icon :name="`heroicons:${service.icon}`" class="w-8 h-8" />
-                <h3 class="ml-2 text-sm font-bold">{{ service.title }}</h3>
               </div>
             </div>
+
+            <!-- 标题 -->
+            <h3 class="text-xl font-bold text-gray-900 mb-4 group-hover:text-eco-700 transition-colors relative">
+              {{ service.title }}
+              <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-eco-500 to-blue-500 group-hover:w-12 transition-all duration-500"></span>
+            </h3>
 
             <!-- 内容 -->
             <div class="relative z-10">
-              <p class="text-gray-600 leading-relaxed mb-6">
+              <p class="text-gray-600 leading-relaxed mb-6 text-sm">
                 {{ service.description }}
               </p>
 
               <!-- 特性标签 -->
               <div class="flex flex-wrap gap-2">
                 <span v-for="feature in service.features" :key="feature"
-                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium group-hover:bg-eco-100 group-hover:text-eco-700 transition-colors duration-300">
+                  class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium group-hover:bg-eco-100 group-hover:text-eco-700 transition-all duration-300 border border-transparent group-hover:border-eco-200">
                   {{ feature }}
                 </span>
               </div>
             </div>
 
-            <!-- 悬浮效果 -->
-            <div
-              class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-eco-500 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+            <!-- 右下角装饰 -->
+            <div class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <Icon name="heroicons:arrow-up-right" class="w-5 h-5 text-eco-500" />
             </div>
+
+            <!-- 悬浮进度条 -->
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-eco-500 via-blue-500 to-eco-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
           </div>
+        </div>
+
+        <!-- 底部 CTA -->
+        <div class="mt-16 text-center">
+          <NuxtLink to="/products"
+            class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group">
+            <span>查看全部服务</span>
+            <Icon name="heroicons:arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          </NuxtLink>
         </div>
       </template>
     </div>

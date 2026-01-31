@@ -16,14 +16,15 @@
       </div>
 
       <!-- 标题区域 -->
-      <div v-else class="text-center mb-16 flex flex-col items-center">
-        <div class="inline-block px-4 py-2 bg-eco-100 text-eco-700 rounded-full text-sm font-medium mb-4">
+      <div v-else class="text-center mb-16">
+        <div class="inline-flex items-center px-5 py-2.5 bg-eco-50 border border-eco-100 text-eco-700 rounded-full text-sm font-medium mb-6">
+          <Icon name="heroicons:cube" class="w-4 h-4 mr-2" />
           {{ categoryData?.title || '我们的产品' }}
         </div>
-        <h2 class="block text-3xl md:text-4xl font-bold text-gray-900 mb-4 w-full">
-          {{ categoryData?.title || '产品展示' }}
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <span class="text-gradient-animate">{{ categoryData?.title || '产品展示' }}</span>
         </h2>
-        <p class="block text-lg text-gray-600 max-w-2xl mx-auto w-full">
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
           {{ categoryData?.subtitle || '我们提供全方位的新能源产品，满足不同场景的应用需求' }}
         </p>
       </div>

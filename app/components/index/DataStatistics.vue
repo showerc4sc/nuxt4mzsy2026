@@ -1,40 +1,56 @@
 <template>
-  <section class="py-20 bg-gradient-to-br from-eco-600 via-eco-700 to-blue-800 relative overflow-hidden">
-    <!-- 背景装饰 -->
-    <div class="absolute inset-0 opacity-10">
-      <div class="parallax-element absolute top-1/4 left-1/4 w-96 h-96 bg-white rounded-full filter blur-3xl"
+  <section class="py-24 bg-gradient-to-br from-eco-600 via-eco-700 to-blue-800 relative overflow-hidden">
+    <!-- 动态背景装饰 -->
+    <div class="absolute inset-0 pointer-events-none">
+      <!-- 浮动圆形 -->
+      <div class="parallax-element absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-white/5 rounded-full filter blur-3xl"
         data-speed="0.15"></div>
-      <div class="parallax-element absolute bottom-1/4 right-1/4 w-96 h-96 bg-white rounded-full filter blur-3xl"
+      <div class="parallax-element absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-blue-400/10 rounded-full filter blur-3xl"
         data-speed="0.25"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full filter blur-3xl"></div>
+      <!-- 网格线 -->
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px); background-size: 50px 50px;"></div>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="text-center mb-12">
-        <div
-          class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-4">
-          {{ sectionData.subtitle }}
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center px-5 py-2.5 bg-white/10 backdrop-blur-md text-white rounded-full text-sm font-medium mb-6 border border-white/20">
+          <Icon name="heroicons:chart-bar" class="w-4 h-4 mr-2" />
+          {{ sectionData.subtitle || '我们的成就' }}
         </div>
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          {{ sectionData.title }}
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+          {{ sectionData.title || '数据说话' }}
         </h2>
-        <p class="text-lg text-white/80 max-w-2xl mx-auto">
-          {{ sectionData.summary }}
+        <p class="text-lg text-white/80 max-w-3xl mx-auto leading-relaxed">
+          {{ sectionData.summary || '多年的行业积累，我们用实力和成果赢得客户信赖' }}
         </p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div v-for="stat in statisticsData" :key="stat.id" class="stat-card text-center group">
-          <div class="relative mb-4">
-            <div
-              class="absolute inset-0 bg-white/20 rounded-2xl blur-xl group-hover:scale-110 transition-transform duration-500">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div v-for="(stat, index) in statisticsData" :key="stat.id"
+          class="stat-card text-center group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
+          :style="{ animationDelay: `${index * 100}ms` }">
+          <!-- 图标装饰 -->
+          <div class="mb-4 flex justify-center">
+            <div class="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500">
+              <Icon :name="getStatIcon(index)" class="w-7 h-7 text-white/80" />
             </div>
-            <div class="relative text-5xl md:text-6xl font-bold text-white tabular-nums">
+          </div>
+
+          <!-- 数字 -->
+          <div class="relative mb-2">
+            <div class="text-4xl md:text-5xl font-bold text-white tabular-nums tracking-tight">
               <span class="stat-number" :data-target="stat.value" :data-suffix="stat.suffix">0</span>
             </div>
           </div>
-          <div class="text-lg text-white/90 font-medium">{{ stat.label }}</div>
-          <div
-            class="mt-2 h-1 w-16 bg-white/30 rounded-full mx-auto group-hover:bg-white/60 transition-colors duration-300">
+
+          <!-- 标签 -->
+          <div class="text-base text-white/90 font-medium mb-3">{{ stat.label }}</div>
+
+          <!-- 进度条 -->
+          <div class="h-1 w-full bg-white/20 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-white/60 to-white/80 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"
+              :style="{ transitionDelay: `${index * 100}ms` }"></div>
           </div>
         </div>
       </div>
@@ -111,6 +127,23 @@ const parseValueAndSuffix = (valueStr) => {
   }
 
   return { value: 0, suffix: valueStr };
+};
+
+/**
+ * 统计图标配置
+ */
+const statIcons = [
+  'heroicons:building-office-2',
+  'heroicons:users',
+  'heroicons:globe-alt',
+  'heroicons:academic-cap'
+];
+
+/**
+ * 获取统计图标
+ */
+const getStatIcon = (index) => {
+  return statIcons[index % statIcons.length];
 };
 
 /**

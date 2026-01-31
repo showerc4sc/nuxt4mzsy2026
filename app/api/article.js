@@ -38,7 +38,7 @@ export async function getArticleList(params = {}) {
  * @returns {Promise<Object>} 返回文章详情数据
  */
 export async function getArticleById(id) {
-  return request.get('/client/cms/article/pub/getInfo', { params: { _id } });
+  return request.get('/client/cms/article/pub/getInfo', { params: { _id: id } });
 }
 
 /**

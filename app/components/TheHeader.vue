@@ -162,10 +162,17 @@ const navigationItems = computed(() => {
 
   if (menuItems && Array.isArray(menuItems) && menuItems.length > 0) {
     // 映射API响应数据到导航菜单格式
-    return menuItems.map(item => ({
-      name: item.title || item.name || item.categoryName || '未命名',
-      path: item.path || item.url || item.href || `/${item.id || ''}`
-    }));
+    return menuItems.map(item => {
+      // 获取路径并确保以 / 开头
+      let path = item.path || item.url || item.href || `/${item.id || ''}`;
+      if (path && !path.startsWith('/')) {
+        path = '/' + path;
+      }
+      return {
+        name: item.title || item.name || item.categoryName || '未命名',
+        path: path
+      };
+    });
   }
 
   return getDefaultMenu();
