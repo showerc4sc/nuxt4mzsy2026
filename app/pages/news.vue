@@ -106,7 +106,7 @@
                           <span class="relative">
                             阅读更多
                             <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-eco-600 group-hover:w-full transition-all duration-300"></span>
-                          </span>
+                </span>
                           <Icon name="heroicons:arrow-right"
                             class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
                         </div>

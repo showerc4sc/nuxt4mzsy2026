@@ -22,6 +22,13 @@ export default defineNuxtConfig({
           crossorigin: true,
         },
       ],
+      // 添加高德地图脚本
+      script: [
+        {
+          type: 'text/javascript',
+          src: 'https://webapi.amap.com/maps?v=2.0&key=d689295bd13850e7d2a985fd1f737a78'
+        }
+      ],
       // 添加noscript标签，当JavaScript禁用时显示内容
       noscript: [
         { innerHTML: "<style>body { opacity: 1 !important; }</style>" },

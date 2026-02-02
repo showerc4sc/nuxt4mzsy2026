@@ -1,21 +1,7 @@
 <template>
   <div>
     <!-- 页面头部 -->
-    <section class="relative pt-40 pb-24 text-white overflow-hidden" style="background-image: url('https://picsum.photos/seed/mzsy-contact/1920/1080.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
-      <!-- 深色遮罩层 -->
-      <div class="absolute inset-0 bg-gradient-to-br from-eco-900/85 to-primary-900/80"></div>
-      <!-- 装饰性光晕 -->
-      <div class="absolute inset-0 opacity-20">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-500 rounded-full filter blur-3xl"></div>
-      </div>
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">联系我们</h1>
-        <p class="text-xl max-w-3xl">
-          我们期待与您的合作，共同推动绿色能源发展
-        </p>
-      </div>
-    </section>
+    <PageTitle slug="contact" />
 
     <!-- 页面内容容器 -->
     <div class="relative z-10">
@@ -35,7 +21,7 @@
                 </div>
                 <div class="ml-4">
                   <h3 class="text-lg font-semibold text-gray-900 mb-1">公司地址</h3>
-                  <p class="text-gray-600">{{ contactData.address }}</p>
+                  <p class="text-gray-600">{{ companyAddress }}</p>
                 </div>
               </div>
               
@@ -45,7 +31,7 @@
                 </div>
                 <div class="ml-4">
                   <h3 class="text-lg font-semibold text-gray-900 mb-1">联系电话</h3>
-                  <p class="text-gray-600">{{ contactData.phone }}</p>
+                  <p class="text-gray-600">{{ companyTel }}</p>
                 </div>
               </div>
               
@@ -55,7 +41,7 @@
                 </div>
                 <div class="ml-4">
                   <h3 class="text-lg font-semibold text-gray-900 mb-1">电子邮箱</h3>
-                  <p class="text-gray-600">{{ contactData.email }}</p>
+                  <p class="text-gray-600">{{ companyEmail }}</p>
                 </div>
               </div>
               
@@ -65,13 +51,13 @@
                 </div>
                 <div class="ml-4">
                   <h3 class="text-lg font-semibold text-gray-900 mb-1">工作时间</h3>
-                  <p class="text-gray-600">{{ contactData.workingHours }}</p>
+                  <p class="text-gray-600">{{ workTimes }}</p>
                 </div>
               </div>
             </div>
             
             <!-- 社交媒体 -->
-            <div class="mt-10">
+            <!-- <div class="mt-10">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">关注我们</h3>
               <div class="flex space-x-4">
                 <a href="#" class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-eco-100 transition-colors duration-200">
@@ -84,7 +70,7 @@
                   <Icon name="heroicons:share" class="w-5 h-5 text-gray-600 hover:text-eco-600" />
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
           
           <!-- 联系表单 -->
@@ -224,14 +210,8 @@
         <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">公司位置</h2>
         
         <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-          <!-- 这里可以集成真实的地图API，如百度地图、高德地图等 -->
-          <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-eco-100 to-primary-100">
-            <div class="text-center">
-              <Icon name="heroicons:map" class="w-16 h-16 text-eco-600 mx-auto mb-4" />
-              <p class="text-lg text-gray-700 mb-2">{{ contactData.address }}</p>
-              <p class="text-gray-600">地图加载中...</p>
-            </div>
-          </div>
+          <!-- 高德地图容器 -->
+          <div ref="mapContainer" class="w-full h-full"></div>
         </div>
       </div>
     </section>
@@ -251,11 +231,81 @@ useHead({
 // 获取路由参数
 const route = useRoute();
 
-// 直接导入JSON数据
-const { data: contactData } = await useAsyncData('contact', async () => {
-  const companyJson = await import('~/data/company.json');
-  return companyJson.default.contact;
+// 导入公司信息 composable
+import { useCompanyInfo } from '~/composables/useCompanyInfo.js';
+
+// 获取公司信息
+const {
+  companyAddress,
+  companyTel,
+  companyEmail,
+  workTimes,
+  companyLat,
+  companyLng
+} = useCompanyInfo();
+
+// 地图容器引用
+const mapContainer = ref(null);
+
+// 初始化高德地图
+onMounted(() => {
+  console.log('高德地图 API 准备加载');
+  if (mapContainer.value) {
+    // 等待高德地图脚本加载完成后初始化地图
+    const checkAMap = setInterval(() => {
+      if (typeof AMap !== 'undefined'&&companyLat.value&&companyLng.value) {
+        console.log('高德地图 API 加载成功',companyLat.value,companyLng.value);
+        clearInterval(checkAMap);
+        initMap();
+      }
+    }, 100);
+
+    // 10秒后停止检查，避免无限循环
+    setTimeout(() => {
+      clearInterval(checkAMap);
+    }, 10000);
+  }
 });
+
+/**
+ * 初始化地图
+ */
+const initMap = () => {
+  if (typeof AMap !== 'undefined' && mapContainer.value) {
+    const map = new AMap.Map(mapContainer.value, {
+      zoom: 15,
+      center: [companyLng.value, companyLat.value],
+      mapStyle: 'amap://styles/normal',
+      viewMode: '2D'
+    });
+
+    // 添加标记
+    const marker = new AMap.Marker({
+      position: [companyLng.value, companyLat.value],
+      title: companyAddress.value,
+      map: map
+    });
+
+    // 添加信息窗体
+    const infoWindow = new AMap.InfoWindow({
+      content: `
+        <div style="padding: 10px; min-width: 200px;">
+          <h4 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">${companyAddress.value}</h4>
+          <p style="margin: 0; color: #666;">淼泽松源（上海）科技发展有限公司</p>
+        </div>
+      `,
+      offset: new AMap.Pixel(0, -30)
+    });
+
+    // 点击标记显示信息窗体
+    marker.on('click', () => {
+      infoWindow.open(map, marker.getPosition());
+    });
+
+    // 自动打开信息窗体
+    infoWindow.open(map, marker.getPosition());
+  }
+};
 
 // 表单数据
 const form = ref({
