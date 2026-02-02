@@ -40,6 +40,16 @@ useHead({
 useHead({
   title: computed(() => companyName.value || '淼泽松源')
 })
+
+// 监听路由变化，页面切换时滚动到顶部
+const route = useRoute()
+
+watch(() => route.path, () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+})
 </script>
 
 <style scoped>
