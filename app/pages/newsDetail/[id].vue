@@ -97,9 +97,9 @@
           <div class="max-w-4xl mx-auto">
             <!-- 文章封面图 -->
             <div class="mb-12 rounded-2xl overflow-hidden shadow-xl">
-              <img :src="articleData.image" :alt="articleData.title"
+              <img :src="articleData.image" v-if="articleData.image" :alt="articleData.title"
                 class="w-full h-auto object-cover"
-                onerror="this.src='https://picsum.photos/seed/news/1200/600.jpg'" />
+               />
             </div>
 
             <!-- 文章正文 -->
@@ -205,7 +205,7 @@ const articleData = computed(() => {
     title: articleInfo.value.title,
     summary: articleInfo.value.subtitle || articleInfo.value.summary || '',
     content: articleInfo.value.content || '',
-    image: coverUrl || 'https://picsum.photos/seed/news/1200/600.jpg',
+    image: coverUrl,
     category: articleInfo.value.category_name || '新闻',
     date: articleInfo.value._add_time_str || '',
     author: articleInfo.value.author || '淼泽松源'
