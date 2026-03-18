@@ -9,6 +9,9 @@
     <!-- 企业概览 -->
     <AboutCompanyOverview slug="about-1" />
 
+    <!-- 管理层简介 -->
+    <AboutManagementTeam />
+
     <!-- 经营范围 -->
     <AboutBusinessScope slug="about-2" />
 
