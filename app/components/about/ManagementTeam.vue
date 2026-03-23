@@ -150,7 +150,7 @@
                 <Icon name="heroicons:briefcase-solid" class="w-3.5 h-3.5 text-purple-500" />
                 <p class="text-purple-600 font-semibold text-sm">{{ manager.position }}</p>
               </div>
-              <div class="text-sm text-gray-600 leading-relaxed line-clamp-3" v-html="manager.resume"></div>
+              <div class="text-sm text-gray-600 leading-relaxed line-clamp-5" v-html="manager.resume"></div>
             </div>
           </div>
         </div>
