@@ -79,9 +79,12 @@
 
       <!-- 版权信息 -->
       <div class="border-t border-gray-800 mt-12 pt-8">
-        <div class="flex flex-col md:flex-row justify-center items-center">
+        <div class="flex flex-col items-center">
           <p class="text-gray-400 text-center">
             &copy; {{ currentYear }} {{ company.name }}. 保留所有权利.
+          </p>
+          <p class="text-gray-500 text-sm mt-2">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition-colors duration-300">沪ICP备2026003102号-1</a>
           </p>
         </div>
       </div>
