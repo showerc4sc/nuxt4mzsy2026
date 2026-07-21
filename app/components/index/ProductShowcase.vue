@@ -1,140 +1,135 @@
 <template>
-  <section
-    class="product-section py-20 bg-gradient-to-br from-eco-50 to-white relative overflow-hidden animate-background-shift">
-    <!-- 背景装饰 -->
-    <div class="absolute inset-0 opacity-5">
-      <div class="parallax-element absolute top-1/4 right-1/4 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"
-        data-speed="0.25"></div>
-      <div class="parallax-element absolute bottom-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl"
-        data-speed="0.15"></div>
-    </div>
-
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  <section class="relative overflow-hidden bg-gray-50 py-32 md:py-40">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- 加载状态 -->
-      <div v-if="pending" class="flex justify-center items-center py-20">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-eco-600"></div>
+      <div v-if="pending" class="flex justify-center py-20">
+        <div class="h-12 w-12 animate-spin rounded-full border-2 border-eco-300 border-t-eco-800"></div>
       </div>
 
       <!-- 标题区域 -->
-      <div v-else class="text-center mb-16">
-        <div class="inline-flex items-center px-5 py-2.5 bg-eco-50 border border-eco-100 text-eco-700 rounded-full text-sm font-medium mb-6">
-          <Icon name="heroicons:cube" class="w-4 h-4 mr-2" />
-          {{ categoryData?.title || '我们的产品' }}
-        </div>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-          <span class="text-gradient-animate">{{ categoryData?.title || '产品展示' }}</span>
+      <div v-else class="reveal mb-20 max-w-3xl">
+        <h2 class="text-4xl font-semibold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+          {{ categoryData?.title || '产品展示' }}
         </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <p class="mt-5 text-lg font-light leading-relaxed text-gray-600 md:text-xl">
           {{ categoryData?.subtitle || '我们提供全方位的新能源产品，满足不同场景的应用需求' }}
         </p>
       </div>
 
-      <div class="relative max-w-7xl mx-auto">
-        <!-- 轮播容器 -->
-        <div class="overflow-hidden rounded-2xl shadow-2xl bg-white">
-          <div class="flex transition-transform duration-700 ease-out"
-            :style="{ transform: `translateX(-${currentSlide * 100}%)` }" v-cloak>
-            <!-- 轮播项 -->
-            <div v-for="(product, index) in productsData" :key="product.id"
-              class="w-full flex-shrink-0 grid grid-cols-1 lg:grid-cols-3 bg-white">
-              <!-- 左侧2/3：产品大图 -->
-              <div class="lg:col-span-2 bg-gray-100 h-96 lg:h-auto relative overflow-hidden group">
-                <img :src="product.image" :alt="product.name"
-                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onerror="this.src='https://picsum.photos/seed/mzsy-product/800/600.jpg'" />
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+      <div v-if="!pending" class="reveal reveal-delay-1 relative mx-auto max-w-6xl">
+        <!-- 轮播容器：Double-Bezel -->
+        <div class="overflow-hidden bezel" v-cloak>
+          <div class="bezel-inner overflow-hidden">
+            <div
+              class="flex transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
+              :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
+            >
+              <!-- 轮播项 -->
+              <div
+                v-for="product in productsData"
+                :key="product.id"
+                class="grid w-full flex-shrink-0 grid-cols-1 lg:grid-cols-5"
+              >
+                <!-- 左侧 3/5：产品大图 -->
+                <div class="relative h-80 overflow-hidden bg-gray-100 lg:col-span-3 lg:h-[520px]">
+                  <img
+                    :src="product.image"
+                    :alt="product.name"
+                    class="h-full w-full object-cover"
+                    onerror="this.src='https://picsum.photos/seed/mzsy-product/800/600.jpg'"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <span
+                    class="absolute left-5 top-5 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-eco-900 shadow-sm backdrop-blur-sm"
+                  >
+                    <Icon name="heroicons:tag" class="mr-1.5 h-3.5 w-3.5" />
+                    {{ product.category }}
+                  </span>
                 </div>
-                <div
-                  class="absolute top-6 left-6 bg-eco-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg flex items-center space-x-2">
-                  <Icon name="heroicons:tag" class="w-4 h-4" />
-                  <span>{{ product.category }}</span>
-                </div>
-                <!-- 图片上的悬浮信息 -->
-                <div
-                  class="absolute bottom-6 left-6 right-6 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <div class="bg-black/50 backdrop-blur-sm rounded-lg p-4">
-                    <p class="text-sm font-medium">{{ product.subtitle || '行业领先技术，卓越性能表现' }}</p>
-                  </div>
-                </div>
-              </div>
 
-              <!-- 右侧1/3：产品介绍 -->
-              <div class="p-8 lg:p-12 flex flex-col justify-center bg-gradient-to-br from-white to-gray-50">
-                <div class="mb-2">
-                  <span class="text-eco-600 font-medium text-sm uppercase tracking-wider">{{ product.series ||
-                    'MZ系列' }}</span>
-                </div>
-                <h3 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 leading-tight">{{ product.name }}
-                </h3>
-                <p class="text-gray-600 mb-8 leading-relaxed">{{ product.description }}</p>
+                <!-- 右侧 2/5：产品介绍 -->
+                <div class="flex flex-col justify-center bg-white p-8 lg:col-span-2 lg:p-12">
+                  <span class="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-eco-800">
+                    {{ product.series || 'MZ系列' }}
+                  </span>
+                  <h3 class="mb-4 text-2xl font-bold leading-tight text-gray-900 lg:text-3xl">
+                    {{ product.name }}
+                  </h3>
+                  <p class="mb-8 leading-relaxed text-gray-600">{{ product.description }}</p>
 
-                <!-- 产品规格 -->
-                <div class="bg-white rounded-xl p-6 shadow-sm mb-8 border border-gray-100">
-                  <h4 class="text-sm font-semibold text-gray-700 mb-4 flex items-center">
-                    <Icon name="heroicons:clipboard-document-list" class="w-4 h-4 mr-2 text-eco-600" />
-                    技术规格
-                  </h4>
-                  <div class="space-y-3">
-                    <div v-for="(value, key) in product.specifications" :key="key"
-                      class="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0">
-                      <span class="text-gray-500 text-sm">{{ key }}:</span>
-                      <span class="font-medium text-gray-900 text-sm bg-eco-50 px-2 py-1 rounded">{{ value
-                      }}</span>
+                  <!-- 技术规格 -->
+                  <dl class="mb-8 space-y-3" v-if="Object.keys(product.specifications).length">
+                    <dt class="font-mono text-xs font-semibold uppercase tracking-wider text-gray-400">技术规格</dt>
+                    <div
+                      v-for="(value, key) in product.specifications"
+                      :key="key"
+                      class="flex items-baseline justify-between gap-4 border-b border-gray-100 pb-2 last:border-0"
+                    >
+                      <dd class="text-sm text-gray-500">{{ key }}</dd>
+                      <dd class="text-right font-mono text-sm font-medium tabular-nums text-gray-900">{{ value }}</dd>
+                    </div>
+                  </dl>
+
+                  <!-- 产品特点 -->
+                  <div v-if="product.features && product.features.length" class="mb-8">
+                    <div class="mb-3 flex flex-wrap gap-2">
+                      <span
+                        v-for="feature in product.features"
+                        :key="feature"
+                        class="rounded-full bg-eco-50 px-3 py-1 text-xs font-medium text-eco-800"
+                      >
+                        {{ feature }}
+                      </span>
                     </div>
                   </div>
-                </div>
 
-                <!-- 产品特点 -->
-                <div v-if="product.features && product.features.length > 0" class="mb-8">
-                  <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                    <Icon name="heroicons:star" class="w-4 h-4 mr-2 text-eco-600" />
-                    产品特点
-                  </h4>
-                  <div class="flex flex-wrap gap-2">
-                    <span v-for="feature in product.features" :key="feature"
-                      class="px-3 py-1 bg-eco-100 text-eco-700 rounded-full text-xs font-medium">
-                      {{ feature }}
+                  <!-- CTA：Button-in-Button -->
+                  <NuxtLink
+                    :to="`/productDetail/${product.id}`"
+                    class="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-2.5 text-base font-semibold text-white shadow-[0_8px_24px_rgba(22,101,52,0.2)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-eco-400 focus-visible:ring-offset-2"
+                  >
+                    <span>了解产品详情</span>
+                    <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+                      <Icon name="heroicons:arrow-right" class="h-3.5 w-3.5" />
                     </span>
-                  </div>
+                  </NuxtLink>
                 </div>
-
-                <NuxtLink :to="`/productDetail/${product.id}`"
-                  class="group inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-eco-500 to-eco-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden font-display mouse-follow"
-                  data-speed="0.05" data-max-distance="20">
-                  <span class="relative z-10">了解产品详情</span>
-                  <Icon name="heroicons:arrow-right"
-                    class="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                  <div
-                    class="absolute inset-0 bg-gradient-to-r from-eco-600 to-eco-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  </div>
-                </NuxtLink>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 轮播控制 -->
-        <button @click="prevSlide"
-          class="group absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-xl transition-all duration-300 hover:scale-110 z-20"
-          aria-label="上一个产品">
-          <Icon name="heroicons:chevron-left"
-            class="w-6 h-6 transition-transform duration-300 group-hover:-translate-x-1" />
+        <!-- 轮播控制：圆角胶囊 -->
+        <button
+          @click="prevSlide"
+          class="group absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-gray-800 shadow-[0_8px_24px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105 hover:bg-white active:scale-95 lg:left-5"
+          aria-label="上一个产品"
+        >
+          <Icon name="heroicons:chevron-left" class="h-5 w-5" />
         </button>
 
-        <button @click="nextSlide"
-          class="group absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-xl transition-all duration-300 hover:scale-110 z-20"
-          aria-label="下一个产品">
-          <Icon name="heroicons:chevron-right"
-            class="w-6 h-6 transition-transform duration-300 group-hover:translate-x-1" />
+        <button
+          @click="nextSlide"
+          class="group absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-gray-800 shadow-[0_8px_24px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105 hover:bg-white active:scale-95 lg:right-5"
+          aria-label="下一个产品"
+        >
+          <Icon name="heroicons:chevron-right" class="h-5 w-5" />
         </button>
 
         <!-- 轮播指示器 -->
-        <div class="flex justify-center mt-8 space-x-2">
-          <button v-for="(_, index) in productsData" :key="index" @click="currentSlide = index"
-            class="h-3 rounded-full transition-all duration-300"
-            :class="currentSlide === index ? 'w-10 bg-gradient-to-r from-eco-500 to-eco-600 shadow-lg' : 'w-3 bg-gray-300 hover:bg-gray-400'"
-            :aria-label="`切换到第${index + 1}个产品`"></button>
+        <div class="mt-8 flex justify-center gap-2">
+          <button
+            v-for="(_, index) in productsData"
+            :key="index"
+            @click="currentSlide = index"
+            class="h-2 rounded-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            :class="
+              currentSlide === index
+                ? 'w-10 bg-eco-800'
+                : 'w-2 bg-gray-300 hover:bg-gray-400'
+            "
+            :aria-label="`切换到第${index + 1}个产品`"
+          ></button>
         </div>
       </div>
     </div>
@@ -154,30 +149,26 @@ import { getArticleListByCategorySlug } from '~/api/article';
 /**
  * 根据slug获取栏目信息
  */
-const { data: categoryData, pending } = await useAsyncData(
-  'category-products',
-  () => getCategoryBySlug('products'),
-  {
-    transform: (response) => {
-      console.log('产品栏目数据:', response);
-      return response || null;
-    }
+const { data: categoryData, pending } = await useAsyncData('category-products', () =>
+  getCategoryBySlug('products'), {
+  transform: (response) => {
+    return response || null;
   }
-);
+});
 
 /**
  * 根据栏目slug获取产品列表
  */
 const { data: productResponse } = await useAsyncData(
   'products-articles',
-  () => getArticleListByCategorySlug({
-    category_slug: 'products',
-    recursive: true,
-    limit: 10
-  }),
+  () =>
+    getArticleListByCategorySlug({
+      category_slug: 'products',
+      recursive: true,
+      limit: 10
+    }),
   {
     transform: (response) => {
-      console.log('产品数据:', response);
       return response || { rows: [], total: 0 };
     }
   }
@@ -189,7 +180,7 @@ const { data: productResponse } = await useAsyncData(
 const productsData = computed(() => {
   if (!productResponse.value?.rows) return [];
 
-  return productResponse.value.rows.map(product => {
+  return productResponse.value.rows.map((product) => {
     // 处理cover字段，去除可能存在的反引号和空格
     const coverUrl = product.cover ? product.cover.replace(/`/g, '').trim() : '';
 
@@ -208,8 +199,10 @@ const productsData = computed(() => {
     let features = [];
     if (product.keywords) {
       if (typeof product.keywords === 'string') {
-        // 支持逗号、分号、竖线分隔
-        features = product.keywords.split(/[,;|，；|]/).map(k => k.trim()).filter(k => k);
+        features = product.keywords
+          .split(/[,;|，；|]/)
+          .map((k) => k.trim())
+          .filter((k) => k);
       } else if (Array.isArray(product.keywords)) {
         features = product.keywords;
       }
@@ -236,7 +229,7 @@ const currentSlide = ref(0);
  * 切换到下一个产品
  */
 const nextSlide = () => {
-  if (!productsData.value) return;
+  if (!productsData.value.length) return;
   currentSlide.value = (currentSlide.value + 1) % productsData.value.length;
 };
 
@@ -244,8 +237,9 @@ const nextSlide = () => {
  * 切换到上一个产品
  */
 const prevSlide = () => {
-  if (!productsData.value) return;
-  currentSlide.value = currentSlide.value === 0 ? productsData.value.length - 1 : currentSlide.value - 1;
+  if (!productsData.value.length) return;
+  currentSlide.value =
+    currentSlide.value === 0 ? productsData.value.length - 1 : currentSlide.value - 1;
 };
 
 // 自动轮播
@@ -255,7 +249,7 @@ let slideInterval = null;
  * 组件挂载后启动自动轮播
  */
 onMounted(() => {
-  slideInterval = setInterval(nextSlide, 5000); // 每5秒自动切换产品轮播
+  slideInterval = setInterval(nextSlide, 5000);
 });
 
 /**

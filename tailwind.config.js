@@ -109,8 +109,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
-        display: ['Inter Display', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Consolas', 'monospace'],
       },
       fontSize: {

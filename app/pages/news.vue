@@ -45,18 +45,20 @@
 
             <!-- 新闻卡片列表 -->
             <div v-else-if="currentNews.length > 0" class="space-y-8">
-              <NuxtLink
-                v-for="(news, index) in currentNews"
-                :key="news.id"
-                :to="`/newsDetail/${news.id}`"
-                class="group block relative"
-                :style="{ animationDelay: `${index * 100}ms` }"
-              >
+            <!-- 新闻卡片 -->
+            <NuxtLink
+              v-for="(news, index) in currentNews"
+              :key="news.id"
+              :to="`/newsDetail/${news.id}`"
+              class="reveal bezel group block"
+              :class="`reveal-delay-${Math.min((index % 3) + 1, 5)}`"
+            >
+              <div class="bezel-inner overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
                 <!-- 卡片容器 -->
-                <div class="relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100">
+                <div class="relative bg-white">
                   <!-- 悬停边框光效 -->
-                  <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%);">
+                  <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style="background: linear-gradient(135deg, rgba(22, 101, 52, 0.04) 0%, rgba(22, 101, 52, 0.02) 100%);">
                   </div>
 
                   <div class="flex flex-col md:flex-row relative z-10">
@@ -66,13 +68,13 @@
                       <img
                         :src="news.image"
                         :alt="news.title"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                        class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
                         onerror="this.src='https://picsum.photos/seed/news/800/500.jpg'"
                       />
                       <!-- 图片角标 -->
                       <div class="absolute top-4 left-4 z-20">
                         <span :class="[
-                          'px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm',
+                          'px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm backdrop-blur-sm',
                           getCategoryBadgeStyle(news.category)
                         ]">
                           {{ news.category }}
@@ -86,42 +88,36 @@
                         <!-- 日期 -->
                         <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
                           <Icon name="heroicons:calendar" class="w-4 h-4" />
-                          <span>{{ news.date }}</span>
+                          <span class="font-mono tabular-nums">{{ news.date }}</span>
                         </div>
 
                         <!-- 标题 -->
-                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 group-hover:text-eco-600 transition-colors duration-300 line-clamp-2 leading-tight">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 group-hover:text-eco-800 transition-colors duration-500 line-clamp-2 leading-tight">
                           {{ news.title }}
                         </h3>
 
                         <!-- 摘要 -->
-                        <p class="text-gray-600 line-clamp-3 mb-6 leading-relaxed">
+                        <p class="text-gray-600 line-clamp-3 mb-6 font-light leading-relaxed">
                           {{ news.summary }}
                         </p>
                       </div>
 
                       <!-- 底部操作区 -->
                       <div class="flex items-center justify-between">
-                        <div class="flex items-center text-eco-600 font-semibold group-hover:text-eco-700 transition-all duration-300">
+                        <div class="flex items-center text-eco-800 font-semibold group-hover:text-eco-900 transition-all duration-500">
                           <span class="relative">
                             阅读更多
-                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-eco-600 group-hover:w-full transition-all duration-300"></span>
-                </span>
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-eco-800 group-hover:w-full transition-all duration-500"></span>
+                          </span>
                           <Icon name="heroicons:arrow-right"
-                            class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
-                        </div>
-
-                        <!-- 装饰点 -->
-                        <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <span class="w-2 h-2 rounded-full bg-eco-400"></span>
-                          <span class="w-2 h-2 rounded-full bg-eco-300"></span>
-                          <span class="w-2 h-2 rounded-full bg-eco-200"></span>
+                            class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-500" />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </NuxtLink>
+              </div>
+            </NuxtLink>
             </div>
 
             <!-- 空状态 -->
@@ -143,10 +139,10 @@
               <button
                 @click="currentPage > 1 && currentPage--"
                 :disabled="currentPage === 1"
-                class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] disabled:opacity-50 disabled:cursor-not-allowed"
                 :class="currentPage === 1
                   ? 'bg-gray-100 text-gray-400'
-                  : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-600 shadow-md hover:shadow-lg border border-gray-200'"
+                  : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-800 border border-gray-200'"
               >
                 <Icon name="heroicons:chevron-left" class="w-5 h-5" />
                 上一页
@@ -157,10 +153,10 @@
                   v-for="page in displayedPages"
                   :key="page"
                   @click="currentPage = page"
-                  class="w-11 h-11 rounded-xl font-medium transition-all duration-300"
+                  class="w-11 h-11 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                   :class="currentPage === page
-                    ? 'bg-gradient-to-br from-eco-600 to-teal-600 text-white shadow-lg shadow-eco-500/30 scale-105'
-                    : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-600 shadow-md border border-gray-200'"
+                    ? 'bg-eco-800 text-white shadow-[0_8px_24px_rgba(22,101,52,0.2)] scale-105'
+                    : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-800 border border-gray-200'"
                 >
                   {{ page }}
                 </button>
@@ -169,10 +165,10 @@
               <button
                 @click="currentPage < totalPages && currentPage++"
                 :disabled="currentPage === totalPages"
-                class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] disabled:opacity-50 disabled:cursor-not-allowed"
                 :class="currentPage === totalPages
                   ? 'bg-gray-100 text-gray-400'
-                  : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-600 shadow-md hover:shadow-lg border border-gray-200'"
+                  : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-800 border border-gray-200'"
               >
                 下一页
                 <Icon name="heroicons:chevron-right" class="w-5 h-5" />
@@ -191,6 +187,9 @@
  */
 
 import { getArticleListByCategorySlug } from '~/api/article';
+
+// 滚动入场动效
+useReveal();
 
 // 当前选中的分类信息
 const currentCategory = ref('');

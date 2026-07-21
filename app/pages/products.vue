@@ -13,67 +13,74 @@
       />
 
       <!-- 产品列表 -->
-      <section class="py-16 bg-gray-50">
+      <section class="py-32 md:py-40 bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
           <!-- 加载状态 -->
           <div v-if="pending" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="i in 6" :key="i" class="bg-white rounded-xl shadow-md overflow-hidden animate-pulse">
-              <div class="aspect-video bg-gray-200"></div>
-              <div class="p-6 space-y-4">
-                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-                <div class="h-6 bg-gray-200 rounded w-3/4"></div>
-                <div class="h-4 bg-gray-200 rounded w-full"></div>
-                <div class="h-4 bg-gray-200 rounded w-2/3"></div>
-                <div class="flex gap-2 pt-2">
-                  <div class="h-10 bg-gray-200 rounded flex-1"></div>
-                  <div class="h-10 bg-gray-200 rounded flex-1"></div>
+            <div v-for="i in 6" :key="i" class="bezel">
+              <div class="bezel-inner overflow-hidden">
+                <div class="aspect-video bg-gray-200 animate-pulse"></div>
+                <div class="p-6 space-y-4">
+                  <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+                  <div class="h-6 bg-gray-200 rounded w-3/4"></div>
+                  <div class="h-4 bg-gray-200 rounded w-full"></div>
+                  <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div class="flex gap-2 pt-2">
+                    <div class="h-10 bg-gray-200 rounded-full flex-1"></div>
+                    <div class="h-10 bg-gray-200 rounded-full flex-1"></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 产品卡片列表 -->
+          <!-- 产品卡片列表：Double-Bezel -->
           <div v-else-if="productList.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="product in productList" :key="product.id"
-              class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <!-- 产品图片 -->
-              <div class="aspect-video overflow-hidden">
-                <img :src="product.image" :alt="product.name"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                  onerror="this.src='https://picsum.photos/seed/products/800/500.jpg'" />
-              </div>
-
-              <!-- 产品信息 -->
-              <div class="p-6">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-sm font-medium text-eco-600 bg-eco-50 px-2 py-1 rounded">
-                    {{ product.category }}
-                  </span>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ product.name }}</h3>
-                <p class="text-gray-600 mb-4 line-clamp-2">{{ product.description }}</p>
-
-                <!-- 产品规格 -->
-                <div v-if="product.specifications && Object.keys(product.specifications).length > 0" class="mb-4">
-                  <h4 class="text-sm font-medium text-gray-900 mb-2">主要规格</h4>
-                  <dl class="grid grid-cols-2 gap-2 text-sm">
-                    <div v-for="(value, key) in product.specifications" :key="key" class="flex">
-                      <dt class="text-gray-500 mr-2">{{ key }}:</dt>
-                      <dd class="text-gray-900">{{ value }}</dd>
-                    </div>
-                  </dl>
+            <div v-for="(product, index) in productList" :key="product.id"
+              class="reveal bezel group"
+              :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+            >
+              <div class="bezel-inner overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+                <!-- 产品图片 -->
+                <div class="aspect-video overflow-hidden">
+                  <img :src="product.image" :alt="product.name"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
+                    onerror="this.src='https://picsum.photos/seed/products/800/500.jpg'" />
                 </div>
 
-                <!-- 操作按钮 -->
-                <div class="flex gap-2">
-                  <NuxtLink :to="`/productDetail/${product.id}`"
-                    class="flex-1 px-4 py-2 bg-eco-600 text-white font-medium rounded-lg hover:bg-eco-700 transition-colors duration-200 text-center">
-                    查看详情
-                  </NuxtLink>
-                  <button @click="inquireProduct(product)"
-                    class="flex-1 px-4 py-2 border border-eco-600 text-eco-600 font-medium rounded-lg hover:bg-eco-50 transition-colors duration-200">
-                    产品咨询
-                  </button>
+                <!-- 产品信息 -->
+                <div class="p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-eco-800 bg-eco-50 px-3 py-1 rounded-full">
+                      {{ product.category }}
+                    </span>
+                  </div>
+                  <h3 class="text-xl font-bold text-gray-900 mb-3">{{ product.name }}</h3>
+                  <p class="text-gray-600 mb-4 line-clamp-2 font-light leading-relaxed">{{ product.description }}</p>
+
+                  <!-- 产品规格 -->
+                  <div v-if="product.specifications && Object.keys(product.specifications).length > 0" class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-900 mb-2">主要规格</h4>
+                    <dl class="grid grid-cols-2 gap-2 text-sm">
+                      <div v-for="(value, key) in product.specifications" :key="key" class="flex">
+                        <dt class="text-gray-500 mr-2">{{ key }}:</dt>
+                        <dd class="text-gray-900 font-medium">{{ value }}</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <!-- 操作按钮 -->
+                  <div class="flex gap-2">
+                    <NuxtLink :to="`/productDetail/${product.id}`"
+                      class="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-eco-800 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]">
+                      查看详情
+                      <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+                    </NuxtLink>
+                    <button @click="inquireProduct(product)"
+                      class="flex-1 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-eco-300 hover:bg-eco-50 active:scale-[0.98]">
+                      产品咨询
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -95,6 +102,9 @@
 
 <script setup>
 import { getArticleListByCategorySlug } from '~/api/article';
+
+// 滚动入场动效
+useReveal();
 
 // 设置页面元数据
 useHead({

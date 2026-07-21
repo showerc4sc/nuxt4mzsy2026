@@ -1,40 +1,43 @@
 <template>
-  <section v-if="!pending && !error" class="py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
     <!-- 背景装饰 -->
     <div class="absolute top-1/2 right-0 w-80 h-80 bg-eco-100/40 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-    
+
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-5xl mx-auto">
         <!-- 标题区域 -->
-        <div class="flex items-center mb-10">
-          <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mr-5 shadow-lg shadow-purple-500/20">
+        <div class="reveal flex items-center mb-12">
+          <div class="w-14 h-14 bg-eco-800 rounded-2xl flex items-center justify-center mr-5 shadow-[0_8px_24px_rgba(22,101,52,0.2)]">
             <Icon name="heroicons:trophy" class="w-7 h-7 text-white" />
           </div>
           <div>
-            <span class="text-purple-600 text-sm font-semibold uppercase tracking-wider">Our Advantages</span>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ title }}</h2>
+            <span class="text-eco-700 text-sm font-semibold uppercase tracking-wider">Our Advantages</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">{{ title }}</h2>
           </div>
         </div>
-        
-        <!-- 优势卡片列表 -->
+
+        <!-- 优势卡片列表：Double-Bezel -->
         <div class="grid grid-cols-1 gap-6">
-          <div v-for="(item, index) in advantageItems" :key="index" 
-            class="group bg-white p-6 md:p-8 rounded-2xl shadow-md shadow-gray-200/50 border border-gray-100 hover:shadow-xl transition-all duration-300">
-            <div class="flex flex-col md:flex-row md:items-start gap-5">
-              <!-- 图标 -->
-              <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-                :class="index % 2 === 0 ? 'bg-gradient-to-br from-eco-500 to-eco-600' : 'bg-gradient-to-br from-primary-500 to-primary-600'">
-                <Icon :name="item.icon" class="w-7 h-7 text-white" />
-              </div>
-              <!-- 内容 -->
-              <div class="flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.name }}</h3>
-                <p class="text-gray-700 font-medium text-lg mb-3">{{ item.title }}</p>
-                <p class="text-gray-600 leading-relaxed">{{ item.description }}</p>
-              </div>
-              <!-- 序号装饰 -->
-              <div class="hidden md:flex w-12 h-12 rounded-full bg-gray-100 items-center justify-center flex-shrink-0 group-hover:bg-purple-100 transition-colors">
-                <span class="text-2xl font-bold text-gray-300 group-hover:text-purple-500 transition-colors">{{ index + 1 }}</span>
+          <div v-for="(item, index) in advantageItems" :key="index"
+            class="reveal bezel group"
+            :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+          >
+            <div class="bezel-inner p-6 md:p-8 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+              <div class="flex flex-col md:flex-row md:items-start gap-5">
+                <!-- 图标：统一 eco 强调色 -->
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 bg-eco-800">
+                  <Icon :name="item.icon" class="w-7 h-7 text-white" />
+                </div>
+                <!-- 内容 -->
+                <div class="flex-1">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.name }}</h3>
+                  <p class="text-gray-700 font-medium text-lg mb-3">{{ item.title }}</p>
+                  <p class="text-gray-600 font-light leading-relaxed">{{ item.description }}</p>
+                </div>
+                <!-- 序号装饰 -->
+                <div class="hidden md:flex w-12 h-12 rounded-full bg-gray-100 items-center justify-center flex-shrink-0 transition-colors duration-500 group-hover:bg-eco-100">
+                  <span class="font-mono text-2xl font-bold text-gray-300 group-hover:text-eco-800 transition-colors duration-500">{{ index + 1 }}</span>
+                </div>
               </div>
             </div>
           </div>

@@ -1,11 +1,22 @@
 <template>
-  <section v-if="!pending && !error" class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h3 class="text-xl font-bold text-gray-900 text-center mb-10">{{ title }}</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
-        <div v-for="(item, index) in achievementsData" :key="index" class="text-center">
-          <div class="text-3xl font-bold text-eco-600 mb-1">{{ item.value }}</div>
-          <div class="text-gray-600 text-sm">{{ item.name }}</div>
+  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gradient-to-br from-eco-800 via-eco-900 to-slate-900 relative overflow-hidden">
+    <!-- 细微纹理 -->
+    <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 40%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 40%);"></div>
+
+    <div class="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="reveal mb-16 max-w-3xl">
+        <h3 class="text-4xl md:text-5xl font-bold tracking-tight text-white">{{ title }}</h3>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
+        <div v-for="(item, index) in achievementsData" :key="index"
+          class="reveal"
+          :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+        >
+          <div class="font-mono text-5xl font-semibold tabular-nums tracking-tight text-white md:text-6xl">
+            {{ item.value }}
+          </div>
+          <div class="mt-5 h-px w-10 bg-eco-400"></div>
+          <div class="mt-5 text-sm font-light text-white/70 md:text-base">{{ item.name }}</div>
         </div>
       </div>
     </div>
@@ -45,6 +56,9 @@
  */
 
 import { getArticleBySlug } from '~/api/article';
+
+// 滚动入场动效
+useReveal();
 
 /**
  * 定义组件属性

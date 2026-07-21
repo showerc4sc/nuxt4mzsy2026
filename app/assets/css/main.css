@@ -12,10 +12,13 @@
   --warning-color: #f59e0b;
   --danger-color: #ef4444;
   --neutral-color: #737373;
-  
+
+  /* 流体动效曲线（high-end-visual-design：模拟真实质量与弹簧物理） */
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+
   /* 字体变量 */
-  --font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
-  --font-display: 'Inter Display', 'Noto Sans SC', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Consolas', monospace;
 }
 
@@ -830,4 +833,138 @@ html {
   opacity: 1;
   transform: translateY(0);
   transition: all 0.6s ease-out;
+}
+
+/* ========== 首页改版：克制的进入动效（IntersectionObserver 驱动） ========== */
+/* 由全局观察器在元素进入视口时添加 .is-visible。
+   Fluid blur+fade：translate-y-16 blur-md opacity-0 -> 0/0/1，800ms+，--ease-fluid。
+   仅 transform/opacity/filter 动画，一次性进入（IntersectionObserver once）。 */
+.reveal {
+  opacity: 0;
+  transform: translateY(4rem);
+  filter: blur(12px);
+  transition: opacity 0.9s var(--ease-fluid),
+    transform 0.9s var(--ease-fluid),
+    filter 0.9s var(--ease-fluid);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* 声明式级联延迟：用于成组元素的错峰进入 */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ========== Double-Bezel 嵌套架构（high-end-visual-design §4.A） ==========
+   外壳 shell：半透明背景 + 大圆角 + 大 padding + 柔和漫射环境阴影
+   内核 inner：独立背景 + 内高光 + 同心小圆角 calc(2rem - padding)
+   浅色变体用于亮色区，深色变体用于暗色区（无 backdrop-blur，遵守 §6 性能守卫）。
+*/
+.bezel {
+  background: rgb(0 0 0 / 0.025);
+  padding: 0.375rem;
+  border-radius: 2rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.03), 0 24px 48px -20px rgb(0 0 0 / 0.12);
+}
+
+.bezel-inner {
+  border-radius: calc(2rem - 0.375rem);
+  background: #ffffff;
+  box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.8);
+}
+
+.bezel-dark {
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  padding: 0.375rem;
+  border-radius: 2rem;
+}
+
+.bezel-dark-inner {
+  border-radius: calc(2rem - 0.375rem);
+  background: rgb(255 255 255 / 0.03);
+  box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.08);
+}
+
+/* ========== 移动端全屏导航：错峰遮罩揭示（§5.A） ========== */
+@keyframes mobile-nav-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-nav-link {
+  opacity: 0;
+  animation: mobile-nav-reveal 0.7s var(--ease-fluid) forwards;
+}
+
+/* ========== 工业机械风：圆角与表面系统 ==========
+   锐角为主，传达精密与技术感（机械公司官网）。
+   --radius-control 2px  按钮 / 输入 / 图标容器
+   --radius-surface 0px  卡片 / 区块 / 容器
+   标签徽章一律直角；分隔以 1px 发丝线为主，少用阴影。
+*/
+:root {
+  --radius-control: 2px;
+  --radius-surface: 0px;
+}
+
+/* 直角技术标签：替代圆角胶囊 */
+.tag-tech {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-control);
+}
+
+/* 工程发丝线：替代阴影做结构分隔 */
+.rule-hair {
+  background-color: rgb(229 231 235); /* gray-200 */
+}
+
+/* 文字与背景分离的强调色，保证正文对比度 */
+.text-accent {
+  color: #15803d; /* eco-700，用于大号标题内的强调 */
+}
+
+.text-accent-strong {
+  color: #166534; /* eco-800，用于小号文字/链接，通过 WCAG AA */
+}
+
+/* 细分隔线，替代每行 border-t + border-b 的臃肿表格感 */
+.hairline {
+  background-color: rgb(229 231 235); /* gray-200 */
+}
+
+/* 动效降级：尊重用户系统偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }

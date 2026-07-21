@@ -1,93 +1,98 @@
 <template>
-  <header class="fixed top-0 left-0 right-0 z-[101] transition-all duration-300 bg-transparent py-4"
-    :class="{ 'bg-white/95 backdrop-blur-md shadow-md': isClientInitialized && isScrolled }">
-    <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center space-x-3 group">
-          <div class="relative w-10 h-10 flex items-center justify-center">
-            <img src="/images/logo.png" alt="淼泽松源" class="w-full h-full object-contain" />
-          </div>
-          <div>
-            <span class="text-xl font-bold transition-colors duration-300 group-hover:text-eco-600"
-              :class="isClientInitialized && isScrolled ? 'text-gray-900' : 'text-white'">{{ company.shortName }}</span>
-            <div class="text-xs font-medium"
-              :class="isClientInitialized && isScrolled ? 'text-gray-500' : 'text-white/80'">{{ company.subtitle }}</div>
-          </div>
-        </NuxtLink>
-
-        <!-- Desktop Navigation -->
-        <div class="hidden lg:flex items-center space-x-1">
-          <!-- 加载状态 -->
-          <div v-if="menuPending" class="flex space-x-1">
-            <div v-for="i in 5" :key="i" class="h-10 w-20 bg-gray-200 rounded-lg animate-pulse"></div>
-          </div>
-          <!-- 导航菜单项 -->
-          <template v-else>
-            <NuxtLink v-for="item in navigationItems" :key="item.name" :to="item.path"
-              class="relative px-4 py-2 font-medium transition-all duration-300 rounded-lg group" :class="[
-                $route.path === item.path
-                  ? isClientInitialized && isScrolled
-                    ? 'text-eco-600 font-semibold'
-                    : 'text-white font-semibold'
-                  : isClientInitialized && isScrolled
-                    ? 'text-gray-700 hover:text-eco-600'
-                    : 'text-white hover:text-eco-200'
-              ]">
-              {{ item.name }}
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-eco-600 transition-all duration-300 group-hover:w-8"
-                :class="{ 'w-12': $route.path === item.path, 'w-0': $route.path !== item.path }"></span>
-            </NuxtLink>
-          </template>
+  <!-- 浮动玻璃胶囊导航（high-end-visual-design §5.A：脱离顶栏，居中浮动） -->
+  <div class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[101] w-[calc(100%-2rem)] max-w-5xl">
+    <nav
+      class="flex items-center justify-between rounded-full pl-2 pr-2 lg:pr-3 py-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+      :class="headerGlassClass"
+    >
+      <!-- Logo -->
+      <NuxtLink to="/" class="flex items-center gap-2.5 pl-2 group">
+        <div class="relative w-9 h-9 flex items-center justify-center">
+          <img src="/images/logo.png" alt="淼泽松源" class="w-full h-full object-contain" />
         </div>
+        <span
+          class="text-lg font-bold transition-colors duration-300 group-hover:text-eco-600"
+          :class="isClientInitialized && isScrolled ? 'text-gray-900' : 'text-white'"
+        >{{ company.shortName }}</span>
+      </NuxtLink>
 
-
-
-        <!-- Mobile menu button -->
-        <div class="lg:hidden">
-          <button @click="toggleMobileMenu"
-            class="relative w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300" :class="isClientInitialized && isScrolled
-              ? 'text-gray-700 hover:text-eco-600 hover:bg-gray-100'
-              : 'text-white hover:text-eco-200 hover:bg-white/10'">
-            <Icon v-if="!isMobileMenuOpen" name="heroicons:bars-3" class="w-6 h-6" />
-            <Icon v-else name="heroicons:x-mark" class="w-6 h-6" />
-          </button>
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-1">
+        <!-- 加载状态 -->
+        <div v-if="menuPending" class="flex space-x-1">
+          <div v-for="i in 3" :key="i" class="h-9 w-20 rounded-full bg-gray-200/60 animate-pulse"></div>
         </div>
+        <!-- 导航菜单项 -->
+        <template v-else>
+          <NuxtLink
+            v-for="item in navigationItems"
+            :key="item.name"
+            :to="item.path"
+            class="relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300"
+            :class="navLinkClass(item.path)"
+          >
+            {{ item.name }}
+          </NuxtLink>
+        </template>
       </div>
 
-      <!-- Mobile Navigation -->
-      <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="transform scale-95 opacity-0"
-        enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-200 ease-in"
-        leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-        <div v-if="isMobileMenuOpen" class="lg:hidden py-4 border-t transition-all duration-300"
-          :class="isClientInitialized && isScrolled ? 'border-gray-100 bg-white' : 'border-white/20 bg-white/95 backdrop-blur-md'">
-          <div class="flex flex-col space-y-2">
-            <!-- 加载状态 -->
-            <div v-if="menuPending" class="space-y-2">
-              <div v-for="i in 5" :key="i" class="h-10 bg-gray-200 rounded-lg animate-pulse"></div>
-            </div>
-            <!-- 导航菜单项 -->
-            <template v-else>
-              <NuxtLink v-for="item in navigationItems" :key="item.name" :to="item.path"
-                class="px-4 py-3 font-medium rounded-lg transition-all duration-300" :class="[
-                  $route.path === item.path
-                    ? 'text-eco-600'
-                    : 'text-gray-700 hover:text-eco-600 hover:bg-eco-50'
-                ]" @click="closeMobileMenu">
-                {{ item.name }}
-              </NuxtLink>
-            </template>
-          </div>
-        </div>
-      </Transition>
+      <!-- Mobile menu button -->
+      <button
+        @click="toggleMobileMenu"
+        class="lg:hidden flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300"
+        :class="isClientInitialized && isScrolled
+          ? 'text-gray-700 hover:bg-gray-100'
+          : 'text-white hover:bg-white/10'"
+        aria-label="菜单"
+      >
+        <Icon v-if="!isMobileMenuOpen" name="heroicons:bars-3" class="w-5 h-5" />
+        <Icon v-else name="heroicons:x-mark" class="w-5 h-5" />
+      </button>
     </nav>
-  </header>
+  </div>
+
+  <!-- 移动端全屏玻璃遮罩（§5.A：大幅玻璃 + 错峰遮罩揭示） -->
+  <Transition
+    enter-active-class="transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <div v-if="isMobileMenuOpen" class="fixed inset-0 z-[100] lg:hidden">
+      <!-- 玻璃背景 -->
+      <div class="absolute inset-0 bg-white/90 backdrop-blur-3xl"></div>
+
+      <!-- 链接列表 -->
+      <div class="relative z-10 flex flex-col items-center justify-center min-h-[100dvh] gap-3 px-8">
+        <!-- 加载状态 -->
+        <div v-if="menuPending" class="space-y-4">
+          <div v-for="i in 3" :key="i" class="h-12 w-48 rounded-full bg-gray-200/60 animate-pulse"></div>
+        </div>
+        <template v-else>
+          <NuxtLink
+            v-for="(item, index) in navigationItems"
+            :key="item.name"
+            :to="item.path"
+            class="mobile-nav-link text-3xl font-bold text-gray-900 hover:text-eco-700 transition-colors duration-300"
+            :style="{ animationDelay: `${index * 80 + 100}ms` }"
+            @click="closeMobileMenu"
+          >
+            {{ item.name }}
+          </NuxtLink>
+        </template>
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <script setup>
 import { getCategoryList } from '~/api/category';
 import { useCompanyInfo } from '~/composables/useCompanyInfo.js';
+
+// 路由（供 navLinkClass 判断激活态 + 路由变化重置滚动状态）
+const route = useRoute();
 
 // 滚动状态
 const isScrolled = ref(false);
@@ -112,31 +117,68 @@ const getDefaultMenu = () => {
   const defaultMenu = [
     { name: '首页', path: '/' },
     { name: '关于我们', path: '/about' },
-    // { name: '产品列表', path: '/products' },
-    // { name: '合作伙伴', path: '/partners' },
-    // { name: '联系我们', path: '/contact' }
   ];
   return defaultMenu;
 };
 
-// 监听页面滚动
+/**
+ * 浮动胶囊玻璃态样式
+ * 顶部（未滚动）：半透明深色玻璃 + 白色发丝环（悬浮于深色 hero 上）
+ * 滚动后：高不透明白色玻璃 + 柔和漫射阴影（悬浮于浅色内容上，确保深色文字清晰可读）
+ */
+const headerGlassClass = computed(() => {
+  if (isClientInitialized.value && isScrolled.value) {
+    return 'bg-white/90 backdrop-blur-2xl ring-1 ring-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.08)]';
+  }
+  return 'bg-white/10 backdrop-blur-2xl ring-1 ring-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.3)]';
+});
+
+/**
+ * 桌面导航链接样式
+ */
+const navLinkClass = (path) => {
+  const isActive = route.path === path;
+  const isLight = isClientInitialized.value && isScrolled.value;
+
+  if (isActive) {
+    return isLight
+      ? 'bg-eco-50 text-eco-900 font-semibold'
+      : 'bg-white/15 text-white font-semibold';
+  }
+  return isLight
+    ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+    : 'text-white/80 hover:text-white hover:bg-white/10';
+};
+
+// 滚动处理器：根据当前 scrollY 同步状态
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 20;
+};
+
 onMounted(() => {
   isClientInitialized.value = true;
-  const handleScroll = () => {
-    isScrolled.value = window.scrollY > 20;
-  };
+  handleScroll();
+  window.addEventListener('scroll', handleScroll, { passive: true });
+});
 
-  window.addEventListener('scroll', handleScroll);
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 
-  onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll);
+// 路由变化时同步实际滚动位置（修复：跳转新页面时按实际 scrollY 决定 header 态，
+// 避免强制重置为透明导致白底白字闪烁；Nuxt 路由切换瞬间重置 scrollY 为 0，
+// 但浏览器滚动恢复可能在 watch 触发前完成，故立即读一次再兜底核对）
+watch(() => route.path, () => {
+  handleScroll();
+  nextTick(() => {
+    setTimeout(handleScroll, 350);
   });
 });
+
 /**
  * 获取导航菜单数据
- * 使用 useAsyncData 在 SSR 模式下获取数据
  */
-const { data: menuData, pending: menuPending, error: menuError } = await useAsyncData('navigation-menu', async () => {
+const { data: menuData, pending: menuPending } = await useAsyncData('navigation-menu', async () => {
   try {
     const data = await getCategoryList();
     return data;
@@ -151,8 +193,6 @@ const { data: menuData, pending: menuPending, error: menuError } = await useAsyn
  * 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
  */
 const navigationItems = computed(() => {
-
-
   let menuItems = null;
   if (menuData.value && menuData.value.rows && Array.isArray(menuData.value.rows)) {
     menuItems = menuData.value.rows;
@@ -161,9 +201,7 @@ const navigationItems = computed(() => {
   }
 
   if (menuItems && Array.isArray(menuItems) && menuItems.length > 0) {
-    // 映射API响应数据到导航菜单格式
     return menuItems.map(item => {
-      // 获取路径并确保以 / 开头
       let path = item.path || item.url || item.href || `/${item.id || ''}`;
       if (path && !path.startsWith('/')) {
         path = '/' + path;
@@ -181,12 +219,10 @@ const navigationItems = computed(() => {
 // 移动菜单状态
 const isMobileMenuOpen = ref(false);
 
-// 切换移动菜单
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
 };
 
-// 关闭移动菜单
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false;
 };

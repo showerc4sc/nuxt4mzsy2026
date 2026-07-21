@@ -43,7 +43,7 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-2">加载失败</h2>
         <p class="text-gray-500 mb-6">无法加载产品详情，请稍后重试</p>
         <NuxtLink to="/products"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-eco-600 to-teal-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium">
+          class="inline-flex items-center gap-2 rounded-full bg-eco-800 px-6 py-3 text-white font-semibold transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]">
           <Icon name="heroicons:arrow-left" class="w-5 h-5" />
           返回产品列表
         </NuxtLink>
@@ -53,32 +53,21 @@
     <!-- 正常内容 -->
     <div v-else class="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
       <!-- 页面标题 -->
-      <section class="relative pt-28 pb-16 text-white overflow-hidden">
-        <!-- 动态渐变背景 -->
-        <div class="absolute inset-0 bg-gradient-to-br from-eco-800 via-eco-700 to-teal-700"></div>
-        <!-- 装饰图案 -->
-        <div class="absolute inset-0 opacity-10">
-          <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
-        </div>
-        <!-- 光晕装饰 -->
-        <div class="absolute top-0 right-0 w-1/2 h-full opacity-30">
-          <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-        <div class="absolute bottom-0 left-0 w-1/2 h-full opacity-20">
-          <div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-teal-300 rounded-full blur-3xl"></div>
-        </div>
+      <section class="relative pt-28 pb-16 text-white overflow-hidden bg-gradient-to-br from-eco-800 via-eco-900 to-slate-900">
+        <!-- 细微纹理：单一 eco 径向 -->
+        <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 40%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 40%);"></div>
 
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="max-w-4xl">
+          <div class="reveal max-w-4xl">
             <!-- 产品分类标签 -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
-              <Icon name="heroicons:cube" class="w-4 h-4 text-eco-200" />
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full border border-white/15 mb-6">
+              <Icon name="heroicons:cube" class="w-4 h-4 text-eco-300" />
               <span class="text-sm font-medium">{{ product.category }}</span>
             </div>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
               {{ product.name }}
             </h1>
-            <p class="text-xl md:text-2xl text-white/80 max-w-3xl leading-relaxed">
+            <p class="text-xl md:text-2xl text-white/80 max-w-3xl font-light leading-relaxed">
               {{ product.description }}
             </p>
           </div>
@@ -92,7 +81,7 @@
           <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
               <li class="inline-flex items-center">
-                <NuxtLink to="/" class="text-gray-500 hover:text-eco-600 transition-colors flex items-center gap-1">
+                <NuxtLink to="/" class="text-gray-500 hover:text-eco-600 transition-colors duration-300 flex items-center gap-1">
                   <Icon name="heroicons:home" class="w-4 h-4" />
                   <span class="hidden sm:inline">首页</span>
                 </NuxtLink>
@@ -100,7 +89,7 @@
               <li>
                 <div class="flex items-center">
                   <Icon name="heroicons:chevron-right" class="w-4 h-4 text-gray-300" />
-                  <NuxtLink to="/products" class="ml-1 text-gray-500 hover:text-eco-600 transition-colors md:ml-2">
+                  <NuxtLink to="/products" class="ml-1 text-gray-500 hover:text-eco-600 transition-colors duration-300 md:ml-2">
                     产品列表
                   </NuxtLink>
                 </div>
@@ -108,7 +97,7 @@
               <li aria-current="page">
                 <div class="flex items-center">
                   <Icon name="heroicons:chevron-right" class="w-4 h-4 text-gray-300" />
-                  <span class="ml-1 text-eco-600 font-medium md:ml-2 truncate max-w-[150px] sm:max-w-xs">{{ product?.name || '产品详情' }}</span>
+                  <span class="ml-1 text-eco-700 font-medium md:ml-2 truncate max-w-[150px] sm:max-w-xs">{{ product?.name || '产品详情' }}</span>
                 </div>
               </li>
             </ol>
@@ -119,29 +108,27 @@
       <!-- 页面内容容器 -->
       <div class="relative z-10">
         <!-- 产品详情内容 -->
-        <section class="py-16 relative overflow-hidden">
-          <!-- 背景装饰 -->
-          <div class="absolute top-0 left-0 w-72 h-72 bg-eco-50 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-          <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-50 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
-
+        <section class="py-32 md:py-40 relative overflow-hidden">
           <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <h2 class="sr-only">产品详细信息</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-              <!-- 产品图片 -->
-              <div class="space-y-6">
+              <!-- 产品图片：Double-Bezel -->
+              <div class="reveal space-y-6">
                 <!-- 主图 -->
                 <div class="relative group">
-                  <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-100">
-                    <img :src="currentImageUrl" :alt="product.name"
-                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      onerror="this.src='https://picsum.photos/seed/mzsy-product-detail/800/800.jpg'" />
+                  <div class="bezel">
+                    <div class="bezel-inner aspect-square bg-gradient-to-br from-gray-100 to-gray-50 overflow-hidden">
+                      <img :src="currentImageUrl" :alt="product.name"
+                        class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
+                        onerror="this.src='https://picsum.photos/seed/mzsy-product-detail/800/800.jpg'" />
+                    </div>
                   </div>
                   <!-- 图片切换指示器 -->
                   <div v-if="product.images && product.images.length > 1" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                     <button v-for="(img, index) in product.images" :key="index"
                       @click="currentImageIndex = index"
-                      class="w-2 h-2 rounded-full transition-all duration-300"
-                      :class="currentImageIndex === index ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/80'">
+                      class="h-2 rounded-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                      :class="currentImageIndex === index ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/80 w-2'">
                     </button>
                   </div>
                 </div>
@@ -149,84 +136,91 @@
                 <!-- 产品图片缩略图 -->
                 <div v-if="product.images && product.images.length > 0" class="grid grid-cols-4 gap-3">
                   <div v-for="(img, index) in product.images" :key="index"
-                    class="aspect-square rounded-xl overflow-hidden cursor-pointer transition-all duration-300 ring-2"
-                    :class="currentImageIndex === index ? 'ring-eco-500 shadow-lg' : 'ring-transparent hover:ring-gray-200'"
+                    class="aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ring-2"
+                    :class="currentImageIndex === index ? 'ring-eco-500' : 'ring-transparent hover:ring-gray-200'"
                     @click="currentImageIndex = index">
                     <img :src="img" :alt="`${product.name} ${index + 1}`"
-                      class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                       onerror="this.src='https://picsum.photos/seed/mzsy-product-thumb/200/200.jpg'" />
                   </div>
                 </div>
               </div>
 
-              <!-- 产品信息 -->
-              <div class="space-y-8">
+              <!-- 产品信息：Double-Bezel -->
+              <div class="reveal reveal-delay-1 space-y-8">
                 <!-- 标题区域 -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
-                  <div class="flex items-center gap-3 mb-4">
-                    <span class="px-4 py-1.5 bg-gradient-to-r from-eco-500 to-teal-500 text-white rounded-full text-sm font-semibold shadow-md">
-                      {{ product.category }}
-                    </span>
-                    <div class="flex text-yellow-400">
-                      <Icon v-for="i in 5" :key="i" name="heroicons:star" class="w-5 h-5 fill-current" />
+                <div class="bezel">
+                  <div class="bezel-inner p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                      <span class="px-4 py-1.5 bg-eco-50 text-eco-800 rounded-full text-sm font-semibold">
+                        {{ product.category }}
+                      </span>
                     </div>
-                  </div>
 
-                  <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">{{ product.name }}</h1>
-                  <p class="text-gray-600 leading-relaxed">{{ product.description }}</p>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">{{ product.name }}</h1>
+                    <p class="text-gray-600 font-light leading-relaxed">{{ product.description }}</p>
+                  </div>
                 </div>
 
                 <!-- 产品特点 -->
-                <div v-if="product.attrList && product.attrList.length > 0" class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
-                  <div class="flex items-center gap-2 mb-5">
-                    <div class="w-10 h-10 bg-gradient-to-br from-eco-100 to-teal-100 rounded-xl flex items-center justify-center">
-                      <Icon name="heroicons:sparkles" class="w-5 h-5 text-eco-600" />
-                    </div>
-                    <h2 class="text-xl font-bold text-gray-900">产品特点</h2>
-                  </div>
-                  <div class="space-y-4">
-                    <div v-for="(attr, index) in product.attrList" :key="attr._index"
-                      class="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:bg-gray-50">
-                      <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-eco-500 to-teal-500 rounded-xl flex items-center justify-center shadow-md">
-                        <span class="text-white font-bold text-sm">{{ index + 1 }}</span>
+                <div v-if="product.attrList && product.attrList.length > 0" class="bezel">
+                  <div class="bezel-inner p-6">
+                    <div class="flex items-center gap-2 mb-5">
+                      <div class="w-10 h-10 bg-eco-50 rounded-2xl flex items-center justify-center">
+                        <Icon name="heroicons:sparkles" class="w-5 h-5 text-eco-800" />
                       </div>
-                      <div class="flex-1">
-                        <h3 class="font-bold text-gray-900 mb-1">{{ attr.attrName }}</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ attr.attrValue }}</p>
+                      <h2 class="text-xl font-bold text-gray-900">产品特点</h2>
+                    </div>
+                    <div class="space-y-4">
+                      <div v-for="(attr, index) in product.attrList" :key="attr._index"
+                        class="flex items-start gap-4 p-4 rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-gray-50">
+                        <div class="flex-shrink-0 w-10 h-10 bg-eco-800 rounded-2xl flex items-center justify-center">
+                          <span class="text-white font-bold font-mono text-sm">{{ index + 1 }}</span>
+                        </div>
+                        <div class="flex-1">
+                          <h3 class="font-bold text-gray-900 mb-1">{{ attr.attrName }}</h3>
+                          <p class="text-gray-600 text-sm font-light leading-relaxed">{{ attr.attrValue }}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- 应用场景 -->
-                <div v-if="product.keywords && product.keywords.length > 0" class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
-                  <div class="flex items-center gap-2 mb-5">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
-                      <Icon name="heroicons:map-pin" class="w-5 h-5 text-blue-600" />
+                <div v-if="product.keywords && product.keywords.length > 0" class="bezel">
+                  <div class="bezel-inner p-6">
+                    <div class="flex items-center gap-2 mb-5">
+                      <div class="w-10 h-10 bg-eco-50 rounded-2xl flex items-center justify-center">
+                        <Icon name="heroicons:map-pin" class="w-5 h-5 text-eco-800" />
+                      </div>
+                      <h2 class="text-xl font-bold text-gray-900">应用场景</h2>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-900">应用场景</h2>
-                  </div>
-                  <div class="flex flex-wrap gap-2">
-                    <span v-for="keyword in product.keywords" :key="keyword"
-                      class="px-4 py-2 bg-gradient-to-r from-eco-50 to-teal-50 text-eco-700 rounded-xl text-sm font-medium border border-eco-100 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-                      {{ keyword }}
-                    </span>
+                    <div class="flex flex-wrap gap-2">
+                      <span v-for="keyword in product.keywords" :key="keyword"
+                        class="px-4 py-2 bg-eco-50 text-eco-800 rounded-full text-sm font-medium border border-eco-100 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5">
+                        {{ keyword }}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 联系咨询 -->
-                <div class="bg-gradient-to-br from-eco-600 to-teal-600 rounded-2xl p-6 text-white shadow-xl">
-                  <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div>
-                      <h3 class="text-lg font-bold mb-1">需要了解更多？</h3>
-                      <p class="text-white/80 text-sm">我们的专业团队随时为您服务</p>
+                <!-- 联系咨询：Double-Bezel 暗色 + Button-in-Button -->
+                <div class="bezel-dark">
+                  <div class="bezel-dark-inner p-6">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                      <div>
+                        <h3 class="text-lg font-bold mb-1 text-white">需要了解更多？</h3>
+                        <p class="text-white/80 text-sm font-light">我们的专业团队随时为您服务</p>
+                      </div>
+                      <NuxtLink to="/contact"
+                        class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-2.5 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]">
+                        <Icon name="heroicons:chat-bubble-left-right" class="w-5 h-5" />
+                        <span>咨询产品</span>
+                        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+                          <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+                        </span>
+                      </NuxtLink>
                     </div>
-                    <NuxtLink to="/contact"
-                      class="group flex items-center gap-2 px-6 py-3 bg-white text-eco-600 font-bold rounded-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
-                      <Icon name="heroicons:chat-bubble-left-right" class="w-5 h-5" />
-                      <span>咨询产品</span>
-                      <Icon name="heroicons:arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </NuxtLink>
                   </div>
                 </div>
               </div>
@@ -234,27 +228,18 @@
           </div>
         </section>
 
-        <!-- 产品参数 -->
-        <section v-if="product.content" class="py-20 relative overflow-hidden">
-          <!-- 背景 -->
-          <div class="absolute inset-0 bg-gradient-to-b from-gray-50 to-white"></div>
-          <div class="absolute top-0 left-1/4 w-96 h-96 bg-eco-100/50 rounded-full blur-3xl"></div>
-          <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-100/50 rounded-full blur-3xl"></div>
-
+        <!-- 产品参数：Double-Bezel -->
+        <section v-if="product.content" class="py-32 md:py-40 relative overflow-hidden bg-gray-50">
           <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-              <div class="inline-flex items-center gap-2 px-4 py-2 bg-eco-100 rounded-full mb-4">
-                <Icon name="heroicons:document-text" class="w-4 h-4 text-eco-600" />
-                <span class="text-sm font-semibold text-eco-700">详细参数</span>
-              </div>
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">产品参数</h2>
-              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            <div class="reveal mb-12 max-w-3xl">
+              <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">产品参数</h2>
+              <p class="text-lg text-gray-600 font-light leading-relaxed">
                 详细的技术参数和性能指标，助您全面了解产品
               </p>
             </div>
 
-            <div class="bg-white rounded-3xl shadow-xl ring-1 ring-gray-100 overflow-hidden">
-              <div class="p-8 md:p-12">
+            <div class="reveal reveal-delay-1 bezel">
+              <div class="bezel-inner p-8 md:p-12">
                 <div class="prose prose-lg max-w-none product-content" v-html="product.content"></div>
               </div>
             </div>
@@ -267,6 +252,9 @@
 
 <script setup>
 import { getArticleById } from '~/api/article';
+
+// 滚动入场动效
+useReveal();
 
 /**
  * 产品详情页面
@@ -403,7 +391,7 @@ useHead({
   top: 0.6rem;
   width: 6px;
   height: 6px;
-  background: linear-gradient(135deg, #10b981, #14b8a6);
+  background: #16a34a;
   border-radius: 50%;
 }
 

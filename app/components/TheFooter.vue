@@ -39,9 +39,9 @@
             <li v-for="item in navigationItems" :key="item.name">
               <NuxtLink
                 :to="item.path"
-                class="text-gray-300 hover:text-white transition-all duration-300 flex items-center group"
+                class="text-gray-300 hover:text-white transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex items-center group"
               >
-                <Icon name="heroicons:chevron-right" class="w-4 h-4 mr-2 text-eco-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <Icon name="heroicons:chevron-right" class="w-4 h-4 mr-2 text-eco-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 {{ item.name }}
               </NuxtLink>
             </li>
@@ -56,20 +56,20 @@
           </h3>
           <ul class="space-y-4 text-gray-300">
             <li class="flex items-start group">
-              <div class="w-10 h-10 bg-gray-800 group-hover:bg-eco-600 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 flex-shrink-0">
-                <Icon name="heroicons:map-pin" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" />
+              <div class="w-10 h-10 bg-gray-800 group-hover:bg-eco-600 rounded-2xl flex items-center justify-center mr-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex-shrink-0 group-hover:-translate-y-0.5">
+                <Icon name="heroicons:map-pin" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-500" />
               </div>
               <span class="pt-2.5">{{ contactData.address }}</span>
             </li>
             <li class="flex items-center group">
-              <div class="w-10 h-10 bg-gray-800 group-hover:bg-eco-600 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 flex-shrink-0">
-                <Icon name="heroicons:phone" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" />
+              <div class="w-10 h-10 bg-gray-800 group-hover:bg-eco-600 rounded-2xl flex items-center justify-center mr-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex-shrink-0 group-hover:-translate-y-0.5">
+                <Icon name="heroicons:phone" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-500" />
               </div>
               <span>{{ contactData.phone }}</span>
             </li>
             <li class="flex items-center group">
-              <div class="w-10 h-10 bg-gray-800 group-hover:bg-eco-600 rounded-lg flex items-center justify-center mr-3 transition-all duration-300 flex-shrink-0">
-                <Icon name="heroicons:envelope" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" />
+              <div class="w-10 h-10 bg-gray-800 group-hover:bg-eco-600 rounded-2xl flex items-center justify-center mr-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex-shrink-0 group-hover:-translate-y-0.5">
+                <Icon name="heroicons:envelope" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-500" />
               </div>
               <span>{{ contactData.email }}</span>
             </li>

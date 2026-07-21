@@ -1,24 +1,26 @@
 <template>
-  <section v-if="!pending && !error" class="py-20 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
+  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
     <!-- 背景装饰 -->
     <div class="absolute top-0 right-0 w-96 h-96 bg-eco-100/30 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-    
+
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-4xl mx-auto">
         <!-- 标题区域 -->
-        <div class="flex items-center mb-10">
-          <div class="w-14 h-14 bg-gradient-to-br from-eco-500 to-eco-600 rounded-2xl flex items-center justify-center mr-5 shadow-lg shadow-eco-500/20">
+        <div class="reveal flex items-center mb-12">
+          <div class="w-14 h-14 bg-eco-800 rounded-2xl flex items-center justify-center mr-5 shadow-[0_8px_24px_rgba(22,101,52,0.2)]">
             <Icon name="heroicons:building-office-2" class="w-7 h-7 text-white" />
           </div>
           <div>
-            <span class="text-eco-600 text-sm font-semibold uppercase tracking-wider">About Us</span>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ title }}</h2>
+            <span class="text-eco-700 text-sm font-semibold uppercase tracking-wider">About Us</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">{{ title }}</h2>
           </div>
         </div>
-        
-        <!-- 内容区域 -->
-        <div class="bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-gray-200/50 border border-gray-100">
-          <div class="prose prose-lg prose-eco text-gray-600 leading-relaxed max-w-none" v-html="content"></div>
+
+        <!-- 内容区域：Double-Bezel -->
+        <div class="reveal reveal-delay-1 bezel">
+          <div class="bezel-inner p-8 md:p-10">
+            <div class="prose prose-lg prose-eco text-gray-600 leading-relaxed max-w-none" v-html="content"></div>
+          </div>
         </div>
       </div>
     </div>

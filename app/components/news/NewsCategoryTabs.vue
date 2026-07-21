@@ -11,7 +11,7 @@
         <!-- 全部选项 -->
         <button
           @click="selectCategory('all')"
-          class="relative px-4 py-2 font-medium transition-all duration-300"
+          class="relative px-4 py-2 font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
           :class="modelValue === 'all' ? 'text-white font-bold' : 'text-white/70 hover:text-white'"
         >
           全部
@@ -26,7 +26,7 @@
           v-for="category in categories"
           :key="category._id"
           @click="selectCategory(category._id)"
-          class="relative px-4 py-2 font-medium transition-all duration-300"
+          class="relative px-4 py-2 font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
           :class="modelValue === category._id ? 'text-white font-bold' : 'text-white/70 hover:text-white'"
         >
           {{ category.title }}

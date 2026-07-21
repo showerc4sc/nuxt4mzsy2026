@@ -1,14 +1,21 @@
 <template>
-  <section v-if="!pending && !error" class="py-16 bg-gray-50">
+  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gray-50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h3 class="text-xl font-bold text-gray-900 text-center mb-10">{{ title }}</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        <div v-for="(item, index) in cooperationFields" :key="index" class="text-center">
-          <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" :class="getIconBgColor(index)">
-            <Icon :name="item.icon" class="w-7 h-7" :class="getIconTextColor(index)" />
+      <div class="reveal mb-12 max-w-3xl">
+        <h3 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">{{ title }}</h3>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div v-for="(item, index) in cooperationFields" :key="index"
+          class="reveal bezel group"
+          :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+        >
+          <div class="bezel-inner p-8 text-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 bg-eco-50 text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
+              <Icon :name="item.icon" class="w-7 h-7" />
+            </div>
+            <h4 class="font-bold text-gray-900 mb-2 text-lg">{{ item.name }}</h4>
+            <p class="text-gray-600 text-sm font-light leading-relaxed">{{ item.description }}</p>
           </div>
-          <h4 class="font-semibold text-gray-900 mb-2">{{ item.name }}</h4>
-          <p class="text-gray-600 text-sm">{{ item.description }}</p>
         </div>
       </div>
     </div>
@@ -49,6 +56,9 @@
  */
 
 import { getArticleBySlug } from '~/api/article';
+
+// 滚动入场动效
+useReveal();
 
 /**
  * 定义组件属性
@@ -97,26 +107,6 @@ const cooperationFields = computed(() => {
     icon: item.attrEx || 'heroicons:cube'
   }));
 });
-
-/**
- * 获取图标背景颜色
- * @param {Number} index - 索引
- * @returns {String} 背景颜色类名
- */
-const getIconBgColor = (index) => {
-  const colors = ['bg-eco-50', 'bg-blue-50', 'bg-amber-50'];
-  return colors[index % colors.length];
-};
-
-/**
- * 获取图标文字颜色
- * @param {Number} index - 索引
- * @returns {String} 文字颜色类名
- */
-const getIconTextColor = (index) => {
-  const colors = ['text-eco-600', 'text-blue-600', 'text-amber-600'];
-  return colors[index % colors.length];
-};
 </script>
 
 <style scoped>

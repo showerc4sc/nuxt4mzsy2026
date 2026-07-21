@@ -7,88 +7,82 @@
     <div class="relative z-10">
 
     <!-- 联系信息与表单 -->
-    <section class="py-16">
+    <section class="py-32 md:py-40">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <!-- 联系信息 -->
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">联系信息</h2>
-            
-            <div class="space-y-6">
-              <div class="flex items-start">
-                <div class="flex-shrink-0 w-12 h-12 bg-eco-100 rounded-lg flex items-center justify-center">
-                  <Icon name="heroicons:map-pin" class="w-6 h-6 text-eco-600" />
-                </div>
-                <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-1">公司地址</h3>
-                  <p class="text-gray-600">{{ companyAddress }}</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start">
-                <div class="flex-shrink-0 w-12 h-12 bg-eco-100 rounded-lg flex items-center justify-center">
-                  <Icon name="heroicons:phone" class="w-6 h-6 text-eco-600" />
-                </div>
-                <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-1">联系电话</h3>
-                  <p class="text-gray-600">{{ companyTel }}</p>
+          <!-- 联系信息：Double-Bezel 卡片 -->
+          <div class="reveal">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-10">联系信息</h2>
+
+            <div class="space-y-4">
+              <div class="bezel group">
+                <div class="bezel-inner flex items-start p-5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+                  <div class="flex-shrink-0 w-11 h-11 bg-eco-50 rounded-2xl flex items-center justify-center text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
+                    <Icon name="heroicons:map-pin" class="w-5 h-5" />
+                  </div>
+                  <div class="ml-4 min-w-0 flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">公司地址</h3>
+                    <p class="text-gray-600 font-light">{{ companyAddress }}</p>
+                  </div>
                 </div>
               </div>
-              
-              <div class="flex items-start">
-                <div class="flex-shrink-0 w-12 h-12 bg-eco-100 rounded-lg flex items-center justify-center">
-                  <Icon name="heroicons:envelope" class="w-6 h-6 text-eco-600" />
-                </div>
-                <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-1">电子邮箱</h3>
-                  <p class="text-gray-600">{{ companyEmail }}</p>
+
+              <div class="bezel group">
+                <div class="bezel-inner flex items-start p-5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+                  <div class="flex-shrink-0 w-11 h-11 bg-eco-50 rounded-2xl flex items-center justify-center text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
+                    <Icon name="heroicons:phone" class="w-5 h-5" />
+                  </div>
+                  <div class="ml-4 min-w-0 flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">联系电话</h3>
+                    <p class="text-gray-600 font-mono tabular-nums">{{ companyTel }}</p>
+                  </div>
                 </div>
               </div>
-              
-              <div class="flex items-start">
-                <div class="flex-shrink-0 w-12 h-12 bg-eco-100 rounded-lg flex items-center justify-center">
-                  <Icon name="heroicons:clock" class="w-6 h-6 text-eco-600" />
+
+              <div class="bezel group">
+                <div class="bezel-inner flex items-start p-5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+                  <div class="flex-shrink-0 w-11 h-11 bg-eco-50 rounded-2xl flex items-center justify-center text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
+                    <Icon name="heroicons:envelope" class="w-5 h-5" />
+                  </div>
+                  <div class="ml-4 min-w-0 flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">电子邮箱</h3>
+                    <p class="text-gray-600 font-light break-all">{{ companyEmail }}</p>
+                  </div>
                 </div>
-                <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-1">工作时间</h3>
-                  <p class="text-gray-600">{{ workTimes }}</p>
+              </div>
+
+              <div class="bezel group">
+                <div class="bezel-inner flex items-start p-5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+                  <div class="flex-shrink-0 w-11 h-11 bg-eco-50 rounded-2xl flex items-center justify-center text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
+                    <Icon name="heroicons:clock" class="w-5 h-5" />
+                  </div>
+                  <div class="ml-4 min-w-0 flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">工作时间</h3>
+                    <p class="text-gray-600 font-light">{{ workTimes }}</p>
+                  </div>
                 </div>
               </div>
             </div>
-            
-            <!-- 社交媒体 -->
-            <!-- <div class="mt-10">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">关注我们</h3>
-              <div class="flex space-x-4">
-                <a href="#" class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-eco-100 transition-colors duration-200">
-                  <Icon name="heroicons:chat-bubble-left-right" class="w-5 h-5 text-gray-600 hover:text-eco-600" />
-                </a>
-                <a href="#" class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-eco-100 transition-colors duration-200">
-                  <Icon name="heroicons:link" class="w-5 h-5 text-gray-600 hover:text-eco-600" />
-                </a>
-                <a href="#" class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-eco-100 transition-colors duration-200">
-                  <Icon name="heroicons:share" class="w-5 h-5 text-gray-600 hover:text-eco-600" />
-                </a>
-              </div>
-            </div> -->
           </div>
-          
-          <!-- 联系表单 -->
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">发送消息</h2>
-            
+
+          <!-- 联系表单：Double-Bezel -->
+          <div class="reveal reveal-delay-1">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-10">发送消息</h2>
+
             <form @submit.prevent="submitForm" class="space-y-6">
               <!-- 产品咨询（如果有） -->
-              <div v-if="route.query.product" class="p-4 bg-eco-50 rounded-lg">
-                <p class="text-eco-800">
-                  <span class="font-medium">咨询产品：</span>{{ route.query.product }}
-                  <span v-if="route.query.category" class="text-eco-600">({{ route.query.category }})</span>
-                </p>
+              <div v-if="route.query.product" class="bezel">
+                <div class="bezel-inner p-4 bg-eco-50">
+                  <p class="text-eco-800">
+                    <span class="font-medium">咨询产品：</span>{{ route.query.product }}
+                    <span v-if="route.query.category" class="text-eco-600">({{ route.query.category }})</span>
+                  </p>
+                </div>
               </div>
-              
+
               <!-- 姓名 -->
               <div>
-                <label for="name" class="block text-sm font-semibold text-gray-700 mb-2 font-display">
+                <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
                   姓名 <span class="text-red-500">*</span>
                 </label>
                 <input
@@ -96,28 +90,28 @@
                   v-model="form.name"
                   type="text"
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-eco-500/50 focus:border-eco-500 bg-white/80 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md font-sans"
+                  class="w-full px-5 py-3 border border-gray-200 rounded-full bg-white focus:ring-2 focus:ring-eco-400 focus:border-eco-400 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                   placeholder="请输入您的姓名"
                 />
               </div>
-              
+
               <!-- 公司 -->
               <div>
-                <label for="company" class="block text-sm font-semibold text-gray-700 mb-2 font-display">
+                <label for="company" class="block text-sm font-semibold text-gray-700 mb-2">
                   公司名称
                 </label>
                 <input
                   id="company"
                   v-model="form.company"
                   type="text"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-eco-500/50 focus:border-eco-500 bg-white/80 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md font-sans"
+                  class="w-full px-5 py-3 border border-gray-200 rounded-full bg-white focus:ring-2 focus:ring-eco-400 focus:border-eco-400 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                   placeholder="请输入您的公司名称"
                 />
               </div>
-              
+
               <!-- 电话 -->
               <div>
-                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2 font-display">
+                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
                   联系电话 <span class="text-red-500">*</span>
                 </label>
                 <input
@@ -125,14 +119,14 @@
                   v-model="form.phone"
                   type="tel"
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-eco-500/50 focus:border-eco-500 bg-white/80 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md font-sans"
+                  class="w-full px-5 py-3 border border-gray-200 rounded-full bg-white focus:ring-2 focus:ring-eco-400 focus:border-eco-400 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                   placeholder="请输入您的联系电话"
                 />
               </div>
-              
+
               <!-- 邮箱 -->
               <div>
-                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2 font-display">
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
                   电子邮箱 <span class="text-red-500">*</span>
                 </label>
                 <input
@@ -140,21 +134,21 @@
                   v-model="form.email"
                   type="email"
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-eco-500/50 focus:border-eco-500 bg-white/80 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md font-sans"
+                  class="w-full px-5 py-3 border border-gray-200 rounded-full bg-white focus:ring-2 focus:ring-eco-400 focus:border-eco-400 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                   placeholder="请输入您的电子邮箱"
                 />
               </div>
-              
+
               <!-- 咨询类型 -->
               <div>
-                <label for="type" class="block text-sm font-semibold text-gray-700 mb-2 font-display">
+                <label for="type" class="block text-sm font-semibold text-gray-700 mb-2">
                   咨询类型 <span class="text-red-500">*</span>
                 </label>
                 <select
                   id="type"
                   v-model="form.type"
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-eco-500/50 focus:border-eco-500 bg-white/80 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md font-sans"
+                  class="w-full px-5 py-3 border border-gray-200 rounded-full bg-white focus:ring-2 focus:ring-eco-400 focus:border-eco-400 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                 >
                   <option value="">请选择咨询类型</option>
                   <option value="product">产品咨询</option>
@@ -163,10 +157,10 @@
                   <option value="other">其他</option>
                 </select>
               </div>
-              
+
               <!-- 留言 -->
               <div>
-                <label for="message" class="block text-sm font-semibold text-gray-700 mb-2 font-display">
+                <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
                   留言内容 <span class="text-red-500">*</span>
                 </label>
                 <textarea
@@ -174,29 +168,33 @@
                   v-model="form.message"
                   rows="4"
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-eco-500/50 focus:border-eco-500 bg-white/80 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md font-sans resize-none"
+                  class="w-full px-5 py-3 border border-gray-200 rounded-2xl bg-white focus:ring-2 focus:ring-eco-400 focus:border-eco-400 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] resize-none"
                   placeholder="请输入您的留言内容"
                 ></textarea>
               </div>
-              
-              <!-- 提交按钮 -->
+
+              <!-- 提交按钮：Button-in-Button -->
               <div>
                 <button
                   type="submit"
                   :disabled="isSubmitting"
-                  class="group relative w-full px-6 py-4 bg-gradient-to-r from-eco-600 to-eco-500 text-white font-semibold rounded-xl hover:from-eco-700 hover:to-eco-600 focus:outline-none focus:ring-2 focus:ring-eco-500 focus:ring-offset-2 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-display"
+                  class="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-3 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-eco-400 focus-visible:ring-offset-2 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed"
                 >
-                  <span class="relative z-10">{{ isSubmitting ? '提交中...' : '发送消息' }}</span>
-                  <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <span>{{ isSubmitting ? '提交中...' : '发送消息' }}</span>
+                  <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+                    <Icon name="heroicons:paper-airplane" class="w-4 h-4" />
+                  </span>
                 </button>
               </div>
             </form>
-            
+
             <!-- 提交成功提示 -->
-            <div v-if="showSuccessMessage" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div class="flex items-center">
-                <Icon name="heroicons:check-circle" class="w-5 h-5 text-green-600 mr-2" />
-                <p class="text-green-800">感谢您的留言！我们会尽快与您联系。</p>
+            <div v-if="showSuccessMessage" class="mt-6 bezel">
+              <div class="bezel-inner p-4 bg-eco-50">
+                <div class="flex items-center">
+                  <Icon name="heroicons:check-circle" class="w-5 h-5 text-eco-700 mr-2" />
+                  <p class="text-eco-800">感谢您的留言！我们会尽快与您联系。</p>
+                </div>
               </div>
             </div>
           </div>
@@ -204,14 +202,18 @@
       </div>
     </section>
 
-    <!-- 地图区域 -->
-    <section class="py-16 bg-gray-50">
+    <!-- 地图区域：Double-Bezel -->
+    <section class="py-32 md:py-40 bg-gray-50">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">公司位置</h2>
-        
-        <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-          <!-- 高德地图容器 -->
-          <div ref="mapContainer" class="w-full h-full"></div>
+        <div class="reveal mb-10 max-w-3xl">
+          <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">公司位置</h2>
+        </div>
+
+        <div class="reveal reveal-delay-1 bezel">
+          <div class="bezel-inner aspect-video bg-gray-200 overflow-hidden">
+            <!-- 高德地图容器 -->
+            <div ref="mapContainer" class="w-full h-full"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -227,6 +229,9 @@ useHead({
     { name: 'description', content: '联系淼泽松源，了解更多关于新能源产品和解决方案的信息。' }
   ]
 });
+
+// 滚动入场动效
+useReveal();
 
 // 获取路由参数
 const route = useRoute();
