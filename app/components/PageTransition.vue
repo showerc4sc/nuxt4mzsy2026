@@ -21,139 +21,88 @@ import { useMobileOptimization } from '~/composables/useMobileOptimization.js'
 // 获取移动设备优化函数
 const { isMobile, isTablet, getAnimationConfig } = useMobileOptimization()
 
-// 页面过渡事件处理
+// 页面过渡事件处理：仅 transform/opacity，无 filter blur（性能守卫）
 const onBeforeEnter = (el) => {
-  // 根据设备类型设置不同的过渡效果
-  if (isMobile.value) {
-    // 移动设备使用简单的淡入效果
-    el.style.opacity = '0'
-    el.style.transform = 'translateY(20px)'
-  } else {
-    // 桌面设备使用更复杂的效果
-    el.style.opacity = '0'
-    el.style.transform = 'translateY(40px) scale(0.98)'
-    el.style.filter = 'blur(2px)'
-  }
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
 }
 
 const onEnter = (el, done) => {
-  // 获取动画配置
-  const config = getAnimationConfig({ duration: 600 })
-  
-  // 使用requestAnimationFrame确保样式应用
+  const config = getAnimationConfig({ duration: 400 });
+
   requestAnimationFrame(() => {
-    // 设置过渡样式
-    el.style.transition = `all ${config.duration}ms ${config.easing}`
-    
-    // 应用最终状态
-    el.style.opacity = '1'
-    
-    if (isMobile.value) {
-      // 移动设备使用简单的变换
-      el.style.transform = 'translateY(0)'
-    } else {
-      // 桌面设备使用更复杂的变换
-      el.style.transform = 'translateY(0) scale(1)'
-      el.style.filter = 'blur(0)'
-    }
-    
-    // 动画完成后调用done
+    el.style.transition = `transform ${config.duration}ms cubic-bezier(0.32, 0.72, 0, 1), opacity ${config.duration}ms cubic-bezier(0.32, 0.72, 0, 1)`;
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+
     setTimeout(() => {
-      done()
-    }, config.duration)
-  })
+      done();
+    }, config.duration);
+  });
 }
 
 const onAfterEnter = (el) => {
-  // 清理样式
-  el.style.transition = ''
-  el.style.transform = ''
-  el.style.filter = ''
+  el.style.transition = '';
+  el.style.transform = '';
 }
 
 const onBeforeLeave = (el) => {
-  // 根据设备类型设置不同的离开效果
-  if (isMobile.value) {
-    // 移动设备使用简单的淡出效果
-    el.style.opacity = '1'
-    el.style.transform = 'translateY(0)'
-  } else {
-    // 桌面设备使用更复杂的效果
-    el.style.opacity = '1'
-    el.style.transform = 'translateY(0) scale(1)'
-    el.style.filter = 'blur(0)'
-  }
+  el.style.opacity = '1';
+  el.style.transform = 'translateY(0)';
 }
 
 const onLeave = (el, done) => {
-  // 获取动画配置
-  const config = getAnimationConfig({ duration: 500 })
-  
-  // 设置过渡样式
-  el.style.transition = `all ${config.duration}ms ${config.easing}`
-  
-  // 应用离开状态
-  el.style.opacity = '0'
-  
-  if (isMobile.value) {
-    // 移动设备使用简单的变换
-    el.style.transform = 'translateY(-20px)'
-  } else {
-    // 桌面设备使用更复杂的变换
-    el.style.transform = 'translateY(-40px) scale(1.02)'
-    el.style.filter = 'blur(1px)'
-  }
-  
-  // 动画完成后调用done
+  const config = getAnimationConfig({ duration: 350 });
+
+  el.style.transition = `transform ${config.duration}ms cubic-bezier(0.32, 0.72, 0, 1), opacity ${config.duration}ms cubic-bezier(0.32, 0.72, 0, 1)`;
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(-20px)';
+
   setTimeout(() => {
-    done()
-  }, config.duration)
+    done();
+  }, config.duration);
 }
 
 const onAfterLeave = (el) => {
-  // 清理样式
-  el.style.transition = ''
-  el.style.transform = ''
-  el.style.filter = ''
+  el.style.transition = '';
+  el.style.transform = '';
 }
 </script>
 
 <style scoped>
-/* 页面过渡动画 */
+/* 页面过渡动画：仅 transform + opacity（性能守卫），流体曲线 */
 .page-enter-active,
 .page-leave-active {
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .page-enter-from {
   opacity: 0;
-  transform: translateY(40px) scale(0.98);
-  filter: blur(2px);
+  transform: translateY(20px);
 }
 
 .page-leave-to {
   opacity: 0;
-  transform: translateY(-40px) scale(1.02);
-  filter: blur(1px);
+  transform: translateY(-20px);
 }
 
 /* 移动设备优化 */
 @media (max-width: 768px) {
   .page-enter-active,
   .page-leave-active {
-    transition: all 0.4s ease-out;
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1);
   }
-  
+
   .page-enter-from {
     opacity: 0;
-    transform: translateY(20px);
-    filter: none;
+    transform: translateY(12px);
   }
-  
+
   .page-leave-to {
     opacity: 0;
-    transform: translateY(-20px);
-    filter: none;
+    transform: translateY(-12px);
   }
 }
 
@@ -161,19 +110,18 @@ const onAfterLeave = (el) => {
 @media (min-width: 769px) and (max-width: 1024px) {
   .page-enter-active,
   .page-leave-active {
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   }
-  
+
   .page-enter-from {
     opacity: 0;
-    transform: translateY(30px) scale(0.99);
-    filter: blur(1px);
+    transform: translateY(16px);
   }
-  
+
   .page-leave-to {
     opacity: 0;
-    transform: translateY(-30px) scale(1.01);
-    filter: blur(0.5px);
+    transform: translateY(-16px);
   }
 }
 </style>

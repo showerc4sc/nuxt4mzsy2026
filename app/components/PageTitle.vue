@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!pending && !error" class="relative pt-40 pb-24 text-white overflow-hidden" :style="{ backgroundImage: `url('${backgroundImage}')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }">
+  <section v-if="!pending && !error" class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden" :style="{ backgroundImage: `url('${backgroundImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }">
     <!-- 深色遮罩层 -->
     <div class="absolute inset-0 bg-gradient-to-br from-eco-900/85 to-primary-900/80"></div>
     <!-- 装饰性光晕 -->
@@ -8,15 +8,17 @@
       <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-500 rounded-full filter blur-3xl"></div>
     </div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <h1 class="text-4xl md:text-5xl font-bold mb-6">{{ title }}</h1>
-      <p class="text-xl opacity-90 max-w-3xl">
-        {{ subtitle }}
-      </p>
+      <div class="reveal max-w-4xl">
+        <h1 class="text-5xl md:text-6xl font-bold tracking-tight mb-6">{{ title }}</h1>
+        <p class="text-xl opacity-90 max-w-3xl font-light leading-relaxed">
+          {{ subtitle }}
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- 加载状态 -->
-  <section v-else-if="pending" class="relative pt-40 pb-24 text-white overflow-hidden bg-gradient-to-br from-eco-900/85 to-primary-900/80">
+  <section v-else-if="pending" class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden bg-gradient-to-br from-eco-900/85 to-primary-900/80">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="animate-pulse">
         <div class="h-12 bg-white/20 rounded w-64 mb-6"></div>
@@ -26,7 +28,7 @@
   </section>
 
   <!-- 错误状态 -->
-  <section v-else class="relative pt-40 pb-24 text-white overflow-hidden bg-gradient-to-br from-eco-900/85 to-primary-900/80">
+  <section v-else class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden bg-gradient-to-br from-eco-900/85 to-primary-900/80">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center">
         <Icon name="heroicons:exclamation-triangle" class="w-12 h-12 mx-auto mb-4 text-yellow-400" />
@@ -44,6 +46,9 @@
  */
 
 import { getCategoryBySlug } from '~/api/category';
+
+// 滚动入场动效
+useReveal();
 
 /**
  * 定义组件属性

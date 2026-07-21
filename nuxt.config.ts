@@ -21,6 +21,10 @@ export default defineNuxtConfig({
           href: "https://fonts.gstatic.com",
           crossorigin: true,
         },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
+        },
       ],
       // 添加高德地图脚本
       script: [

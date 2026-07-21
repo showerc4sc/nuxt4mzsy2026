@@ -1,37 +1,41 @@
 <template>
-  <section v-if="!pending && !error" class="py-20 bg-gray-50 relative overflow-hidden">
+  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gray-50 relative overflow-hidden">
     <!-- 背景装饰 -->
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-100/30 rounded-full filter blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-    
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-eco-100/30 rounded-full filter blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-5xl mx-auto">
         <!-- 标题区域 -->
-        <div class="flex items-center mb-10">
-          <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-5 shadow-lg shadow-blue-500/20">
+        <div class="reveal flex items-center mb-12">
+          <div class="w-14 h-14 bg-eco-800 rounded-2xl flex items-center justify-center mr-5 shadow-[0_8px_24px_rgba(22,101,52,0.2)]">
             <Icon name="heroicons:clipboard-document-list" class="w-7 h-7 text-white" />
           </div>
           <div>
-            <span class="text-blue-600 text-sm font-semibold uppercase tracking-wider">Business Scope</span>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ title }}</h2>
+            <span class="text-eco-700 text-sm font-semibold uppercase tracking-wider">Business Scope</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">{{ title }}</h2>
           </div>
         </div>
-        
-        <!-- 卡片网格 -->
+
+        <!-- 卡片网格：Double-Bezel -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div v-for="(item, index) in businessScopeItems" :key="index" 
-            class="group bg-white p-6 rounded-2xl shadow-md shadow-gray-200/50 border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300">
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-500 group-hover:scale-110 transition-all duration-300">
-                <Icon :name="item.icon" class="w-6 h-6 text-blue-500 group-hover:text-white transition-colors" />
-              </div>
-              <div class="flex-1">
-                <h3 class="text-lg font-bold text-gray-900 mb-3">{{ item.name }}</h3>
-                <ul class="space-y-2">
-                  <li v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="flex items-start text-gray-600 text-sm">
-                    <Icon name="heroicons:check-badge" class="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>{{ tag }}</span>
-                  </li>
-                </ul>
+          <div v-for="(item, index) in businessScopeItems" :key="index"
+            class="reveal bezel group"
+            :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+          >
+            <div class="bezel-inner p-6 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
+              <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 bg-eco-50 rounded-2xl flex items-center justify-center flex-shrink-0 transition-colors duration-500 group-hover:bg-eco-800 group-hover:scale-105">
+                  <Icon :name="item.icon" class="w-6 h-6 text-eco-800 group-hover:text-white transition-colors duration-500" />
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-bold text-gray-900 mb-3">{{ item.name }}</h3>
+                  <ul class="space-y-2">
+                    <li v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="flex items-start text-gray-600 text-sm">
+                      <Icon name="heroicons:check-badge" class="w-4 h-4 text-eco-600 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>{{ tag }}</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

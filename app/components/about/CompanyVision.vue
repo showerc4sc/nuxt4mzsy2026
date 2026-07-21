@@ -1,48 +1,41 @@
 <template>
-  <section v-if="!pending && !error" class="py-20 relative overflow-hidden">
-    <!-- 背景图片层 - 不使用 fixed 定位 -->
-    <div class="absolute inset-0 z-0">
-      <div class="absolute inset-0 bg-cover bg-center" :style="{ backgroundImage: `url('${backgroundImage}')` }"></div>
-    </div>
-    
-    <!-- 深色遮罩层 -->
-    <div class="absolute inset-0 bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-eco-900/85 z-[1]"></div>
-    
-    <!-- 装饰光效 -->
-    <div class="absolute inset-0 z-[2] opacity-20 pointer-events-none">
-      <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-eco-500/30 rounded-full filter blur-3xl"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/30 rounded-full filter blur-3xl"></div>
-    </div>
-    
+  <section v-if="!pending && !error" class="py-32 md:py-40 relative overflow-hidden bg-gradient-to-br from-eco-800 via-eco-900 to-slate-900">
+    <!-- 细微纹理：单一 eco 径向 -->
+    <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 40%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 40%);"></div>
+
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-5xl mx-auto">
         <!-- 标题区域 -->
-        <div class="flex items-center mb-10">
-          <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mr-5 shadow-lg shadow-yellow-500/20">
+        <div class="reveal flex items-center mb-12">
+          <div class="w-14 h-14 bg-eco-800 rounded-2xl flex items-center justify-center mr-5 shadow-[0_8px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
             <Icon name="heroicons:light-bulb" class="w-7 h-7 text-white" />
           </div>
           <div>
-            <span class="text-yellow-400 text-sm font-semibold uppercase tracking-wider">Vision & Mission</span>
-            <h2 class="text-3xl md:text-4xl font-bold text-white">{{ title }}</h2>
+            <span class="text-eco-300 text-sm font-semibold uppercase tracking-wider">Vision & Mission</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">{{ title }}</h2>
           </div>
         </div>
-        
-        <!-- 卡片网格 -->
+
+        <!-- 卡片网格：Double-Bezel 暗色 -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div v-for="(item, index) in visionItems" :key="index" 
-            class="group bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-300">
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-yellow-500/20 transition-colors">
-                <Icon :name="item.icon" class="w-6 h-6 text-yellow-400" />
-              </div>
-              <div class="flex-1">
-                <h3 class="text-xl font-bold text-white mb-3">{{ item.name }}</h3>
-                <p v-if="item.value" class="text-gray-300 leading-relaxed">{{ item.value }}</p>
-                <div v-if="item.tags && item.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
-                  <span v-for="(tag, tagIndex) in item.tags" :key="tagIndex" 
-                    class="px-3 py-1.5 bg-white/10 text-white/90 rounded-full text-sm font-medium border border-white/20">
-                    {{ tag }}
-                  </span>
+          <div v-for="(item, index) in visionItems" :key="index"
+            class="reveal bezel-dark group"
+            :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+          >
+            <div class="bezel-dark-inner p-6">
+              <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 transition-colors duration-500 group-hover:bg-eco-800">
+                  <Icon :name="item.icon" class="w-6 h-6 text-eco-300" />
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-xl font-bold text-white mb-3">{{ item.name }}</h3>
+                  <p v-if="item.value" class="text-gray-300 font-light leading-relaxed">{{ item.value }}</p>
+                  <div v-if="item.tags && item.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
+                    <span v-for="(tag, tagIndex) in item.tags" :key="tagIndex"
+                      class="px-3 py-1.5 bg-white/10 text-white/90 rounded-full text-sm font-medium border border-white/10">
+                      {{ tag }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

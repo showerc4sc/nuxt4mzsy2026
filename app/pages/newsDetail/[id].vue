@@ -49,7 +49,7 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-2">加载失败</h2>
         <p class="text-gray-500 mb-6">无法加载文章详情，请稍后重试</p>
         <NuxtLink to="/news"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-eco-600 text-white rounded-lg hover:bg-eco-700 transition-colors duration-300 font-medium">
+          class="inline-flex items-center gap-2 rounded-full bg-eco-800 px-6 py-3 text-white font-semibold transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]">
           <Icon name="heroicons:arrow-left" class="w-5 h-5" />
           返回新闻列表
         </NuxtLink>
@@ -59,17 +59,11 @@
     <!-- 正常内容 -->
     <div v-else>
       <!-- 页面标题区域 -->
-      <section class="relative pt-40 pb-24 text-white overflow-hidden"
-        style="background-image: url('https://picsum.photos/seed/mzsy-news-detail/1920/1080.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
-        <!-- 深色遮罩层 -->
-        <div class="absolute inset-0 bg-gradient-to-br from-eco-900/85 to-primary-900/80"></div>
-        <!-- 装饰性光晕 -->
-        <div class="absolute inset-0 opacity-20">
-          <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"></div>
-          <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-500 rounded-full filter blur-3xl"></div>
-        </div>
+      <section class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden bg-gradient-to-br from-eco-800 via-eco-900 to-slate-900">
+        <!-- 细微纹理 -->
+        <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 40%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 40%);"></div>
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="max-w-4xl mx-auto">
+          <div class="reveal max-w-4xl mx-auto">
             <div class="flex items-center gap-2 mb-4">
               <span :class="[
                 'px-3 py-1 rounded-full text-xs font-medium',
@@ -77,14 +71,14 @@
               ]">
                 {{ articleData.category }}
               </span>
-              <span class="text-white/70 text-sm">
+              <span class="text-white/70 text-sm font-mono tabular-nums">
                 {{ articleData.date }}
               </span>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
               {{ articleData.title }}
             </h1>
-            <p class="text-xl opacity-90">
+            <p class="text-xl font-light opacity-90 leading-relaxed">
               {{ articleData.summary }}
             </p>
           </div>
@@ -92,41 +86,47 @@
       </section>
 
       <!-- 文章内容区域 -->
-      <section class="py-16 bg-gray-50">
+      <section class="py-32 md:py-40 bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
           <div class="max-w-4xl mx-auto">
-            <!-- 文章封面图 -->
-            <div class="mb-12 rounded-2xl overflow-hidden shadow-xl">
-              <img :src="articleData.image" v-if="articleData.image" :alt="articleData.title"
-                class="w-full h-auto object-cover"
-               />
-            </div>
-
-            <!-- 文章正文 -->
-            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-              <div class="prose prose-lg max-w-none">
-                <!-- 作者信息 -->
-                <div class="flex items-center gap-4 pb-6 border-b border-gray-200 mb-8">
-                  <div class="w-12 h-12 bg-eco-100 rounded-full flex items-center justify-center">
-                    <Icon name="heroicons:user" class="w-6 h-6 text-eco-600" />
-                  </div>
-                  <div>
-                    <div class="font-medium text-gray-900">{{ articleData.author || '淼泽松源' }}</div>
-                    <div class="text-sm text-gray-500">{{ articleData.date }}</div>
-                  </div>
-                </div>
-
-                <!-- 文章内容 -->
-                <div class="article-content" v-html="articleData.content"></div>
+            <!-- 文章封面图：Double-Bezel -->
+            <div class="reveal mb-12 bezel">
+              <div class="bezel-inner overflow-hidden">
+                <img :src="articleData.image" v-if="articleData.image" :alt="articleData.title"
+                  class="w-full h-auto object-cover"
+                 />
               </div>
             </div>
 
-            <!-- 返回按钮 -->
-            <div class="mt-12">
+            <!-- 文章正文：Double-Bezel -->
+            <div class="reveal reveal-delay-1 bezel">
+              <div class="bezel-inner p-8 md:p-12">
+                <div class="prose prose-lg max-w-none">
+                  <!-- 作者信息 -->
+                  <div class="flex items-center gap-4 pb-6 border-b border-gray-200 mb-8">
+                    <div class="w-12 h-12 bg-eco-50 rounded-full flex items-center justify-center">
+                      <Icon name="heroicons:user" class="w-6 h-6 text-eco-800" />
+                    </div>
+                    <div>
+                      <div class="font-medium text-gray-900">{{ articleData.author || '淼泽松源' }}</div>
+                      <div class="text-sm text-gray-500 font-mono tabular-nums">{{ articleData.date }}</div>
+                    </div>
+                  </div>
+
+                  <!-- 文章内容 -->
+                  <div class="article-content" v-html="articleData.content"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 返回按钮：Button-in-Button -->
+            <div class="reveal reveal-delay-2 mt-12">
               <NuxtLink to="/news"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-eco-600 text-white rounded-lg hover:bg-eco-700 transition-colors duration-300 font-medium">
-                <Icon name="heroicons:arrow-left" class="w-5 h-5" />
-                返回新闻列表
+                class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-2 pr-6 py-2 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+                  <Icon name="heroicons:arrow-left" class="w-4 h-4" />
+                </span>
+                <span>返回新闻列表</span>
               </NuxtLink>
             </div>
           </div>
@@ -138,6 +138,9 @@
 
 <script setup>
 import { getArticleById } from '~/api/article';
+
+// 滚动入场动效
+useReveal();
 
 /**
  * 获取分类颜色
