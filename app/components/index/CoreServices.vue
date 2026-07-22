@@ -29,19 +29,19 @@
           <!-- 第一项：大卡片，纵跨 3 行 -->
           <div
             v-if="servicesData[0]"
-            class="reveal md:row-span-3 bezel"
+            class="reveal md:row-span-3 bezel group transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1"
           >
             <div class="bezel-inner flex h-full flex-col p-10">
               <!-- 序号 + 图标 -->
               <div class="mb-8 flex items-center gap-4">
                 <span class="font-mono text-2xl font-bold tabular-nums text-eco-800">01</span>
-                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-eco-50 text-eco-800">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-eco-50 text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
                   <Icon :name="`heroicons:${servicesData[0].icon}`" class="h-7 w-7" />
                 </div>
               </div>
 
               <!-- 标题 -->
-              <h3 class="mb-4 text-2xl font-bold text-gray-900 md:text-3xl">{{ servicesData[0].title }}</h3>
+              <h3 class="mb-4 text-2xl font-bold text-gray-900 md:text-3xl transition-colors duration-500 group-hover:text-eco-900">{{ servicesData[0].title }}</h3>
 
               <!-- 描述 -->
               <p class="mb-8 flex-1 leading-relaxed text-gray-600">{{ servicesData[0].description }}</p>
@@ -51,7 +51,7 @@
                 <span
                   v-for="feature in servicesData[0].features"
                   :key="feature"
-                  class="rounded-full bg-eco-50 px-3 py-1 text-xs font-medium text-eco-800"
+                  class="rounded-full bg-eco-50 px-3 py-1 text-xs font-medium text-eco-800 transition-colors duration-500 group-hover:bg-eco-100"
                 >
                   {{ feature }}
                 </span>
@@ -63,7 +63,7 @@
           <div
             v-for="(service, index) in servicesData.slice(1)"
             :key="service.id"
-            class="reveal bezel"
+            class="reveal bezel group transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1"
             :class="`reveal-delay-${Math.min(index, 5)}`"
           >
             <div class="bezel-inner flex h-full items-center gap-5 p-6 md:p-7">
@@ -72,7 +72,7 @@
                 <span class="font-mono text-sm font-bold tabular-nums text-eco-800">
                   {{ String(index + 2).padStart(2, '0') }}
                 </span>
-                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-eco-50 text-eco-800">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-eco-50 text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
                   <Icon :name="`heroicons:${service.icon}`" class="h-6 w-6" />
                 </div>
               </div>

@@ -32,7 +32,7 @@
           <div class="bezel-dark-inner flex flex-col p-8 md:p-10">
             <!-- 数字 -->
             <div class="font-mono text-5xl font-semibold tabular-nums tracking-tight text-white md:text-6xl">
-              <span class="stat-number" :data-target="stat.value" :data-suffix="stat.suffix">0</span>
+              <span class="stat-number" :data-target="stat.value" :data-suffix="stat.suffix" :data-stagger="index">0</span>
             </div>
             <!-- 细线分隔 -->
             <div class="mt-5 h-px w-10 bg-eco-400"></div>
@@ -149,11 +149,16 @@ onMounted(() => {
             entry.target.classList.add('animated');
             const targetValue = parseInt(entry.target.getAttribute('data-target'));
             const suffix = entry.target.getAttribute('data-suffix') || '';
+            // 错峰：每项延迟 300ms 启动，形成数字依次递增的叙事高潮
+            const staggerIndex = parseInt(entry.target.getAttribute('data-stagger')) || 0;
+            const delay = reduced ? 0 : staggerIndex * 300;
 
             if (reduced) {
               entry.target.textContent = targetValue + suffix;
             } else {
-              animateNumber(entry.target, targetValue, duration, suffix);
+              setTimeout(() => {
+                animateNumber(entry.target, targetValue, duration, suffix);
+              }, delay);
             }
           }
         });

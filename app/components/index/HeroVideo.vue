@@ -4,7 +4,7 @@
     <div class="absolute inset-0">
       <video
         ref="heroVideo"
-        class="absolute inset-0 h-full w-full object-cover"
+        class="hero-video absolute inset-0 h-full w-full object-cover"
         autoplay
         muted
         loop
@@ -154,4 +154,22 @@ onMounted(() => {
 
 <style scoped>
 /* 组件特定样式 */
+
+/* Hero 视频滚动视差缩放：随页面滚动从 scale(1) 放大到 scale(1.15)，
+   营造电影感纵深。使用 CSS scroll-driven animation，无 JS 滚动监听，
+   GPU 加速。仅 transform 动画。支持降级。 */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-video {
+      animation: hero-scroll-zoom linear forwards;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    @keyframes hero-scroll-zoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.15); }
+    }
+  }
+}
 </style>
