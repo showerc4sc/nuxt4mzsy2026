@@ -21,9 +21,13 @@ export default defineNuxtConfig({
           href: "https://fonts.gstatic.com",
           crossorigin: true,
         },
+        // 字体用 media=print + onload 异步加载：避免 Google Fonts 在国内网络下
+        // 长时间超时阻塞首屏渲染（原先会出现 4s 白屏后才出内容）。
         {
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
+          media: "print",
+          onload: "this.media='all'",
         },
       ],
       // 添加高德地图脚本

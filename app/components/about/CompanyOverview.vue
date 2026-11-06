@@ -1,25 +1,24 @@
 <template>
-  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
-    <!-- 背景装饰 -->
-    <div class="absolute top-0 right-0 w-96 h-96 bg-eco-100/30 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="max-w-4xl mx-auto">
-        <!-- 标题区域 -->
-        <div class="reveal flex items-center mb-12">
-          <div class="w-14 h-14 bg-eco-800 rounded-2xl flex items-center justify-center mr-5 shadow-[0_8px_24px_rgba(22,101,52,0.2)]">
-            <Icon name="heroicons:building-office-2" class="w-7 h-7 text-white" />
-          </div>
-          <div>
-            <span class="text-eco-700 text-sm font-semibold uppercase tracking-wider">About Us</span>
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">{{ title }}</h2>
+  <section v-if="!pending && !error" aria-busy="false" class="relative overflow-hidden bg-[#f5f8f6] py-20 sm:py-24 lg:py-32">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="reveal lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <div class="mb-7 flex h-11 w-11 items-center justify-center rounded-sm border border-[#159a76]/20 bg-[#e4eee8] text-[#137457]">
+              <Icon name="heroicons:building-office-2" class="h-5 w-5" />
+            </div>
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#137457]">About Us</p>
+            <h2 class="text-3xl font-semibold leading-tight tracking-[-0.035em] text-[#102b25] sm:text-4xl">{{ title }}</h2>
+            <div class="mt-8 h-px w-16 bg-[#159a76]/50"></div>
           </div>
         </div>
-
-        <!-- 内容区域：Double-Bezel -->
-        <div class="reveal reveal-delay-1 bezel">
-          <div class="bezel-inner p-8 md:p-10">
-            <div class="prose prose-lg prose-eco text-gray-600 leading-relaxed max-w-none" v-html="content"></div>
+        <div class="reveal reveal-delay-1 lg:col-span-7 lg:col-start-6">
+          <div class="border-y border-[#102b25]/10 py-8 sm:py-10">
+            <div class="overview-content text-base leading-8 text-[#425c53] sm:text-lg sm:leading-9" v-html="content"></div>
+            <div v-if="!content" class="flex items-center gap-3 text-sm text-[#647970]">
+              <Icon name="heroicons:document-text" class="h-5 w-5" />
+              <span>暂无企业概览内容</span>
+            </div>
           </div>
         </div>
       </div>
@@ -27,35 +26,30 @@
   </section>
 
   <!-- 加载状态 -->
-  <section v-else-if="pending" class="py-20 bg-white">
+  <section v-else-if="pending" aria-busy="true" aria-label="正在加载企业概览" class="bg-[#f5f8f6] py-20 sm:py-24 lg:py-32">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto">
-        <div class="animate-pulse">
-          <div class="flex items-center mb-10">
-            <div class="w-14 h-14 bg-gray-200 rounded-2xl mr-5"></div>
-            <div class="space-y-2">
-              <div class="h-4 bg-gray-200 rounded w-24"></div>
-              <div class="h-8 bg-gray-200 rounded w-48"></div>
-            </div>
-          </div>
-          <div class="bg-gray-100 rounded-2xl p-8 space-y-4">
-            <div class="h-4 bg-gray-200 rounded w-full"></div>
-            <div class="h-4 bg-gray-200 rounded w-full"></div>
-            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-          </div>
+      <div class="grid animate-pulse gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-4">
+          <div class="mb-7 h-11 w-11 rounded-sm bg-[#102b25]/10"></div>
+          <div class="mb-5 h-3 w-20 rounded-sm bg-[#102b25]/10"></div>
+          <div class="h-10 w-48 rounded-sm bg-[#102b25]/10"></div>
+        </div>
+        <div class="space-y-5 border-y border-[#102b25]/10 py-10 lg:col-span-7 lg:col-start-6">
+          <div class="h-4 w-full rounded-sm bg-[#102b25]/10"></div>
+          <div class="h-4 w-full rounded-sm bg-[#102b25]/10"></div>
+          <div class="h-4 w-11/12 rounded-sm bg-[#102b25]/10"></div>
+          <div class="h-4 w-2/3 rounded-sm bg-[#102b25]/10"></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 错误状态 -->
-  <section v-else class="py-20 bg-white">
+  <section v-else class="bg-[#f5f8f6] py-20 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Icon name="heroicons:exclamation-triangle" class="w-8 h-8 text-yellow-500" />
-        </div>
-        <p class="text-xl text-gray-600">加载企业概览失败</p>
+      <div class="flex items-center gap-4 border-y border-[#102b25]/10 py-8 text-[#425c53]" role="alert">
+        <Icon name="heroicons:exclamation-triangle" class="h-6 w-6 shrink-0 text-[#9a7025]" />
+        <p>加载企业概览失败，请稍后重试</p>
       </div>
     </div>
   </section>
@@ -112,11 +106,31 @@ const content = computed(() => articleData.value?.content || '');
 </script>
 
 <style scoped>
-.prose {
-  max-width: none;
+.overview-content :deep(p) {
+  margin-bottom: 1.5rem;
 }
 
-.prose p {
-  margin-bottom: 1.5rem;
+.overview-content :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+.overview-content :deep(h3) {
+  margin: 2rem 0 0.75rem;
+  color: #102b25;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.overview-content :deep(ul) {
+  margin: 1.5rem 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.overview-content :deep(a) {
+  color: #137457;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
 }
 </style>

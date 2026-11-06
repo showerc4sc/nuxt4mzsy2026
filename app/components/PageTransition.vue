@@ -10,13 +10,21 @@
       @leave="onLeave"
       @after-leave="onAfterLeave"
     >
-      <slot />
+      <!-- 必须包一层带 key 的单一根元素：<slot /> 可能渲染出 fragment，
+           Vue 无法对非元素根节点做过渡，会打印
+           "Component inside <Transition> renders non-element root node"。 -->
+      <div :key="route.path" class="page-transition-view">
+        <slot />
+      </div>
     </Transition>
   </div>
 </template>
 
 <script setup>
 import { useMobileOptimization } from '~/composables/useMobileOptimization.js'
+
+// 过渡 key 依赖路由，保证每次导航都是新节点
+const route = useRoute()
 
 // 获取移动设备优化函数
 const { isMobile, isTablet, getAnimationConfig } = useMobileOptimization()

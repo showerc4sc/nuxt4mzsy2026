@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-white">
+  <div class="relative bg-[#f4f7f5]">
     <!-- 英雄视频区域 -->
     <IndexHeroVideo />
 

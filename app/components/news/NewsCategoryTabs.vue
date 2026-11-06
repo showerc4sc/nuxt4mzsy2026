@@ -1,46 +1,43 @@
 <template>
-  <section class="relative py-8 bg-gradient-to-r from-eco-800 to-eco-900 text-white">
+  <section class="border-b border-[#dce5e1] bg-[#f5f8f7]" aria-label="新闻分类">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- 加载状态 -->
-      <div v-if="pending" class="flex justify-center items-center py-2">
-        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+      <div v-if="pending" class="flex h-[73px] items-center gap-8 overflow-hidden" aria-label="正在加载新闻分类">
+        <span v-for="i in 5" :key="i" class="h-4 w-16 shrink-0 animate-pulse rounded bg-[#dce5e1]"></span>
       </div>
 
       <!-- 分类列表 -->
-      <div v-else class="flex flex-wrap gap-4 md:gap-8 justify-center">
+      <nav v-else class="category-scroll flex items-stretch gap-7 overflow-x-auto sm:gap-9" aria-label="按分类浏览新闻">
         <!-- 全部选项 -->
         <button
+          type="button"
           @click="selectCategory('all')"
-          class="relative px-4 py-2 font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
-          :class="modelValue === 'all' ? 'text-white font-bold' : 'text-white/70 hover:text-white'"
+          class="category-tab relative shrink-0 whitespace-nowrap py-6 text-sm font-medium tracking-wide transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#159a76] focus-visible:ring-offset-4"
+          :class="modelValue === 'all' ? 'text-[#102b25]' : 'text-[#61716c] hover:text-[#159a76]'"
+          :aria-pressed="modelValue === 'all'"
         >
           全部
-          <!-- 选中项下方的白色倒三角 -->
-          <span
-            v-if="modelValue === 'all'"
-            class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white"
-          ></span>
+          <span v-if="modelValue === 'all'" class="absolute inset-x-0 bottom-0 h-0.5 bg-[#159a76]"></span>
         </button>
 
         <button
           v-for="category in categories"
           :key="category._id"
+          type="button"
           @click="selectCategory(category._id)"
-          class="relative px-4 py-2 font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
-          :class="modelValue === category._id ? 'text-white font-bold' : 'text-white/70 hover:text-white'"
+          class="category-tab relative shrink-0 whitespace-nowrap py-6 text-sm font-medium tracking-wide transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#159a76] focus-visible:ring-offset-4"
+          :class="modelValue === category._id ? 'text-[#102b25]' : 'text-[#61716c] hover:text-[#159a76]'"
+          :aria-pressed="modelValue === category._id"
         >
           {{ category.title }}
-          <!-- 选中项下方的白色倒三角 -->
-          <span
-            v-if="modelValue === category._id"
-            class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white"
-          ></span>
+          <span v-if="modelValue === category._id" class="absolute inset-x-0 bottom-0 h-0.5 bg-[#159a76]"></span>
         </button>
-      </div>
+      </nav>
 
       <!-- 错误状态 -->
-      <div v-if="error" class="text-center py-2 text-white/80">
-        <span class="text-sm">加载分类失败</span>
+      <div v-if="error" class="flex items-center gap-2 border-t border-[#eadfdc] py-3 text-sm text-[#9a4c43]" role="status">
+        <Icon name="heroicons:exclamation-circle" class="h-4 w-4 shrink-0" />
+        <span>加载分类失败</span>
       </div>
     </div>
   </section>
@@ -172,5 +169,23 @@ defineExpose({
 </script>
 
 <style scoped>
-/* 组件特定样式 */
+.category-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #b7c8c1 transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+
+.category-scroll::-webkit-scrollbar-thumb {
+  background: #b7c8c1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-tab {
+    transition: none;
+  }
+}
 </style>

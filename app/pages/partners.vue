@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-[#f5f8f6] text-[#102b25]">
     <!-- 页面头部 -->
     <PageTitle slug="partners" />
 
@@ -13,20 +13,25 @@
     <PartnersCooperationAchievements slug="partner-3" />
 
     <!-- 合作联系 -->
-    <section class="py-32 md:py-40 bg-white border-t border-gray-100">
+    <section class="border-t border-[#102b25]/10 bg-[#e9f0ec] py-20 sm:py-24 lg:py-28">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="reveal max-w-2xl mx-auto text-center">
-          <h3 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">商务合作</h3>
-          <p class="text-lg font-light text-gray-600 mb-12 leading-relaxed">
-            欢迎整车厂、能源企业、物流运营商等洽谈合作
-          </p>
-          <NuxtLink to="/contact"
-            class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-7 pr-2 py-3 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]">
-            <span>立即咨询</span>
-            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
-              <Icon name="heroicons:arrow-right" class="w-4 h-4" />
-            </span>
-          </NuxtLink>
+        <div class="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
+          <div class="reveal lg:col-span-7">
+            <p class="mb-5 text-sm font-medium tracking-[0.12em] text-[#137457]">开放协作，长期共赢</p>
+            <h2 class="text-3xl font-semibold tracking-[-0.035em] text-[#102b25] sm:text-4xl">商务合作</h2>
+            <p class="mt-6 max-w-xl text-base leading-8 text-[#425c53]">
+              欢迎整车厂、能源企业、物流运营商等洽谈合作
+            </p>
+          </div>
+          <div class="reveal reveal-delay-1 lg:col-span-5 lg:flex lg:justify-end">
+            <NuxtLink
+              to="/contact"
+              class="group inline-flex min-h-12 w-full items-center justify-between gap-8 whitespace-nowrap rounded-sm bg-[#102b25] px-6 py-3 text-sm font-semibold text-white transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[#159a76] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#159a76] active:translate-y-px sm:w-auto"
+            >
+              <span>立即咨询</span>
+              <Icon name="heroicons:arrow-up-right" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </section>

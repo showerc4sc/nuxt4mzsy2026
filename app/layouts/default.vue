@@ -1,7 +1,8 @@
 <template>
   <div class="min-h-screen flex flex-col" v-cloak>
+    <a href="#main-content" class="fixed left-4 top-3 z-[110] -translate-y-24 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#173e32] shadow-lg transition-transform focus:translate-y-0">跳到主要内容</a>
     <TheHeader />
-    <main class="flex-grow">
+    <main id="main-content" class="flex-grow" tabindex="-1">
       <PageTransition>
         <slot />
       </PageTransition>

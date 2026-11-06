@@ -20,43 +20,43 @@ useHead({
           padding: 0;
           width: 100%;
           height: 100%;
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-          -webkit-font-smoothing: antialiased;
+          font-family: 'Plus Jakarta Sans', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+-webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
-        
+
         * {
           box-sizing: border-box;
         }
-        
+
         /* 隐藏未加载完成的内容，防止闪烁 */
         [v-cloak] {
           display: none !important;
         }
-        
+
         /* 基础布局样式 */
         .min-h-screen {
           min-height: 100vh;
         }
-        
+
         .flex {
           display: flex;
         }
-        
+
         .flex-col {
           flex-direction: column;
         }
-        
+
         .flex-grow {
           flex-grow: 1;
         }
-        
+
         /* 防止内容闪烁的占位样式 */
         body {
-          background-color: #ffffff;
-          color: #1f2937;
+          background-color: #f4f7f5;
+          color: #263c35;
         }
-        
+
         /* 加载指示器样式 */
         .nuxt-loading-indicator {
           position: fixed;
@@ -64,7 +64,7 @@ useHead({
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, #22c55e, #0ea5e9);
+          background: #238b70;
           z-index: 9999;
           transition: opacity 0.3s ease;
         }

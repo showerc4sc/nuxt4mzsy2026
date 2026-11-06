@@ -1,6 +1,5 @@
 <template>
-  <section class="relative min-h-[100dvh] w-full overflow-hidden bg-slate-950">
-    <!-- 视频背景 -->
+  <section class="relative min-h-[100dvh] w-full overflow-hidden bg-[#09271f]">
     <div class="absolute inset-0">
       <video
         ref="heroVideo"
@@ -11,129 +10,87 @@
         playsinline
         preload="auto"
         crossorigin="anonymous"
+        aria-label="淼泽松源新能源科技展示视频"
         @error="handleVideoError"
         @loadeddata="handleVideoLoaded"
       >
         <source :src="videoUrl" type="video/mp4" />
-        您的浏览器不支持视频标签。
+        <span class="sr-only">您的浏览器不支持视频标签。</span>
       </video>
-
-      <!-- 视频加载失败时的备用背景 -->
       <div
         v-if="videoLoadFailed"
         class="absolute inset-0 bg-cover bg-center"
         style="background-image: url('https://picsum.photos/seed/mzsy-hero/1920/1080.jpg')"
+        role="img"
+        aria-label="新能源科技设施"
       ></div>
-
-      <!-- 品牌色调遮罩：左侧深、右侧透，保证文字对比度 -->
-      <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-eco-900/60 to-slate-950/30"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/40"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,30,24,.94)_0%,rgba(6,35,28,.8)_44%,rgba(6,29,24,.25)_78%,rgba(6,29,24,.35)_100%)]"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#09271f]/80 via-transparent to-[#09271f]/50"></div>
     </div>
 
-    <!-- 内容 -->
     <div class="relative z-10 flex min-h-[100dvh] items-center">
-      <div class="container mx-auto px-4 pt-24 pb-24 sm:px-6 lg:px-8">
-        <div class="max-w-3xl">
-          <!-- 欢迎标签（页面唯一眉标之一）：圆角胶囊 -->
-          <div class="reveal reveal-delay-1 mb-8 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-sm">
-            <Icon name="heroicons:sparkles" class="mr-2 h-4 w-4 text-eco-300" />
-            <span class="text-sm font-medium text-white/90">欢迎来到 {{ company.name }}</span>
+      <div class="site-container pb-16 pt-28 md:pb-20 md:pt-24">
+        <div class="max-w-4xl">
+          <div class="hero-enter hero-enter-1 mb-7 flex items-center gap-3 text-xs font-medium tracking-[0.14em] text-[#b5d8c8] sm:text-sm">
+            <span class="h-px w-9 bg-[#85bca5]"></span>
+            新能源技术与应用
           </div>
 
-          <!-- 主标题 -->
-          <h1 class="reveal reveal-delay-2 text-4xl font-semibold leading-[1.15] tracking-tight text-white md:text-5xl lg:text-6xl">
-            <span class="block">{{ company.name }}</span>
-            <span class="mt-3 block text-xl font-light tracking-tight text-eco-200 md:text-2xl lg:text-3xl">{{ company.slogan }}</span>
+          <h1 class="hero-enter hero-enter-2 text-white">
+            <span class="block max-w-4xl text-[2.5rem] font-semibold leading-[1.16] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-[4.25rem]">{{ company.name }}</span>
+            <span class="mt-5 block text-xl font-medium leading-normal tracking-[0.04em] text-[#b8e2cf] sm:text-2xl md:text-3xl">{{ company.slogan }}</span>
           </h1>
 
-          <!-- 描述文字 -->
-          <p class="reveal reveal-delay-3 mt-8 max-w-2xl text-lg font-light leading-relaxed text-white/80 md:text-xl">
-            {{ company.description }}
-          </p>
+          <p class="hero-enter hero-enter-3 mt-7 max-w-2xl text-base leading-8 text-white/70 md:text-lg">{{ company.description }}</p>
 
-          <!-- CTA 按钮组：Button-in-Button 架构（§4.B）+ 磁吸物理（§5.B） -->
-          <div class="reveal reveal-delay-4 mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <NuxtLink
-              to="/products"
-              class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-2 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 hover:shadow-[0_12px_40px_rgba(22,101,52,0.35)] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-eco-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-            >
-              <Icon name="heroicons:cube-transparent" class="h-5 w-5" />
+          <div class="hero-enter hero-enter-4 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <NuxtLink to="/products" class="btn-light group w-fit">
               <span>探索产品</span>
-              <!-- 嵌套圆形尾图标：hover 时对角位移 + 放大（内部动张力） -->
-              <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
+              <span class="btn-icon bg-[#e6efea] text-[#17604f]">
                 <Icon name="heroicons:arrow-right" class="h-4 w-4" />
               </span>
             </NuxtLink>
-
-            <NuxtLink
-              to="/contact"
-              class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-white/50 hover:bg-white/10 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-            >
-              <Icon name="heroicons:chat-bubble-left-right" class="h-5 w-5" />
+            <NuxtLink to="/contact" class="inline-flex min-h-12 w-fit items-center gap-2 rounded-xl border border-white/30 bg-[#09271f]/25 px-6 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white/10 active:translate-y-px">
               立即咨询
+              <Icon name="heroicons:arrow-up-right" class="h-4 w-4" />
             </NuxtLink>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="pointer-events-none absolute bottom-0 right-0 hidden w-[38%] border-t border-white/15 py-6 pr-8 text-right text-[10px] tracking-[0.2em] text-white/45 lg:block">
+      METHANOL · WIND · ENERGY STORAGE
+    </div>
   </section>
 </template>
 
 <script setup>
-/**
- * 英雄视频区域组件
- * 显示公司介绍视频背景和欢迎信息
- */
-
-// 导入API方法
 import { getArticleBySlug } from '~/api/article';
 
-// 构建视频绝对路径
-const videoUrl = computed(() => {
-  if (process.client) {
-    return `${window.location.origin}/video/index.mp4`;
-  }
-  return '/video/index.mp4';
-});
+const videoUrl = ref('/video/index.mp4');
 
-// 视频引用
 const heroVideo = ref(null);
-
-// 视频加载失败标志
 const videoLoadFailed = ref(false);
-
-// 视频加载成功处理
-const handleVideoLoaded = () => {
-  videoLoadFailed.value = false;
-};
-
-// 视频错误处理
+const handleVideoLoaded = () => { videoLoadFailed.value = false; };
 const handleVideoError = (event) => {
   console.error('视频加载失败:', event);
   videoLoadFailed.value = true;
 };
 
-// 使用API获取文章数据
 const { data: articleData } = await useAsyncData('hero-article', async () => {
   try {
-    const response = await getArticleBySlug('miaozesongyuanshanghaike');
-    return response || {};
+    return await getArticleBySlug('miaozesongyuanshanghaike') || {};
   } catch (err) {
     console.error('获取文章数据失败:', err);
     return {};
   }
 });
 
-// 从文章数据中提取公司信息
 const company = computed(() => {
   if (!articleData.value) {
-    return {
-      name: '淼泽松源',
-      slogan: '绿色能源，智慧未来',
-      description: '致力于为全球客户提供优质的新能源解决方案'
-    };
+    return { name: '淼泽松源', slogan: '绿色能源，智慧未来', description: '致力于为全球客户提供优质的新能源解决方案' };
   }
-
   return {
     name: articleData.value.title || '淼泽松源',
     slogan: articleData.value.subtitle,
@@ -141,8 +98,10 @@ const company = computed(() => {
   };
 });
 
-// 在客户端初始化视频播放
 onMounted(() => {
+  // 挂载后再补全为绝对地址，避免 SSR 与客户端首帧不一致触发 hydration mismatch
+  videoUrl.value = `${window.location.origin}/video/index.mp4`;
+
   if (heroVideo.value) {
     heroVideo.value.play().catch((error) => {
       console.error('视频播放失败:', error);
@@ -153,11 +112,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 组件特定样式 */
-
-/* Hero 视频滚动视差缩放：随页面滚动从 scale(1) 放大到 scale(1.15)，
-   营造电影感纵深。使用 CSS scroll-driven animation，无 JS 滚动监听，
-   GPU 加速。仅 transform 动画。支持降级。 */
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
     .hero-video {
@@ -165,10 +119,9 @@ onMounted(() => {
       animation-timeline: scroll(root);
       animation-range: 0 100vh;
     }
-
     @keyframes hero-scroll-zoom {
       from { transform: scale(1); }
-      to { transform: scale(1.15); }
+      to { transform: scale(1.1); }
     }
   }
 }

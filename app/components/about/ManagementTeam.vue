@@ -1,198 +1,122 @@
 <template>
-  <section class="py-32 md:py-40 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
-    <!-- 背景装饰 - 点阵纹理 -->
-    <div class="absolute inset-0 opacity-[0.015]" style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 24px 24px;"></div>
-
-    <!-- 背景光晕装饰：统一 eco -->
-    <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-eco-100/20 rounded-full filter blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-eco-100/20 rounded-full filter blur-3xl pointer-events-none"></div>
-
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  <section class="border-y border-[#102b25]/10 bg-[#edf3ef] py-20 sm:py-24 lg:py-28">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- 标题区域 -->
-      <div class="reveal text-center mb-20">
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-eco-800 rounded-2xl mb-8 shadow-[0_8px_32px_rgba(22,101,52,0.2)] relative">
-          <Icon name="heroicons:user-group" class="w-10 h-10 text-white" />
-          <div class="absolute -top-1 -right-1 w-6 h-6 bg-eco-400 rounded-full border-4 border-white"></div>
+      <div class="reveal mb-14 grid gap-6 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-5">
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#137457]">Management Team</p>
+          <h2 class="text-3xl font-semibold tracking-[-0.035em] text-[#102b25] sm:text-4xl">管理层简介</h2>
         </div>
-        <span class="text-eco-700 text-sm font-semibold uppercase tracking-[0.2em] block mb-4">Management Team</span>
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6">管理层简介</h2>
-        <div class="w-24 h-1.5 bg-gradient-to-r from-eco-400 via-eco-500 to-eco-400 rounded-full mx-auto mb-6"></div>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto font-light leading-relaxed">专业的管理团队，引领企业持续发展</p>
+        <p class="max-w-md self-end text-base leading-8 text-[#526b61] lg:col-span-4 lg:col-start-9">专业的管理团队，引领企业持续发展</p>
       </div>
 
       <!-- 第一级：董事长 -->
-      <div v-if="chairman" class="mb-20">
-        <div class="reveal flex items-center mb-10">
-          <div class="flex items-center gap-3 px-6 py-2 bg-eco-50 rounded-full border border-eco-100">
-            <div class="w-2 h-2 bg-eco-500 rounded-full"></div>
-            <h3 class="text-lg font-bold text-eco-700 tracking-wide">董事长</h3>
-          </div>
-          <div class="flex-1 h-px bg-gradient-to-r from-eco-200 via-eco-100 to-transparent ml-6"></div>
+      <div v-if="chairman" class="mb-16">
+        <div class="reveal mb-6 flex items-center gap-5">
+          <h3 class="shrink-0 text-sm font-semibold text-[#137457]">董事长</h3>
+          <div class="h-px flex-1 bg-[#102b25]/10"></div>
         </div>
-
-        <div class="max-w-5xl mx-auto">
-          <div class="reveal reveal-delay-1 bezel group">
-            <div class="bezel-inner p-10 md:p-14 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1 relative overflow-hidden">
-              <!-- 卡片装饰 -->
-              <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-eco-50 to-transparent rounded-bl-[100px] opacity-50"></div>
-
-              <div class="flex flex-col md:flex-row items-center md:items-start gap-10 relative z-10">
-                <!-- 头像区域：统一 eco 描边 -->
-                <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 bg-eco-400/20 rounded-full blur-2xl scale-110"></div>
-                  <div class="relative w-44 h-44 rounded-full bg-gradient-to-br from-eco-400 via-eco-500 to-eco-600 p-1.5 shadow-2xl shadow-eco-500/30">
-                    <img
-                      :src="chairman.avatar || defaultAvatar"
-                      :alt="chairman.name"
-                      class="w-full h-full rounded-full object-cover bg-white border-4 border-white"
-                    />
-                  </div>
-                  <!-- 职位徽章 -->
-                  <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-eco-800 text-white text-xs font-bold rounded-full shadow-lg border-2 border-white">
-                    <span class="flex items-center gap-1.5">
-                      <Icon name="heroicons:star-solid" class="w-3 h-3" />
-                      董事长
-                    </span>
-                  </div>
-                </div>
-
-                <!-- 信息区域 -->
-                <div class="flex-1 text-center md:text-left">
-                  <h4 class="text-3xl font-bold text-gray-900 mb-2">{{ chairman.name }}</h4>
-                  <p class="text-eco-700 font-semibold mb-6 text-lg">{{ chairman.position }}</p>
-                  <div class="prose prose-lg prose-gray text-gray-600 leading-relaxed max-w-none" v-html="chairman.resume"></div>
-                </div>
-              </div>
-            </div>
+        <article class="reveal reveal-delay-1 grid overflow-hidden border border-[#102b25]/10 bg-white md:grid-cols-12">
+          <div class="relative flex items-center justify-center overflow-hidden bg-[#dce9e1] px-8 py-10 md:col-span-4 md:py-14">
+            <img
+              :src="chairman.avatar || defaultAvatar"
+              :alt="chairman.name"
+              class="aspect-[4/5] w-full max-w-[15rem] object-cover"
+              loading="lazy"
+            />
           </div>
-        </div>
+          <div class="flex flex-col justify-center p-7 sm:p-10 md:col-span-8 lg:p-14">
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#137457]">Chairman</p>
+            <h4 class="text-3xl font-semibold tracking-[-0.03em] text-[#102b25]">{{ chairman.name }}</h4>
+            <p class="mb-7 mt-2 text-base font-medium text-[#137457]">{{ chairman.position }}</p>
+            <div class="team-resume max-w-2xl text-base leading-8 text-[#526b61]" v-html="chairman.resume"></div>
+          </div>
+        </article>
       </div>
 
       <!-- 第二级：总经理 -->
-      <div v-if="generalManager" class="mb-20">
-        <div class="reveal flex items-center mb-10">
-          <div class="flex items-center gap-3 px-6 py-2 bg-eco-50 rounded-full border border-eco-100">
-            <div class="w-2 h-2 bg-eco-500 rounded-full"></div>
-            <h3 class="text-lg font-bold text-eco-700 tracking-wide">总经理</h3>
-          </div>
-          <div class="flex-1 h-px bg-gradient-to-r from-eco-200 via-eco-100 to-transparent ml-6"></div>
+      <div v-if="generalManager" class="mb-16 lg:ml-[8.333%]">
+        <div class="reveal mb-6 flex items-center gap-5">
+          <h3 class="shrink-0 text-sm font-semibold text-[#137457]">总经理</h3>
+          <div class="h-px flex-1 bg-[#102b25]/10"></div>
         </div>
-
-        <div class="max-w-5xl mx-auto">
-          <div class="reveal reveal-delay-1 bezel group">
-            <div class="bezel-inner p-10 md:p-12 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1 relative overflow-hidden">
-              <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-eco-50 to-transparent rounded-bl-[100px] opacity-50"></div>
-
-              <div class="flex flex-col md:flex-row items-center md:items-start gap-9 relative z-10">
-                <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 bg-eco-400/20 rounded-full blur-xl scale-110"></div>
-                  <div class="relative w-40 h-40 rounded-full bg-gradient-to-br from-eco-400 via-eco-500 to-eco-600 p-1.5 shadow-xl shadow-eco-500/25">
-                    <img
-                      :src="generalManager.avatar || defaultAvatar"
-                      :alt="generalManager.name"
-                      class="w-full h-full rounded-full object-cover bg-white border-4 border-white"
-                    />
-                  </div>
-                  <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-eco-800 text-white text-xs font-bold rounded-full shadow-lg border-2 border-white">
-                    总经理
-                  </div>
-                </div>
-
-                <div class="flex-1 text-center md:text-left">
-                  <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ generalManager.name }}</h4>
-                  <p class="text-eco-700 font-semibold mb-5 text-lg">{{ generalManager.position }}</p>
-                  <div class="prose prose-gray text-gray-600 font-light leading-relaxed max-w-none" v-html="generalManager.resume"></div>
-                </div>
-              </div>
-            </div>
+        <article class="reveal reveal-delay-1 grid border-y border-[#102b25]/10 py-8 sm:grid-cols-12 sm:gap-8 sm:py-10">
+          <div class="mb-7 sm:col-span-3 sm:mb-0">
+            <img
+              :src="generalManager.avatar || defaultAvatar"
+              :alt="generalManager.name"
+              class="aspect-[4/5] w-40 object-cover sm:w-full sm:max-w-[12rem]"
+              loading="lazy"
+            />
           </div>
-        </div>
+          <div class="sm:col-span-8 sm:col-start-5">
+            <h4 class="text-2xl font-semibold tracking-[-0.025em] text-[#102b25]">{{ generalManager.name }}</h4>
+            <p class="mb-5 mt-2 text-sm font-medium text-[#137457]">{{ generalManager.position }}</p>
+            <div class="team-resume text-sm leading-7 text-[#526b61]" v-html="generalManager.resume"></div>
+          </div>
+        </article>
       </div>
 
       <!-- 第三级：部门经理 -->
-      <div v-if="departmentManagers && departmentManagers.length > 0" class="mb-20">
-        <div class="reveal flex items-center mb-10">
-          <div class="flex items-center gap-3 px-6 py-2 bg-eco-50 rounded-full border border-eco-100">
-            <div class="w-2 h-2 bg-eco-500 rounded-full"></div>
-            <h3 class="text-lg font-bold text-eco-700 tracking-wide">部门经理</h3>
-          </div>
-          <div class="flex-1 h-px bg-gradient-to-r from-eco-200 via-eco-100 to-transparent ml-6"></div>
+      <div v-if="departmentManagers && departmentManagers.length > 0" class="mb-16">
+        <div class="reveal mb-6 flex items-center gap-5">
+          <h3 class="shrink-0 text-sm font-semibold text-[#137457]">部门经理</h3>
+          <div class="h-px flex-1 bg-[#102b25]/10"></div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          <div
+        <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
+          <article
             v-for="(manager, index) in departmentManagers"
             :key="index"
-            class="reveal bezel group"
+            class="reveal group border-t border-[#102b25]/15 py-7"
             :class="`reveal-delay-${Math.min(index + 1, 5)}`"
           >
-            <div class="bezel-inner p-7 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1 relative overflow-hidden">
-              <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-eco-50/50 to-transparent rounded-bl-[80px]"></div>
-
-              <div class="flex flex-col items-center text-center relative z-10">
-                <div class="relative mb-5">
-                  <div class="w-32 h-32 rounded-full bg-gradient-to-br from-eco-300 via-eco-400 to-eco-500 p-1 shadow-lg shadow-eco-200/50 group-hover:shadow-eco-300/60 transition-all duration-500">
-                    <img
-                      :src="manager.avatar || defaultAvatar"
-                      :alt="manager.name"
-                      class="w-full h-full rounded-full object-cover bg-white border-4 border-white"
-                    />
-                  </div>
-                </div>
-
-                <h4 class="text-xl font-bold text-gray-900 mb-2">{{ manager.name }}</h4>
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-eco-50 rounded-full mb-4">
-                  <Icon name="heroicons:briefcase-solid" class="w-3.5 h-3.5 text-eco-600" />
-                  <p class="text-eco-700 font-semibold text-sm">{{ manager.position }}</p>
-                </div>
-                <div class="text-sm text-gray-600 font-light leading-relaxed line-clamp-5" v-html="manager.resume"></div>
-              </div>
+            <div class="mb-6 overflow-hidden bg-[#dce9e1]">
+              <img
+                :src="manager.avatar || defaultAvatar"
+                :alt="manager.name"
+                class="aspect-[4/5] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.025]"
+                loading="lazy"
+              />
             </div>
-          </div>
+            <h4 class="text-xl font-semibold tracking-[-0.02em] text-[#102b25]">{{ manager.name }}</h4>
+            <p class="mb-4 mt-1.5 text-sm font-medium text-[#137457]">{{ manager.position }}</p>
+            <div class="team-resume text-sm leading-7 text-[#526b61]" v-html="manager.resume"></div>
+          </article>
         </div>
       </div>
 
       <!-- 第四级：合伙人 -->
       <div v-if="partners && partners.length > 0">
-        <div class="reveal flex items-center mb-10">
-          <div class="flex items-center gap-3 px-6 py-2 bg-eco-50 rounded-full border border-eco-100">
-            <div class="w-2 h-2 bg-eco-500 rounded-full"></div>
-            <h3 class="text-lg font-bold text-eco-700 tracking-wide">合伙人</h3>
-          </div>
-          <div class="flex-1 h-px bg-gradient-to-r from-eco-200 via-eco-100 to-transparent ml-6"></div>
+        <div class="reveal mb-6 flex items-center gap-5">
+          <h3 class="shrink-0 text-sm font-semibold text-[#137457]">合伙人</h3>
+          <div class="h-px flex-1 bg-[#102b25]/10"></div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          <div
+        <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
+          <article
             v-for="(partner, index) in partners"
             :key="index"
-            class="reveal bezel group"
+            class="reveal group border-t border-[#102b25]/15 py-7"
             :class="`reveal-delay-${Math.min(index + 1, 5)}`"
           >
-            <div class="bezel-inner p-7 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1 relative overflow-hidden">
-              <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-eco-50/50 to-transparent rounded-bl-[80px]"></div>
-
-              <div class="flex flex-col items-center text-center relative z-10">
-                <div class="relative mb-5">
-                  <div class="w-32 h-32 rounded-full bg-gradient-to-br from-eco-300 via-eco-400 to-eco-500 p-1 shadow-lg shadow-eco-200/50 group-hover:shadow-eco-300/60 transition-all duration-500">
-                    <img
-                      :src="partner.avatar || defaultAvatar"
-                      :alt="partner.name"
-                      class="w-full h-full rounded-full object-cover bg-white border-4 border-white"
-                    />
-                  </div>
-                </div>
-
-                <h4 class="text-xl font-bold text-gray-900 mb-2">{{ partner.name }}</h4>
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-eco-50 rounded-full mb-4">
-                  <Icon name="heroicons:handshake-solid" class="w-3.5 h-3.5 text-eco-600" />
-                  <p class="text-eco-700 font-semibold text-sm">{{ partner.position }}</p>
-                </div>
-                <div class="text-sm text-gray-600 font-light leading-relaxed line-clamp-3" v-html="partner.resume"></div>
-              </div>
+            <div class="mb-6 overflow-hidden bg-[#dce9e1]">
+              <img
+                :src="partner.avatar || defaultAvatar"
+                :alt="partner.name"
+                class="aspect-[4/5] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.025]"
+                loading="lazy"
+              />
             </div>
-          </div>
+            <h4 class="text-xl font-semibold tracking-[-0.02em] text-[#102b25]">{{ partner.name }}</h4>
+            <p class="mb-4 mt-1.5 text-sm font-medium text-[#137457]">{{ partner.position }}</p>
+            <div class="team-resume text-sm leading-7 text-[#526b61]" v-html="partner.resume"></div>
+          </article>
         </div>
+      </div>
+
+      <!-- 空状态 -->
+      <div v-if="!chairman && !generalManager && (!departmentManagers || departmentManagers.length === 0) && (!partners || partners.length === 0)" class="flex items-center gap-4 border-y border-[#102b25]/10 py-8 text-[#526b61]">
+        <Icon name="heroicons:user-group" class="h-6 w-6 shrink-0 text-[#137457]" />
+        <p>暂无管理层信息</p>
       </div>
     </div>
   </section>
@@ -346,20 +270,11 @@ const partners = computed(() => {
 </script>
 
 <style scoped>
-.prose {
-  max-width: none;
+.team-resume :deep(p) {
+  margin-bottom: 0.75rem;
 }
 
-.prose :deep(p) {
-  margin-bottom: 1rem;
-  line-height: 1.8;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.team-resume :deep(p:last-child) {
+  margin-bottom: 0;
 }
 </style>

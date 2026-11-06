@@ -1,36 +1,46 @@
 <template>
-  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gradient-to-br from-eco-800 via-eco-900 to-slate-900 relative overflow-hidden">
-    <!-- 细微纹理 -->
-    <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 40%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 40%);"></div>
+  <section v-if="!pending && !error" class="bg-[#102b25] py-20 text-white sm:py-24 lg:py-28">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <div class="reveal lg:col-span-3">
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#8ad9be]">Achievements</p>
+          <h2 class="text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl">{{ title }}</h2>
+          <div class="mt-8 h-px w-16 bg-[#7dd9bb]/60"></div>
+        </div>
 
-    <div class="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="reveal mb-16 max-w-3xl">
-        <h3 class="text-4xl md:text-5xl font-bold tracking-tight text-white">{{ title }}</h3>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
-        <div v-for="(item, index) in achievementsData" :key="index"
-          class="reveal"
-          :class="`reveal-delay-${Math.min(index + 1, 5)}`"
-        >
-          <div class="font-mono text-5xl font-semibold tabular-nums tracking-tight text-white md:text-6xl">
-            {{ item.value }}
+        <div v-if="achievementsData.length" class="grid grid-cols-2 gap-x-6 gap-y-10 lg:col-span-8 lg:col-start-5 lg:grid-cols-4">
+          <div
+            v-for="(item, index) in achievementsData"
+            :key="index"
+            class="reveal border-t border-white/20 pt-6"
+            :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+          >
+            <div class="break-words font-mono text-[2rem] font-medium leading-tight tracking-[-0.05em] tabular-nums text-white sm:text-4xl lg:text-[2.5rem]">
+              {{ item.value }}
+            </div>
+            <div class="mt-5 text-sm leading-6 text-white/65">{{ item.name }}</div>
           </div>
-          <div class="mt-5 h-px w-10 bg-eco-400"></div>
-          <div class="mt-5 text-sm font-light text-white/70 md:text-base">{{ item.name }}</div>
+        </div>
+        <div v-else class="flex items-center gap-4 border-y border-white/15 py-8 text-white/70 lg:col-span-8 lg:col-start-5">
+          <Icon name="heroicons:chart-bar" class="h-6 w-6 shrink-0 text-[#8ad9be]" />
+          <p>暂无合作成果数据</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 加载状态 -->
-  <section v-else-if="pending" class="py-16 bg-gray-50">
+  <section v-else-if="pending" aria-busy="true" aria-label="正在加载合作成果" class="bg-[#102b25] py-20 text-white sm:py-24 lg:py-28">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="animate-pulse">
-        <div class="h-6 bg-gray-200 rounded w-32 mx-auto mb-10"></div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
-          <div v-for="i in 4" :key="i" class="text-center">
-            <div class="h-10 bg-gray-200 rounded w-20 mx-auto mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-16 mx-auto"></div>
+      <div class="grid animate-pulse gap-12 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-3">
+          <div class="mb-5 h-3 w-28 rounded-sm bg-white/10"></div>
+          <div class="h-10 w-36 rounded-sm bg-white/10"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-10 lg:col-span-8 lg:col-start-5 lg:grid-cols-4">
+          <div v-for="i in 4" :key="i" class="border-t border-white/15 pt-6">
+            <div class="h-9 w-20 max-w-full rounded-sm bg-white/10"></div>
+            <div class="mt-5 h-4 w-16 rounded-sm bg-white/10"></div>
           </div>
         </div>
       </div>
@@ -38,11 +48,11 @@
   </section>
 
   <!-- 错误状态 -->
-  <section v-else class="py-16 bg-gray-50">
+  <section v-else class="bg-[#102b25] py-20 text-white sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <Icon name="heroicons:exclamation-triangle" class="w-12 h-12 mx-auto mb-4 text-yellow-400" />
-        <p class="text-xl text-gray-600">加载合作成果失败</p>
+      <div class="flex items-center gap-4 border-y border-white/15 py-8 text-white/75" role="alert">
+        <Icon name="heroicons:exclamation-triangle" class="h-6 w-6 shrink-0 text-[#e4bd73]" />
+        <p>加载合作成果失败，请稍后重试</p>
       </div>
     </div>
   </section>

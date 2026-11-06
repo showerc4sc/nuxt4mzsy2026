@@ -1,28 +1,20 @@
 <template>
-  <div>
+  <div class="static-product-page min-h-screen bg-[#f8faf9]">
     <!-- 面包屑导航 -->
-    <section class="py-6 bg-gray-50">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="flex" aria-label="Breadcrumb">
-          <ol class="inline-flex items-center space-x-1 md:space-x-3">
-            <li class="inline-flex items-center">
-              <NuxtLink to="/" class="text-gray-700 hover:text-eco-600">
-                首页
-              </NuxtLink>
+    <section class="border-b border-[#e1e9e4] bg-white pt-24">
+      <div class="container mx-auto px-4 py-5 sm:px-6 lg:px-8">
+        <nav aria-label="Breadcrumb">
+          <ol class="flex min-w-0 items-center gap-2 text-sm sm:gap-3">
+            <li class="shrink-0">
+              <NuxtLink to="/" class="text-[#74847c] transition-colors hover:text-[#159a76]">首页</NuxtLink>
             </li>
-            <li>
-              <div class="flex items-center">
-                <Icon name="heroicons:chevron-right" class="w-4 h-4 text-gray-400" />
-                <NuxtLink to="/products" class="ml-1 text-gray-700 hover:text-eco-600 md:ml-2">
-                  产品列表
-                </NuxtLink>
-              </div>
+            <li class="flex shrink-0 items-center gap-2 sm:gap-3">
+              <Icon name="heroicons:chevron-right" class="h-3.5 w-3.5 text-[#a8b5ae]" />
+              <NuxtLink to="/products" class="text-[#74847c] transition-colors hover:text-[#159a76]">产品列表</NuxtLink>
             </li>
-            <li aria-current="page">
-              <div class="flex items-center">
-                <Icon name="heroicons:chevron-right" class="w-4 h-4 text-gray-400" />
-                <span class="ml-1 text-gray-500 md:ml-2">{{ product?.name || '产品详情' }}</span>
-              </div>
+            <li aria-current="page" class="flex min-w-0 items-center gap-2 sm:gap-3">
+              <Icon name="heroicons:chevron-right" class="h-3.5 w-3.5 shrink-0 text-[#a8b5ae]" />
+              <span class="truncate font-medium text-[#294b3e]">{{ product?.name || '产品详情' }}</span>
             </li>
           </ol>
         </nav>
@@ -30,110 +22,118 @@
     </section>
 
     <!-- 加载状态 -->
-    <section v-if="!productsData" class="py-16 bg-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-eco-600"></div>
-        <p class="mt-4 text-gray-600">正在加载产品信息...</p>
+    <section v-if="!productsData" class="py-12 sm:py-16 lg:py-20" aria-label="正在加载产品信息" aria-busy="true">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.08fr_1fr] lg:gap-16">
+          <div>
+            <div class="aspect-square animate-pulse rounded-2xl bg-[#e6ede9]"></div>
+            <div class="mt-4 grid grid-cols-4 gap-3">
+              <div v-for="i in 4" :key="i" class="aspect-square animate-pulse rounded-lg bg-[#e6ede9]"></div>
+            </div>
+          </div>
+          <div class="space-y-7 pt-2">
+            <div class="h-4 w-24 animate-pulse rounded-sm bg-[#dfe8e2]"></div>
+            <div class="space-y-4">
+              <div class="h-12 w-4/5 animate-pulse rounded-sm bg-[#dfe8e2]"></div>
+              <div class="h-5 w-full animate-pulse rounded-sm bg-[#e8eeea]"></div>
+              <div class="h-5 w-2/3 animate-pulse rounded-sm bg-[#e8eeea]"></div>
+            </div>
+            <div class="grid grid-cols-2 gap-x-6 gap-y-6 border-y border-[#e1e9e4] py-7">
+              <div v-for="i in 4" :key="i" class="space-y-3">
+                <div class="h-3 w-16 animate-pulse rounded-sm bg-[#e8eeea]"></div>
+                <div class="h-5 w-24 animate-pulse rounded-sm bg-[#dfe8e2]"></div>
+              </div>
+            </div>
+            <div class="h-12 w-64 animate-pulse rounded-lg bg-[#dfe8e2]"></div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- 产品详情内容 -->
-    <section v-else-if="product" class="py-32 md:py-40 bg-white">
+    <section v-else-if="product" class="py-12 sm:py-16 lg:py-20">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="sr-only">产品详细信息</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <!-- 产品图片：Double-Bezel -->
-          <div class="reveal space-y-4">
-            <div class="bezel">
-              <div class="bezel-inner aspect-square bg-gray-100 overflow-hidden">
-                <img
-                  :src="product.image"
-                  :alt="product.name"
-                  class="w-full h-full object-cover"
-                  onerror="this.src='https://picsum.photos/seed/mzsy-product-detail/800/800.jpg'"
-                />
-              </div>
+        <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.08fr_1fr] lg:gap-16">
+          <!-- 产品图片 -->
+          <div class="reveal min-w-0">
+            <div class="product-gallery flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-[#dfe8e2] bg-white">
+              <img
+                :src="product.image"
+                :alt="product.name"
+                class="h-full w-full object-contain p-6 sm:p-10"
+                onerror="this.src='https://picsum.photos/seed/mzsy-product-detail/800/800.jpg'"
+              />
             </div>
-            <div class="grid grid-cols-4 gap-2">
-              <div
+            <div class="mt-4 grid grid-cols-4 gap-3" aria-label="产品图片选择">
+              <button
                 v-for="i in 4"
                 :key="i"
-                class="aspect-square bg-gray-100 rounded-2xl overflow-hidden cursor-pointer hover:ring-2 hover:ring-eco-500 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                type="button"
+                class="aspect-square overflow-hidden rounded-lg border bg-white p-1 transition-all duration-300"
+                :class="currentImageIndex === i - 1 ? 'border-[#159a76]' : 'border-[#dfe8e2] hover:border-[#8fb6a4]'"
+                :aria-label="`查看产品图片 ${i}`"
+                :aria-pressed="currentImageIndex === i - 1"
                 @click="currentImageIndex = i - 1"
               >
                 <img
                   :src="product.image"
                   :alt="`${product.name} ${i}`"
-                  class="w-full h-full object-cover"
+                  class="h-full w-full rounded-md object-cover"
                   onerror="this.src='https://picsum.photos/seed/mzsy-product-thumb/200/200.jpg'"
                 />
-              </div>
+              </button>
             </div>
           </div>
 
-          <!-- 产品信息：Double-Bezel -->
-          <div class="reveal reveal-delay-1 space-y-6">
-            <div class="bezel">
-              <div class="bezel-inner p-6">
-                <div class="flex items-center gap-3 mb-4">
-                  <span class="px-3 py-1 bg-eco-50 text-eco-800 rounded-full text-sm font-medium">
-                    {{ product.category }}
-                  </span>
-                </div>
-
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-4">{{ product.name }}</h1>
-                <p class="text-lg text-gray-600 font-light leading-relaxed">{{ product.description }}</p>
-              </div>
-            </div>
+          <!-- 产品信息 -->
+          <div class="reveal reveal-delay-1 min-w-0 lg:pt-2">
+            <div class="text-sm font-medium tracking-[0.08em] text-[#159a76]">{{ product.category }}</div>
+            <h1 class="mt-4 text-3xl font-semibold leading-[1.22] tracking-[-0.035em] text-[#102b25] sm:text-4xl lg:text-[2.75rem]">
+              {{ product.name }}
+            </h1>
+            <p class="mt-5 max-w-xl text-base leading-8 text-[#65776e]">{{ product.description }}</p>
 
             <!-- 产品规格 -->
-            <div class="bezel">
-              <div class="bezel-inner p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">产品规格</h2>
-                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div
-                    v-for="(value, key) in product.specifications"
-                    :key="key"
-                    class="flex justify-between py-3 border-b border-gray-100 last:border-0"
-                  >
-                    <dt class="text-gray-500">{{ key }}</dt>
-                    <dd class="font-medium text-gray-900">{{ value }}</dd>
-                  </div>
-                </dl>
-              </div>
+            <div class="mt-8 border-y border-[#dfe8e2] py-7">
+              <h2 class="mb-5 flex items-center gap-2 text-base font-semibold text-[#183d31]">
+                <Icon name="heroicons:adjustments-horizontal" class="h-5 w-5 text-[#159a76]" />
+                产品规格
+              </h2>
+              <dl class="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
+                <div v-for="(value, key) in product.specifications" :key="key" class="min-w-0">
+                  <dt class="text-xs leading-5 text-[#829088]">{{ key }}</dt>
+                  <dd class="mt-1 break-words text-sm font-semibold leading-6 text-[#263f36]">{{ value }}</dd>
+                </div>
+              </dl>
             </div>
 
             <!-- 应用场景 -->
-            <div class="bezel">
-              <div class="bezel-inner p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">应用场景</h2>
-                <div class="flex flex-wrap gap-2">
-                  <span
-                    v-for="scene in applicationScenes"
-                    :key="scene"
-                    class="px-3 py-2 bg-eco-50 text-eco-800 rounded-full text-sm"
-                  >
-                    {{ scene }}
-                  </span>
-                </div>
+            <div v-if="applicationScenes.length > 0" class="mt-7">
+              <h2 class="mb-4 text-base font-semibold text-[#183d31]">应用场景</h2>
+              <div class="flex flex-wrap gap-x-5 gap-y-3">
+                <span v-for="scene in applicationScenes" :key="scene" class="inline-flex items-center gap-2 text-sm text-[#49665a]">
+                  <Icon name="heroicons:check" class="h-4 w-4 text-[#159a76]" />
+                  {{ scene }}
+                </span>
               </div>
             </div>
 
-            <!-- 联系咨询：Button-in-Button -->
-            <div class="flex flex-col sm:flex-row gap-4">
+            <!-- 联系咨询 -->
+            <div class="mt-9 flex flex-col gap-3 sm:flex-row">
               <NuxtLink
                 to="/contact"
-                class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-3 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-eco-400"
+                class="group inline-flex min-h-12 items-center justify-center gap-5 rounded-lg bg-[#102b25] px-6 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#159a76] active:translate-y-px sm:justify-between"
               >
                 <span>咨询产品</span>
-                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
-                  <Icon name="heroicons:arrow-right" class="h-4 w-4" />
-                </span>
+                <Icon name="heroicons:arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </NuxtLink>
               <button
+                type="button"
                 @click="downloadSpec"
-                class="inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-base font-semibold text-gray-900 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-eco-300 hover:bg-eco-50 active:scale-[0.98]"
+                class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#d5e1da] bg-white px-6 py-3 text-sm font-semibold text-[#294b3e] transition-colors duration-300 hover:border-[#8fb6a4] hover:bg-[#eff6f2] active:translate-y-px"
               >
+                <Icon name="heroicons:arrow-down-tray" class="h-4 w-4" />
                 下载规格书
               </button>
             </div>
@@ -142,95 +142,84 @@
       </div>
     </section>
 
-    <!-- 相关产品推荐：Double-Bezel -->
-    <section v-if="relatedProducts && relatedProducts.length > 0" class="py-32 md:py-40 bg-gray-50">
+    <!-- 相关产品推荐 -->
+    <section v-if="product && relatedProducts && relatedProducts.length > 0" class="border-t border-[#e1e9e4] bg-white py-16 sm:py-20 lg:py-24">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="reveal mb-12 max-w-3xl">
-          <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">相关产品推荐</h2>
-          <p class="text-lg text-gray-600 font-light leading-relaxed">
-            您可能还感兴趣的其他产品
-          </p>
+        <div class="reveal mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="mb-3 text-xs font-semibold tracking-[0.16em] text-[#159a76]">更多产品</p>
+            <h2 class="text-3xl font-semibold tracking-[-0.03em] text-[#102b25] sm:text-4xl">相关产品推荐</h2>
+          </div>
+          <p class="text-sm leading-7 text-[#73837b]">您可能还感兴趣的其他产品</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          <article
             v-for="(relatedProduct, index) in relatedProducts"
             :key="relatedProduct.id"
-            class="reveal bezel group"
+            class="reveal related-card group flex h-full flex-col overflow-hidden"
             :class="`reveal-delay-${Math.min(index + 1, 5)}`"
           >
-            <div class="bezel-inner overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
-              <div class="aspect-video bg-gray-100">
-                <img
-                  :src="relatedProduct.image"
-                  :alt="relatedProduct.name"
-                  class="w-full h-full object-cover"
-                  onerror="this.src='https://picsum.photos/seed/mzsy-related-product/400/300.jpg'"
-                />
-              </div>
-              <div class="p-6">
-                <span class="text-sm text-eco-800 font-medium bg-eco-50 px-3 py-1 rounded-full">{{ relatedProduct.category }}</span>
-                <h3 class="text-lg font-bold text-gray-900 mt-3 mb-2">{{ relatedProduct.name }}</h3>
-                <p class="text-gray-600 text-sm mb-4 line-clamp-2 font-light">{{ relatedProduct.description }}</p>
-                <NuxtLink
-                  :to="`/productDetail/${relatedProduct.id}`"
-                  class="group/link inline-flex items-center gap-2 text-eco-800 font-semibold text-sm transition-colors duration-300 hover:text-eco-900"
-                >
-                  查看详情
-                  <Icon name="heroicons:arrow-right" class="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1" />
-                </NuxtLink>
-              </div>
+            <div class="aspect-[4/3] overflow-hidden bg-[#edf3ef]">
+              <img
+                :src="relatedProduct.image"
+                :alt="relatedProduct.name"
+                class="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.035]"
+                onerror="this.src='https://picsum.photos/seed/mzsy-related-product/400/300.jpg'"
+              />
             </div>
-          </div>
+            <div class="flex flex-1 flex-col p-6">
+              <span class="text-xs font-medium tracking-wide text-[#159a76]">{{ relatedProduct.category }}</span>
+              <h3 class="mt-3 text-lg font-semibold leading-7 text-[#18372e]">{{ relatedProduct.name }}</h3>
+              <p class="mt-2 flex-1 text-sm leading-7 text-[#718179] line-clamp-2">{{ relatedProduct.description }}</p>
+              <NuxtLink
+                :to="`/productDetail/${relatedProduct.id}`"
+                class="mt-6 inline-flex items-center gap-2 self-start border-t border-[#dfe8e2] pt-4 text-sm font-semibold text-[#176f5a] transition-colors hover:text-[#159a76]"
+              >
+                查看详情
+                <Icon name="heroicons:arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </NuxtLink>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- 产品不存在提示 -->
-    <section v-else-if="productsData.value && productsData.value.length > 0" class="py-32 md:py-40 bg-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <Icon name="heroicons:exclamation-triangle" class="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">产品未找到</h2>
-        <p class="text-lg text-gray-600 mb-4">抱歉，您查找的产品不存在或已被移除。</p>
-        <p class="text-sm text-gray-500 mb-8">产品ID: {{ productId }} (类型: {{ typeof productId }})</p>
-        <div class="mb-8">
-          <p class="text-sm text-gray-500 mb-2">可用产品ID列表:</p>
-          <div class="flex flex-wrap justify-center gap-2">
-            <span
-              v-for="p in productsData.value"
-              :key="p.id"
-              class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
-            >
+    <section v-else-if="productsData.value && productsData.value.length > 0" class="px-4 py-20 sm:py-28">
+      <div class="state-panel container mx-auto max-w-3xl px-6 py-12 text-center sm:px-12 sm:py-16">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f3f0e5] text-[#a48336]">
+          <Icon name="heroicons:exclamation-triangle" class="h-8 w-8" />
+        </div>
+        <h2 class="mt-6 text-2xl font-semibold tracking-tight text-[#102b25]">产品未找到</h2>
+        <p class="mt-3 text-base leading-7 text-[#718179]">抱歉，您查找的产品不存在或已被移除。</p>
+        <div class="mx-auto mt-8 max-w-xl rounded-lg bg-[#f3f6f4] p-5 text-left">
+          <p class="text-xs leading-6 text-[#7c8b83]">产品ID: {{ productId }} (类型: {{ typeof productId }})</p>
+          <p class="mt-3 text-xs font-medium text-[#60736a]">可用产品ID列表:</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            <span v-for="p in productsData.value" :key="p.id" class="rounded bg-white px-2 py-1 font-mono text-xs text-[#60736a]">
               ID: {{ p.id }} ({{ typeof p.id }})
             </span>
           </div>
         </div>
-        <NuxtLink
-          to="/products"
-          class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-3 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]"
-        >
-          <span>返回产品列表</span>
-          <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
-            <Icon name="heroicons:arrow-right" class="h-4 w-4" />
-          </span>
+        <NuxtLink to="/products" class="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#102b25] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#159a76]">
+          <Icon name="heroicons:arrow-left" class="h-4 w-4" />
+          返回产品列表
         </NuxtLink>
       </div>
     </section>
 
     <!-- 数据加载错误 -->
-    <section v-else class="py-32 md:py-40 bg-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <Icon name="heroicons:exclamation-circle" class="w-16 h-16 text-red-500 mx-auto mb-4" />
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">数据加载错误</h2>
-        <p class="text-lg text-gray-600 mb-8">抱歉，产品数据加载失败，请稍后再试。</p>
-        <NuxtLink
-          to="/products"
-          class="group inline-flex items-center gap-3 rounded-full bg-eco-800 pl-6 pr-2 py-3 text-base font-semibold text-white shadow-[0_8px_32px_rgba(22,101,52,0.25)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-eco-900 active:scale-[0.98]"
-        >
-          <span>返回产品列表</span>
-          <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105">
-            <Icon name="heroicons:arrow-right" class="h-4 w-4" />
-          </span>
+    <section v-else class="px-4 py-20 sm:py-28">
+      <div class="state-panel container mx-auto max-w-3xl px-6 py-12 text-center sm:px-12 sm:py-16">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f8ece9] text-[#b65e50]">
+          <Icon name="heroicons:exclamation-circle" class="h-8 w-8" />
+        </div>
+        <h2 class="mt-6 text-2xl font-semibold tracking-tight text-[#102b25]">数据加载错误</h2>
+        <p class="mt-3 text-base leading-7 text-[#718179]">抱歉，产品数据加载失败，请稍后再试。</p>
+        <NuxtLink to="/products" class="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#102b25] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#159a76]">
+          <Icon name="heroicons:arrow-left" class="h-4 w-4" />
+          返回产品列表
         </NuxtLink>
       </div>
     </section>
@@ -331,10 +320,42 @@ useHead({
 </script>
 
 <style scoped>
+.product-gallery {
+  background-image: radial-gradient(circle at 50% 42%, #ffffff 20%, #f0f5f2 100%);
+}
+
+.related-card,
+.state-panel {
+  border: 1px solid #dfe8e2;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.related-card {
+  transition: border-color 300ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.related-card:hover {
+  border-color: #aec9bb;
+  transform: translateY(-3px);
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .related-card,
+  .related-card img {
+    transition: none;
+  }
+
+  .related-card:hover,
+  .related-card:hover img {
+    transform: none;
+  }
 }
 </style>

@@ -1,87 +1,104 @@
 <template>
-  <!-- 浮动玻璃胶囊导航（high-end-visual-design §5.A：脱离顶栏，居中浮动） -->
-  <div class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[101] w-[calc(100%-2rem)] max-w-5xl">
+  <header class="pointer-events-none fixed inset-x-0 top-0 z-[101] px-3 pt-3 sm:px-5 sm:pt-4">
     <nav
-      class="flex items-center justify-between rounded-full pl-2 pr-2 lg:pr-3 py-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+      class="pointer-events-auto mx-auto flex h-16 max-w-[88rem] items-center justify-between rounded-2xl px-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-4"
       :class="headerGlassClass"
+      aria-label="主导航"
     >
-      <!-- Logo -->
-      <NuxtLink to="/" class="flex items-center gap-2.5 pl-2 group">
-        <div class="relative w-9 h-9 flex items-center justify-center">
-          <img src="/images/logo.png" alt="淼泽松源" class="w-full h-full object-contain" />
-        </div>
-        <span
-          class="text-lg font-bold transition-colors duration-300 group-hover:text-eco-600"
-          :class="isClientInitialized && isScrolled ? 'text-gray-900' : 'text-white'"
-        >{{ company.shortName }}</span>
+      <NuxtLink to="/" class="group flex min-w-0 items-center gap-3 rounded-lg" aria-label="淼泽松源首页">
+        <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-0.5 shadow-sm ring-1 ring-black/5">
+          <img src="/images/logo.png" alt="淼泽松源" class="h-full w-full object-contain" />
+        </span>
+        <span class="min-w-0">
+          <span
+            class="block truncate text-base font-bold tracking-wide transition-colors duration-300 sm:text-lg"
+            :class="isLightHeader ? 'text-[#102b25] group-hover:text-eco-700' : 'text-white'"
+          >{{ company.shortName }}</span>
+          <span
+            class="hidden text-[9px] font-medium tracking-[0.18em] sm:block"
+            :class="isLightHeader ? 'text-[#71837b]' : 'text-white/55'"
+          >MIAOZE SONGYUAN</span>
+        </span>
       </NuxtLink>
 
-      <!-- Desktop Navigation -->
-      <div class="hidden lg:flex items-center gap-1">
-        <!-- 加载状态 -->
-        <div v-if="menuPending" class="flex space-x-1">
-          <div v-for="i in 3" :key="i" class="h-9 w-20 rounded-full bg-gray-200/60 animate-pulse"></div>
+      <div class="hidden items-center gap-0.5 lg:flex">
+        <div v-if="menuPending" class="flex gap-2 px-3" aria-label="导航加载中">
+          <div v-for="i in 4" :key="i" class="h-8 w-16 rounded-lg bg-white/10 animate-pulse"></div>
         </div>
-        <!-- 导航菜单项 -->
         <template v-else>
           <NuxtLink
             v-for="item in navigationItems"
             :key="item.name"
             :to="item.path"
-            class="relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300"
+            class="relative rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-300"
             :class="navLinkClass(item.path)"
           >
             {{ item.name }}
+            <span
+              v-if="route.path === item.path"
+              class="absolute inset-x-4 -bottom-0.5 h-px bg-current opacity-60"
+            ></span>
           </NuxtLink>
         </template>
       </div>
 
-      <!-- Mobile menu button -->
+      <div class="hidden lg:block">
+        <NuxtLink
+          to="/contact"
+          class="rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-300 active:translate-y-px"
+          :class="isLightHeader
+            ? 'bg-[#176f5a] text-white hover:bg-[#105c4b]'
+            : 'bg-white text-[#153e32] hover:bg-[#e7f3ed]'"
+        >立即咨询</NuxtLink>
+      </div>
+
       <button
+        type="button"
+        class="flex h-11 w-11 items-center justify-center rounded-xl transition-colors lg:hidden"
+        :class="isLightHeader ? 'text-[#173c31] hover:bg-black/5' : 'text-white hover:bg-white/10'"
+        :aria-expanded="isMobileMenuOpen"
+        aria-controls="mobile-navigation"
+        :aria-label="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
         @click="toggleMobileMenu"
-        class="lg:hidden flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300"
-        :class="isClientInitialized && isScrolled
-          ? 'text-gray-700 hover:bg-gray-100'
-          : 'text-white hover:bg-white/10'"
-        aria-label="菜单"
       >
-        <Icon v-if="!isMobileMenuOpen" name="heroicons:bars-3" class="w-5 h-5" />
-        <Icon v-else name="heroicons:x-mark" class="w-5 h-5" />
+        <span class="relative block h-4 w-5">
+          <span class="absolute left-0 top-0.5 h-px w-5 bg-current transition-transform duration-300" :class="{ 'translate-y-1.5 rotate-45': isMobileMenuOpen }"></span>
+          <span class="absolute bottom-0.5 left-0 h-px w-5 bg-current transition-transform duration-300" :class="{ '-translate-y-1.5 -rotate-45': isMobileMenuOpen }"></span>
+        </span>
       </button>
     </nav>
-  </div>
+  </header>
 
-  <!-- 移动端全屏玻璃遮罩（§5.A：大幅玻璃 + 错峰遮罩揭示） -->
   <Transition
-    enter-active-class="transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    enter-active-class="transition-opacity duration-300"
     enter-from-class="opacity-0"
-    enter-to-class="opacity-100"
-    leave-active-class="transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
-    leave-from-class="opacity-100"
+    leave-active-class="transition-opacity duration-200"
     leave-to-class="opacity-0"
   >
-    <div v-if="isMobileMenuOpen" class="fixed inset-0 z-[100] lg:hidden">
-      <!-- 玻璃背景 -->
-      <div class="absolute inset-0 bg-white/90 backdrop-blur-3xl"></div>
-
-      <!-- 链接列表 -->
-      <div class="relative z-10 flex flex-col items-center justify-center min-h-[100dvh] gap-3 px-8">
-        <!-- 加载状态 -->
+    <div v-if="isMobileMenuOpen" id="mobile-navigation" class="fixed inset-0 z-[100] bg-[#f4f7f5] lg:hidden">
+      <div class="grid-pattern absolute inset-0 opacity-50"></div>
+      <div class="relative flex min-h-[100dvh] flex-col px-6 pb-10 pt-28 sm:px-10">
+        <p class="mb-8 text-xs font-medium tracking-[0.18em] text-[#71837b]">网站导航</p>
         <div v-if="menuPending" class="space-y-4">
-          <div v-for="i in 3" :key="i" class="h-12 w-48 rounded-full bg-gray-200/60 animate-pulse"></div>
+          <div v-for="i in 4" :key="i" class="skeleton h-12 w-56 rounded-lg"></div>
         </div>
-        <template v-else>
+        <nav v-else class="flex flex-col" aria-label="移动端导航">
           <NuxtLink
             v-for="(item, index) in navigationItems"
             :key="item.name"
             :to="item.path"
-            class="mobile-nav-link text-3xl font-bold text-gray-900 hover:text-eco-700 transition-colors duration-300"
-            :style="{ animationDelay: `${index * 80 + 100}ms` }"
+            class="mobile-nav-link group flex items-center justify-between border-b border-[#dce5df] py-5 text-2xl font-semibold text-[#163c30]"
+            :style="{ animationDelay: `${index * 60 + 80}ms` }"
             @click="closeMobileMenu"
           >
-            {{ item.name }}
+            <span>{{ item.name }}</span>
+            <Icon name="heroicons:arrow-up-right" class="h-5 w-5 text-[#6b8b7d] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
           </NuxtLink>
-        </template>
+        </nav>
+        <div class="mt-auto pt-10 text-sm leading-7 text-[#65776e]">
+          <p class="font-semibold text-[#173e32]">{{ company.shortName }}</p>
+          <p>{{ company.subtitle }}</p>
+        </div>
       </div>
     </div>
   </Transition>
@@ -91,66 +108,43 @@
 import { getCategoryList } from '~/api/category';
 import { useCompanyInfo } from '~/composables/useCompanyInfo.js';
 
-// 路由（供 navLinkClass 判断激活态 + 路由变化重置滚动状态）
 const route = useRoute();
-
-// 滚动状态
 const isScrolled = ref(false);
-
-// 客户端初始化标志
 const isClientInitialized = ref(false);
+const { companyName, companySubtitle } = useCompanyInfo();
 
-// 获取公司信息
-const {
-  companyName,
-  companySubtitle
-} = useCompanyInfo()
-
-// 公司信息
 const company = computed(() => ({
   shortName: companyName.value || '淼泽松源',
   subtitle: companySubtitle.value || '新能源科技'
 }));
 
-// 获取默认菜单
-const getDefaultMenu = () => {
-  const defaultMenu = [
-    { name: '首页', path: '/' },
-    { name: '关于我们', path: '/about' },
-  ];
-  return defaultMenu;
-};
+const getDefaultMenu = () => [
+  { name: '首页', path: '/' },
+  { name: '关于我们', path: '/about' }
+];
 
-/**
- * 浮动胶囊玻璃态样式
- * 顶部（未滚动）：半透明深色玻璃 + 白色发丝环（悬浮于深色 hero 上）
- * 滚动后：高不透明白色玻璃 + 柔和漫射阴影（悬浮于浅色内容上，确保深色文字清晰可读）
- */
+// 菜单打开时固定使用浅色文字，避免白色遮罩上的对比度问题
+const isLightHeader = computed(() =>
+  isMobileMenuOpen.value || route.path !== '/' || (isClientInitialized.value && isScrolled.value)
+);
+
 const headerGlassClass = computed(() => {
-  if (isClientInitialized.value && isScrolled.value) {
-    return 'bg-white/90 backdrop-blur-2xl ring-1 ring-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.08)]';
+  if (isLightHeader.value) {
+    return 'bg-white/95 shadow-[0_12px_35px_-22px_rgba(16,43,37,0.45)] ring-1 ring-[#173e32]/10 backdrop-blur-xl';
   }
-  return 'bg-white/10 backdrop-blur-2xl ring-1 ring-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.3)]';
+  return 'bg-[#0b2822]/55 shadow-[0_12px_35px_-22px_rgba(0,0,0,0.6)] ring-1 ring-white/15 backdrop-blur-xl';
 });
 
-/**
- * 桌面导航链接样式
- */
 const navLinkClass = (path) => {
   const isActive = route.path === path;
-  const isLight = isClientInitialized.value && isScrolled.value;
-
   if (isActive) {
-    return isLight
-      ? 'bg-eco-50 text-eco-900 font-semibold'
-      : 'bg-white/15 text-white font-semibold';
+    return isLightHeader.value ? 'bg-[#eaf3ee] text-[#17604f]' : 'bg-white/10 text-white';
   }
-  return isLight
-    ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-    : 'text-white/80 hover:text-white hover:bg-white/10';
+  return isLightHeader.value
+    ? 'text-[#5d7067] hover:bg-[#f0f5f2] hover:text-[#173e32]'
+    : 'text-white/75 hover:bg-white/10 hover:text-white';
 };
 
-// 滚动处理器：根据当前 scrollY 同步状态
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
 };
@@ -163,67 +157,54 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
+  if (process.client) document.body.style.overflow = '';
 });
 
-// 路由变化时同步实际滚动位置（修复：跳转新页面时按实际 scrollY 决定 header 态，
-// 避免强制重置为透明导致白底白字闪烁；Nuxt 路由切换瞬间重置 scrollY 为 0，
-// 但浏览器滚动恢复可能在 watch 触发前完成，故立即读一次再兜底核对）
 watch(() => route.path, () => {
+  closeMobileMenu();
   handleScroll();
-  nextTick(() => {
-    setTimeout(handleScroll, 350);
-  });
+  nextTick(() => setTimeout(handleScroll, 350));
 });
 
-/**
- * 获取导航菜单数据
- */
 const { data: menuData, pending: menuPending } = await useAsyncData('navigation-menu', async () => {
   try {
-    const data = await getCategoryList();
-    return data;
+    return await getCategoryList();
   } catch (error) {
     return null;
   }
-}, {
-  server: true
-});
+}, { server: true });
 
-/**
- * 使用从API获取的菜单数据，如果数据为空或出错，则使用默认菜单
- */
 const navigationItems = computed(() => {
   let menuItems = null;
-  if (menuData.value && menuData.value.rows && Array.isArray(menuData.value.rows)) {
+  if (menuData.value?.rows && Array.isArray(menuData.value.rows)) {
     menuItems = menuData.value.rows;
-  } else if (menuData.value && Array.isArray(menuData.value)) {
+  } else if (Array.isArray(menuData.value)) {
     menuItems = menuData.value;
   }
 
-  if (menuItems && Array.isArray(menuItems) && menuItems.length > 0) {
+  if (menuItems?.length > 0) {
     return menuItems.map(item => {
       let path = item.path || item.url || item.href || `/${item.id || ''}`;
-      if (path && !path.startsWith('/')) {
-        path = '/' + path;
-      }
-      return {
-        name: item.title || item.name || item.categoryName || '未命名',
-        path: path
-      };
+      if (path && !path.startsWith('/')) path = '/' + path;
+      return { name: item.title || item.name || item.categoryName || '未命名', path };
     });
   }
-
   return getDefaultMenu();
 });
 
-// 移动菜单状态
 const isMobileMenuOpen = ref(false);
+const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value; };
+const closeMobileMenu = () => { isMobileMenuOpen.value = false; };
 
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-};
+watch(isMobileMenuOpen, (open) => {
+  if (process.client) document.body.style.overflow = open ? 'hidden' : '';
+});
 
-const closeMobileMenu = () => {
-  isMobileMenuOpen.value = false;
-};
+onMounted(() => {
+  const onEscape = (event) => {
+    if (event.key === 'Escape') closeMobileMenu();
+  };
+  window.addEventListener('keydown', onEscape);
+  onUnmounted(() => window.removeEventListener('keydown', onEscape));
+});
 </script>

@@ -1,71 +1,77 @@
 <template>
-  <section v-if="!pending && !error" class="py-32 md:py-40 relative overflow-hidden bg-gradient-to-br from-eco-800 via-eco-900 to-slate-900">
-    <!-- 细微纹理：单一 eco 径向 -->
-    <div class="pointer-events-none absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 40%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 40%);"></div>
+  <section v-if="!pending && !error" class="relative isolate overflow-hidden bg-[#102b25] py-20 text-white sm:py-24 lg:py-32">
+    <img
+      :src="backgroundImage"
+      alt=""
+      aria-hidden="true"
+      class="absolute inset-0 -z-20 h-full w-full object-cover opacity-[0.12] grayscale"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 -z-10 bg-[#102b25]/75"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-[12%] -z-10 hidden w-px bg-white/[0.07] lg:block" aria-hidden="true"></div>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="max-w-5xl mx-auto">
-        <!-- 标题区域 -->
-        <div class="reveal flex items-center mb-12">
-          <div class="w-14 h-14 bg-eco-800 rounded-2xl flex items-center justify-center mr-5 shadow-[0_8px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
-            <Icon name="heroicons:light-bulb" class="w-7 h-7 text-white" />
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="reveal lg:col-span-4">
+          <div class="mb-7 flex h-11 w-11 items-center justify-center rounded-sm border border-white/20 text-[#7dd9bb]">
+            <Icon name="heroicons:light-bulb" class="h-5 w-5" />
           </div>
-          <div>
-            <span class="text-eco-300 text-sm font-semibold uppercase tracking-wider">Vision & Mission</span>
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">{{ title }}</h2>
-          </div>
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#8ad9be]">Vision & Mission</p>
+          <h2 class="max-w-sm text-3xl font-semibold leading-[1.3] tracking-[-0.035em] text-white sm:text-4xl">{{ title }}</h2>
+          <div class="mt-8 h-px w-16 bg-[#7dd9bb]/60"></div>
         </div>
 
-        <!-- 卡片网格：Double-Bezel 暗色 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div v-for="(item, index) in visionItems" :key="index"
-            class="reveal bezel-dark group"
+        <div v-if="visionItems.length" class="lg:col-span-7 lg:col-start-6">
+          <article
+            v-for="(item, index) in visionItems"
+            :key="index"
+            class="reveal grid gap-5 border-t border-white/15 py-8 first:pt-0 sm:grid-cols-12 sm:gap-6"
             :class="`reveal-delay-${Math.min(index + 1, 5)}`"
           >
-            <div class="bezel-dark-inner p-6">
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 transition-colors duration-500 group-hover:bg-eco-800">
-                  <Icon :name="item.icon" class="w-6 h-6 text-eco-300" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-xl font-bold text-white mb-3">{{ item.name }}</h3>
-                  <p v-if="item.value" class="text-gray-300 font-light leading-relaxed">{{ item.value }}</p>
-                  <div v-if="item.tags && item.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
-                    <span v-for="(tag, tagIndex) in item.tags" :key="tagIndex"
-                      class="px-3 py-1.5 bg-white/10 text-white/90 rounded-full text-sm font-medium border border-white/10">
-                      {{ tag }}
-                    </span>
-                  </div>
-                </div>
+            <div class="sm:col-span-4">
+              <div class="mb-4 flex items-center gap-3 text-[#8ad9be]">
+                <Icon :name="item.icon" class="h-5 w-5" />
+                <span class="font-mono text-xs tabular-nums text-white/45">{{ String(index + 1).padStart(2, '0') }}</span>
+              </div>
+              <h3 class="text-xl font-semibold tracking-[-0.02em] text-white">{{ item.name }}</h3>
+            </div>
+            <div class="sm:col-span-8">
+              <p v-if="item.value" class="text-sm leading-7 text-white/70 sm:text-base sm:leading-8">{{ item.value }}</p>
+              <div v-if="item.tags && item.tags.length > 0" class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+                <span v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="text-sm font-medium text-[#a8e5ce]">
+                  {{ tag }}
+                </span>
               </div>
             </div>
-          </div>
+          </article>
+          <div class="h-px bg-white/15"></div>
+        </div>
+        <div v-else class="flex items-center gap-4 border-y border-white/15 py-8 text-white/70 lg:col-span-7 lg:col-start-6">
+          <Icon name="heroicons:light-bulb" class="h-6 w-6 shrink-0 text-[#8ad9be]" />
+          <p>暂无企业理念与愿景内容</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 加载状态 -->
-  <section v-else-if="pending" class="py-20 relative overflow-hidden bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-eco-900/85">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="max-w-5xl mx-auto">
-        <div class="animate-pulse">
-          <div class="flex items-center mb-10">
-            <div class="w-14 h-14 bg-white/20 rounded-2xl mr-5"></div>
-            <div class="space-y-2">
-              <div class="h-4 bg-white/20 rounded w-40"></div>
-              <div class="h-8 bg-white/20 rounded w-56"></div>
+  <section v-else-if="pending" aria-busy="true" aria-label="正在加载企业理念与愿景" class="bg-[#102b25] py-20 text-white sm:py-24 lg:py-32">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid animate-pulse gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-4">
+          <div class="mb-7 h-11 w-11 rounded-sm bg-white/10"></div>
+          <div class="mb-5 h-3 w-32 rounded-sm bg-white/10"></div>
+          <div class="h-10 w-56 max-w-full rounded-sm bg-white/10"></div>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6">
+          <div v-for="i in 3" :key="i" class="grid gap-5 border-t border-white/10 py-8 sm:grid-cols-12">
+            <div class="sm:col-span-4">
+              <div class="mb-4 h-5 w-5 rounded-sm bg-white/10"></div>
+              <div class="h-6 w-28 rounded-sm bg-white/10"></div>
             </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div v-for="i in 4" :key="i" class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 bg-white/20 rounded-xl"></div>
-                <div class="flex-1 space-y-3">
-                  <div class="h-5 bg-white/20 rounded w-32"></div>
-                  <div class="h-3 bg-white/20 rounded w-full"></div>
-                </div>
-              </div>
+            <div class="space-y-3 sm:col-span-8">
+              <div class="h-4 w-full rounded-sm bg-white/10"></div>
+              <div class="h-4 w-3/4 rounded-sm bg-white/10"></div>
             </div>
           </div>
         </div>
@@ -74,13 +80,11 @@
   </section>
 
   <!-- 错误状态 -->
-  <section v-else class="py-20 relative overflow-hidden bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-eco-900/85">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="max-w-5xl mx-auto text-center">
-        <div class="w-16 h-16 bg-yellow-100/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Icon name="heroicons:exclamation-triangle" class="w-8 h-8 text-yellow-400" />
-        </div>
-        <p class="text-xl text-white">加载企业理念与愿景失败</p>
+  <section v-else class="bg-[#102b25] py-20 text-white sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-4 border-y border-white/15 py-8 text-white/75" role="alert">
+        <Icon name="heroicons:exclamation-triangle" class="h-6 w-6 shrink-0 text-[#e4bd73]" />
+        <p>加载企业理念与愿景失败，请稍后重试</p>
       </div>
     </div>
   </section>

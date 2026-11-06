@@ -1,102 +1,48 @@
 <template>
-  <section v-if="!pending && !error" class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden" :style="{ backgroundImage: `url('${backgroundImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }">
-    <!-- 深色遮罩层 -->
-    <div class="absolute inset-0 bg-gradient-to-br from-eco-900/85 to-primary-900/80"></div>
-    <!-- 装饰性光晕 -->
-    <div class="absolute inset-0 opacity-20">
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-eco-500 rounded-full filter blur-3xl"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-500 rounded-full filter blur-3xl"></div>
-    </div>
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="reveal max-w-4xl">
-        <h1 class="text-5xl md:text-6xl font-bold tracking-tight mb-6">{{ title }}</h1>
-        <p class="text-xl opacity-90 max-w-3xl font-light leading-relaxed">
-          {{ subtitle }}
-        </p>
-      </div>
-    </div>
-  </section>
+  <section class="relative isolate -mt-24 overflow-hidden bg-[#102f27] pb-16 pt-40 text-white md:pb-20 md:pt-44">
+    <div v-if="!pending && !error" class="absolute inset-0 -z-20 bg-cover bg-center" :style="{ backgroundImage: `url('${backgroundImage}')` }" role="img" :aria-label="title"></div>
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,37,29,.96)_0%,rgba(10,45,35,.88)_55%,rgba(10,43,34,.64)_100%)]"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-1/3 opacity-30 lg:block" style="background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 52px 52px;"></div>
 
-  <!-- 加载状态 -->
-  <section v-else-if="pending" class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden bg-gradient-to-br from-eco-900/85 to-primary-900/80">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="animate-pulse">
-        <div class="h-12 bg-white/20 rounded w-64 mb-6"></div>
-        <div class="h-6 bg-white/20 rounded w-96"></div>
+    <div class="site-container">
+      <div v-if="pending" class="animate-pulse" aria-label="页面标题加载中">
+        <div class="mb-6 h-4 w-32 rounded bg-white/15"></div>
+        <div class="h-12 w-64 max-w-full rounded bg-white/20"></div>
+        <div class="mt-6 h-6 w-[32rem] max-w-full rounded bg-white/10"></div>
       </div>
-    </div>
-  </section>
-
-  <!-- 错误状态 -->
-  <section v-else class="relative pt-40 pb-32 md:pb-40 text-white overflow-hidden bg-gradient-to-br from-eco-900/85 to-primary-900/80">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="text-center">
-        <Icon name="heroicons:exclamation-triangle" class="w-12 h-12 mx-auto mb-4 text-yellow-400" />
-        <p class="text-xl">加载页面标题失败</p>
+      <div v-else-if="error" class="flex items-center gap-3 text-white/80" role="status">
+        <Icon name="heroicons:exclamation-circle" class="h-6 w-6 text-[#d8c69c]" />
+        <p>页面标题暂时无法加载</p>
+      </div>
+      <div v-else class="reveal max-w-4xl">
+        <p class="mb-5 text-[10px] font-medium tracking-[0.22em] text-[#a9cdbd]">MIAOZE SONGYUAN</p>
+        <h1 class="text-4xl font-semibold leading-tight tracking-[-0.035em] sm:text-5xl md:text-6xl">{{ title }}</h1>
+        <p v-if="subtitle" class="mt-6 max-w-2xl text-base leading-8 text-white/70 md:text-lg">{{ subtitle }}</p>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-/**
- * 页面标题组件
- * 用于显示页面顶部的标题区域，包含背景图片、标题和副标题
- * 数据通过 getCategoryBySlug API 获取
- */
-
 import { getCategoryBySlug } from '~/api/category';
 
-// 滚动入场动效
 useReveal();
-
-/**
- * 定义组件属性
- */
 const props = defineProps({
-  /**
-   * 分类 slug
-   * @type {String}
-   * @required
-   */
-  slug: {
-    type: String,
-    required: true
-  }
+  slug: { type: String, required: true }
 });
 
-/**
- * 使用API获取分类数据
- */
 const { data: categoryData, pending, error } = useAsyncData(`page-title-${props.slug}`, async () => {
   try {
     const response = await getCategoryBySlug(props.slug);
-    console.log("getCategoryBySlug",response)
+    console.log('getCategoryBySlug', response);
     return response || {};
   } catch (err) {
     console.error('获取页面标题数据失败:', err);
     return {};
   }
-}, {
-  server: true
-});
+}, { server: true });
 
-/**
- * 页面标题
- */
 const title = computed(() => categoryData.value?.title || '页面标题');
-
-/**
- * 页面副标题
- */
 const subtitle = computed(() => categoryData.value?.subtitle || '');
-
-/**
- * 背景图片URL
- */
 const backgroundImage = computed(() => categoryData.value?.cover || 'https://picsum.photos/seed/mzsy-default/1920/1080.jpg');
 </script>
-
-<style scoped>
-/* 组件样式使用 Tailwind CSS，无需额外样式 */
-</style>

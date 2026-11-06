@@ -1,36 +1,54 @@
 <template>
-  <section v-if="!pending && !error" class="py-32 md:py-40 bg-gray-50">
+  <section v-if="!pending && !error" class="bg-[#f5f8f6] py-20 sm:py-24 lg:py-28">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="reveal mb-12 max-w-3xl">
-        <h3 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">{{ title }}</h3>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        <div v-for="(item, index) in cooperationFields" :key="index"
-          class="reveal bezel group"
-          :class="`reveal-delay-${Math.min(index + 1, 5)}`"
-        >
-          <div class="bezel-inner p-8 text-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 bg-eco-50 text-eco-800 transition-colors duration-500 group-hover:bg-eco-800 group-hover:text-white">
-              <Icon :name="item.icon" class="w-7 h-7" />
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="reveal lg:col-span-3">
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#137457]">Cooperation</p>
+          <h2 class="text-3xl font-semibold tracking-[-0.035em] text-[#102b25] sm:text-4xl">{{ title }}</h2>
+          <div class="mt-8 h-px w-16 bg-[#159a76]/50"></div>
+        </div>
+
+        <div v-if="cooperationFields.length" class="grid gap-x-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5 lg:grid-cols-3">
+          <article
+            v-for="(item, index) in cooperationFields"
+            :key="index"
+            class="reveal group border-t border-[#102b25]/15 py-7 lg:py-0"
+            :class="`reveal-delay-${Math.min(index + 1, 5)}`"
+          >
+            <div class="mb-8 flex items-center justify-between">
+              <div class="flex h-11 w-11 items-center justify-center rounded-sm bg-[#e4eee8] text-[#137457] transition-colors duration-300 group-hover:bg-[#102b25] group-hover:text-white">
+                <Icon :name="item.icon" class="h-5 w-5" />
+              </div>
+              <span class="font-mono text-xs tabular-nums text-[#789086]">{{ String(index + 1).padStart(2, '0') }}</span>
             </div>
-            <h4 class="font-bold text-gray-900 mb-2 text-lg">{{ item.name }}</h4>
-            <p class="text-gray-600 text-sm font-light leading-relaxed">{{ item.description }}</p>
-          </div>
+            <h3 class="mb-3 text-lg font-semibold tracking-[-0.015em] text-[#102b25]">{{ item.name }}</h3>
+            <p class="text-sm leading-7 text-[#526b61]">{{ item.description }}</p>
+          </article>
+        </div>
+        <div v-else class="flex items-center gap-4 border-y border-[#102b25]/10 py-8 text-[#526b61] lg:col-span-8 lg:col-start-5">
+          <Icon name="heroicons:cube" class="h-6 w-6 shrink-0 text-[#137457]" />
+          <p>暂无合作领域信息</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 加载状态 -->
-  <section v-else-if="pending" class="py-16 bg-gray-50">
+  <section v-else-if="pending" aria-busy="true" aria-label="正在加载合作领域" class="bg-[#f5f8f6] py-20 sm:py-24 lg:py-28">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="animate-pulse">
-        <div class="h-6 bg-gray-200 rounded w-32 mx-auto mb-10"></div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div v-for="i in 3" :key="i" class="text-center">
-            <div class="w-14 h-14 bg-gray-200 rounded-xl mx-auto mb-4"></div>
-            <div class="h-5 bg-gray-200 rounded w-24 mx-auto mb-2"></div>
-            <div class="h-4 bg-gray-200 rounded w-full"></div>
+      <div class="grid animate-pulse gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-3">
+          <div class="mb-5 h-3 w-24 rounded-sm bg-[#102b25]/10"></div>
+          <div class="h-10 w-36 rounded-sm bg-[#102b25]/10"></div>
+        </div>
+        <div class="grid gap-x-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5 lg:grid-cols-3">
+          <div v-for="i in 3" :key="i" class="border-t border-[#102b25]/10 py-7 lg:py-0">
+            <div class="mb-8 h-11 w-11 rounded-sm bg-[#102b25]/10"></div>
+            <div class="mb-4 h-5 w-24 rounded-sm bg-[#102b25]/10"></div>
+            <div class="space-y-3">
+              <div class="h-3 w-full rounded-sm bg-[#102b25]/10"></div>
+              <div class="h-3 w-4/5 rounded-sm bg-[#102b25]/10"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -38,11 +56,11 @@
   </section>
 
   <!-- 错误状态 -->
-  <section v-else class="py-16 bg-gray-50">
+  <section v-else class="bg-[#f5f8f6] py-20 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto text-center">
-        <Icon name="heroicons:exclamation-triangle" class="w-12 h-12 mx-auto mb-4 text-yellow-400" />
-        <p class="text-xl text-gray-600">加载合作领域失败</p>
+      <div class="flex items-center gap-4 border-y border-[#102b25]/10 py-8 text-[#425c53]" role="alert">
+        <Icon name="heroicons:exclamation-triangle" class="h-6 w-6 shrink-0 text-[#9a7025]" />
+        <p>加载合作领域失败，请稍后重试</p>
       </div>
     </div>
   </section>

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+  <div class="min-h-screen bg-[#f8faf9] text-[#102b25]">
     <!-- 页面标题 -->
     <PageTitle slug="news" />
 
@@ -13,167 +13,123 @@
       />
 
       <!-- 新闻列表 -->
-      <section class="py-16 relative overflow-hidden">
-        <!-- 背景装饰 -->
-        <div class="absolute inset-0 pointer-events-none">
-          <div class="absolute top-20 left-0 w-72 h-72 bg-eco-100/50 rounded-full blur-3xl"></div>
-          <div class="absolute bottom-20 right-0 w-96 h-96 bg-teal-50/50 rounded-full blur-3xl"></div>
-        </div>
+      <section class="py-14 sm:py-20 lg:py-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-6xl">
+            <div class="mb-8 flex items-end justify-between gap-4 border-b border-[#cfdad5] pb-5 sm:mb-10">
+              <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">新闻动态</h2>
+              <p v-if="!pending && totalNews > 0" class="shrink-0 text-sm text-[#61716c]">
+                共 <span class="font-mono tabular-nums text-[#159a76]">{{ totalNews }}</span> 篇
+              </p>
+            </div>
 
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="max-w-5xl mx-auto">
             <!-- 加载状态 -->
-            <div v-if="pending" class="space-y-6">
-              <div v-for="i in 3" :key="i" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                <div class="flex flex-col md:flex-row">
-                  <div class="md:w-2/5 h-56 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse"></div>
-                  <div class="flex-1 p-6 space-y-4">
-                    <div class="flex items-center justify-between">
-                      <div class="h-6 bg-gray-200 rounded-full w-24"></div>
-                      <div class="h-4 bg-gray-200 rounded w-28"></div>
-                    </div>
-                    <div class="h-7 bg-gray-200 rounded w-3/4"></div>
-                    <div class="h-4 bg-gray-200 rounded w-full"></div>
-                    <div class="h-4 bg-gray-200 rounded w-2/3"></div>
-                    <div class="pt-2">
-                      <div class="h-5 bg-gray-200 rounded w-24"></div>
-                    </div>
-                  </div>
+            <div v-if="pending" class="divide-y divide-[#dce5e1]" aria-label="正在加载新闻">
+              <div v-for="i in 4" :key="i" class="flex animate-pulse gap-5 py-7 sm:gap-8 sm:py-8">
+                <div class="hidden w-28 shrink-0 space-y-3 sm:block">
+                  <div class="h-3 w-20 rounded bg-[#dce5e1]"></div>
+                  <div class="h-3 w-14 rounded bg-[#e7eeeb]"></div>
                 </div>
+                <div class="min-w-0 flex-1 space-y-4">
+                  <div class="h-3 w-16 rounded bg-[#e7eeeb]"></div>
+                  <div class="h-6 w-3/4 rounded bg-[#dce5e1]"></div>
+                  <div class="h-4 w-full rounded bg-[#e7eeeb]"></div>
+                  <div class="h-4 w-2/3 rounded bg-[#e7eeeb]"></div>
+                </div>
+                <div class="hidden h-32 w-48 shrink-0 rounded-md bg-[#e7eeeb] md:block"></div>
               </div>
             </div>
 
-            <!-- 新闻卡片列表 -->
-            <div v-else-if="currentNews.length > 0" class="space-y-8">
-            <!-- 新闻卡片 -->
-            <NuxtLink
-              v-for="(news, index) in currentNews"
-              :key="news.id"
-              :to="`/newsDetail/${news.id}`"
-              class="reveal bezel group block"
-              :class="`reveal-delay-${Math.min((index % 3) + 1, 5)}`"
-            >
-              <div class="bezel-inner overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-1">
-                <!-- 卡片容器 -->
-                <div class="relative bg-white">
-                  <!-- 悬停边框光效 -->
-                  <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style="background: linear-gradient(135deg, rgba(22, 101, 52, 0.04) 0%, rgba(22, 101, 52, 0.02) 100%);">
-                  </div>
-
-                  <div class="flex flex-col md:flex-row relative z-10">
-                    <!-- 新闻图片 -->
-                    <div class="md:w-2/5 h-56 md:h-64 overflow-hidden relative">
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <img
-                        :src="news.image"
-                        :alt="news.title"
-                        class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
-                        onerror="this.src='https://picsum.photos/seed/news/800/500.jpg'"
-                      />
-                      <!-- 图片角标 -->
-                      <div class="absolute top-4 left-4 z-20">
-                        <span :class="[
-                          'px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm backdrop-blur-sm',
-                          getCategoryBadgeStyle(news.category)
-                        ]">
-                          {{ news.category }}
-                        </span>
-                      </div>
-                    </div>
-
-                    <!-- 新闻内容 -->
-                    <div class="flex-1 p-6 md:p-8 flex flex-col justify-between">
-                      <div>
-                        <!-- 日期 -->
-                        <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                          <Icon name="heroicons:calendar" class="w-4 h-4" />
-                          <span class="font-mono tabular-nums">{{ news.date }}</span>
-                        </div>
-
-                        <!-- 标题 -->
-                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 group-hover:text-eco-800 transition-colors duration-500 line-clamp-2 leading-tight">
-                          {{ news.title }}
-                        </h3>
-
-                        <!-- 摘要 -->
-                        <p class="text-gray-600 line-clamp-3 mb-6 font-light leading-relaxed">
-                          {{ news.summary }}
-                        </p>
-                      </div>
-
-                      <!-- 底部操作区 -->
-                      <div class="flex items-center justify-between">
-                        <div class="flex items-center text-eco-800 font-semibold group-hover:text-eco-900 transition-all duration-500">
-                          <span class="relative">
-                            阅读更多
-                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-eco-800 group-hover:w-full transition-all duration-500"></span>
-                          </span>
-                          <Icon name="heroicons:arrow-right"
-                            class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-500" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <!-- 编辑式新闻列表 -->
+            <div v-else-if="currentNews.length > 0" class="divide-y divide-[#dce5e1]">
+              <NuxtLink
+                v-for="(news, index) in currentNews"
+                :key="news.id"
+                :to="`/newsDetail/${news.id}`"
+                class="reveal group -mx-3 flex flex-col gap-5 px-3 py-7 transition-colors duration-300 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#159a76] sm:-mx-5 sm:flex-row sm:gap-8 sm:px-5 sm:py-9"
+                :class="`reveal-delay-${Math.min((index % 3) + 1, 5)}`"
+              >
+                <!-- 日期 -->
+                <div class="flex shrink-0 items-center justify-between gap-3 sm:w-28 sm:flex-col sm:items-start sm:justify-start sm:gap-3 sm:pt-1">
+                  <time class="font-mono text-xs tabular-nums tracking-wide text-[#61716c] sm:text-sm">{{ news.date }}</time>
+                  <span class="text-xs font-medium tracking-wide text-[#159a76]">{{ news.category }}</span>
                 </div>
-              </div>
-            </NuxtLink>
+
+                <!-- 新闻内容 -->
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-balance text-xl font-semibold leading-snug tracking-tight text-[#102b25] transition-colors duration-300 group-hover:text-[#159a76] sm:text-2xl">
+                    {{ news.title }}
+                  </h3>
+                  <p class="mt-3 line-clamp-2 max-w-3xl text-sm leading-7 text-[#61716c] sm:text-[15px]">
+                    {{ news.summary }}
+                  </p>
+                  <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#102b25]">
+                    阅读更多
+                    <Icon name="heroicons:arrow-right" class="h-4 w-4 text-[#159a76] transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </div>
+
+                <!-- 新闻图片 -->
+                <div class="order-first h-48 overflow-hidden rounded-md bg-[#e7eeeb] sm:order-none sm:h-32 sm:w-44 sm:shrink-0 lg:w-52">
+                  <img
+                    :src="news.image"
+                    :alt="news.title"
+                    class="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]"
+                    loading="lazy"
+                    onerror="this.src='https://picsum.photos/seed/news/800/500.jpg'"
+                  />
+                </div>
+              </NuxtLink>
             </div>
 
             <!-- 空状态 -->
-            <div v-else class="text-center py-20">
-              <div class="relative inline-block mb-8">
-                <div class="w-28 h-28 bg-gradient-to-br from-eco-100 to-teal-100 rounded-full flex items-center justify-center mx-auto">
-                  <Icon name="heroicons:newspaper" class="w-14 h-14 text-eco-400" />
-                </div>
-                <div class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-200 rounded-full flex items-center justify-center">
-                  <Icon name="heroicons:sparkles" class="w-4 h-4 text-yellow-600" />
-                </div>
+            <div v-else class="border-y border-[#dce5e1] px-5 py-20 text-center sm:py-24" role="status">
+              <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-md bg-[#edf3f0]">
+                <Icon name="heroicons:newspaper" class="h-8 w-8 text-[#159a76]" />
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-3">暂无新闻</h3>
-              <p class="text-gray-500 max-w-md mx-auto">该分类下暂时没有新闻内容，请选择其他分类或稍后再来查看</p>
+              <h3 class="text-xl font-semibold text-[#102b25]">暂无新闻</h3>
+              <p class="mx-auto mt-3 max-w-md text-sm leading-7 text-[#61716c]">该分类下暂时没有新闻内容，请选择其他分类或稍后再来查看</p>
             </div>
 
             <!-- 分页 -->
-            <div v-if="totalPages > 1" class="mt-16 flex justify-center items-center gap-3">
+            <nav v-if="totalPages > 1" class="mt-12 flex flex-wrap items-center justify-center gap-2 sm:mt-16" aria-label="新闻分页">
               <button
+                type="button"
                 @click="currentPage > 1 && currentPage--"
                 :disabled="currentPage === 1"
-                class="flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] disabled:opacity-50 disabled:cursor-not-allowed"
-                :class="currentPage === 1
-                  ? 'bg-gray-100 text-gray-400'
-                  : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-800 border border-gray-200'"
+                aria-label="上一页"
+                class="mr-2 inline-flex h-10 items-center gap-1.5 rounded-md border border-[#cfdad5] bg-white px-3 text-sm font-medium text-[#102b25] transition-colors duration-300 hover:border-[#159a76] hover:text-[#159a76] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#159a76] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:border-[#dce5e1] disabled:bg-transparent disabled:text-[#91a09a] sm:px-4"
               >
-                <Icon name="heroicons:chevron-left" class="w-5 h-5" />
+                <Icon name="heroicons:chevron-left" class="h-4 w-4" />
                 上一页
               </button>
 
-              <div class="flex items-center gap-2">
-                <button
-                  v-for="page in displayedPages"
-                  :key="page"
-                  @click="currentPage = page"
-                  class="w-11 h-11 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
-                  :class="currentPage === page
-                    ? 'bg-eco-800 text-white shadow-[0_8px_24px_rgba(22,101,52,0.2)] scale-105'
-                    : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-800 border border-gray-200'"
-                >
-                  {{ page }}
-                </button>
-              </div>
+              <button
+                v-for="page in displayedPages"
+                :key="page"
+                type="button"
+                @click="currentPage = page"
+                :aria-label="`第 ${page} 页`"
+                :aria-current="currentPage === page ? 'page' : undefined"
+                class="h-10 w-10 rounded-md border text-sm font-medium tabular-nums transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#159a76] focus-visible:ring-offset-2"
+                :class="currentPage === page
+                  ? 'border-[#102b25] bg-[#102b25] text-white'
+                  : 'border-[#cfdad5] bg-white text-[#42554e] hover:border-[#159a76] hover:text-[#159a76]'"
+              >
+                {{ page }}
+              </button>
 
               <button
+                type="button"
                 @click="currentPage < totalPages && currentPage++"
                 :disabled="currentPage === totalPages"
-                class="flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] disabled:opacity-50 disabled:cursor-not-allowed"
-                :class="currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400'
-                  : 'bg-white text-gray-700 hover:bg-eco-50 hover:text-eco-800 border border-gray-200'"
+                aria-label="下一页"
+                class="ml-2 inline-flex h-10 items-center gap-1.5 rounded-md border border-[#cfdad5] bg-white px-3 text-sm font-medium text-[#102b25] transition-colors duration-300 hover:border-[#159a76] hover:text-[#159a76] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#159a76] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:border-[#dce5e1] disabled:bg-transparent disabled:text-[#91a09a] sm:px-4"
               >
                 下一页
-                <Icon name="heroicons:chevron-right" class="w-5 h-5" />
+                <Icon name="heroicons:chevron-right" class="h-4 w-4" />
               </button>
-            </div>
+            </nav>
           </div>
         </div>
       </section>

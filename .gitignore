@@ -24,3 +24,12 @@ logs
 !.env.example
 
 # Large media files
+
+# 本地验证产物（无头浏览器截图 / 报告）
+verify-shots
+
+# 编辑器与本地工具目录
+.history
+.agents
+.zcode
+skills-lock.json
